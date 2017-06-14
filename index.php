@@ -33,14 +33,23 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<h2>Input</h2>
+				<h2>YAML</h2>
 				<form action="" method="POST">
 					<textarea name="yaml" rows="30" style="width: 100%"></textarea>
 					<br><br>
+					<label for="input[name='db_host']">Database Host:</label><br>
+					<input type="text" name="db_host" value="localhost"/><br>
+
+					<label for="input[name='db_user']">Database User:</label><br>
+					<input type="text" name="db_user" value="root"/><br>
+
+					<label for="input[name='db_pass']">Database Password:</label><br>
+					<input type="password" name="db_pass"/><br>
+					<br>
 					<button class="btn btn-default">Import</button>
 					<button class="btn btn-default">Export</button>
 					<button style="float: right;" type="submit" class="btn btn-primary">Submit</button>
-				</form>
+				</form><br>
 			</div>
 
 			<div class="col-md-6">
@@ -92,9 +101,9 @@
 							}
 					   	}
 						//TODO: write php conf representation to $config['projectName']/conf.php
-						
+						//TOOD: make sure we get feedback if db couldn´t be created
+
 						//TODO: tables/index.php should be copied from table_view.php, which hasn´t been created. crud read is a service.
-						//TODO: add inputs for host, user and pass
 						//TODO: how will we handle sessions? with a prefix/postfix?
 						//TODO: db tables in singular
 						//TODO src/db_connection.php
@@ -114,6 +123,9 @@
 							//logo.png
 							//session.php
 
+					   	//DB CONNECTION
+						//TODO: generate db_conf either here or in bash
+
 						//SQL
 						$sql = 'DROP DATABASE IF EXISTS '.$config['projectName'].';'.PHP_EOL;
 						$sql .= 'CREATE DATABASE '.$config['projectName'].';'.PHP_EOL;
@@ -123,7 +135,7 @@
 							foreach ($config['tables'][$table]['columns'] as $column => $value) {
 								$type = $config['tables'][$table]['columns'][$column]['type'];
 
-								if($type ==	 '*')
+								if($type ==	 '\*')
 									$type = 'varchar(255)';
 								else if($config['tables'][$type] != null)
 									$type = 'int, foreign key('.$column.') references '.$type.'(id)';
@@ -141,10 +153,11 @@
 						echo "<h2>SQL</h2>";
 						echo "<pre>".$sql."</pre>";
 						echo "<a href='$db_file_name'>$db_file_name</a>";
+						//TODO: link looks funny
 
 						//RUN SCRIPT
 						echo "<h2>Build</h2>";
-						$command = './build.sh '.$config['projectName'].' host user pass';
+						$command = './build.sh '.$config['projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' '.$_POST['db_pass'];
 						foreach ($config['tables'] as $table => $value) {
 							$command .= ' '.$table;
 						}
