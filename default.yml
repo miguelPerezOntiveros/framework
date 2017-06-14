@@ -1,0 +1,41 @@
+projectName: myProject1
+tables: 
+  content: 
+    columns: 
+      name: 
+        permisions: bla3
+        type: 255
+      value: 
+        permisions: bla3
+        type: 1024
+    permisions: bla1
+  gallery: 
+    columns: 
+      title: 
+        permisions: bla3
+        type: 255
+      image: 
+        permisions: bla3
+        type: \*
+    permisions: bla1
+  customer: 
+    columns: 
+      name: 
+        permisions: bla3
+        type: 255
+      email: 
+        permisions: bla3
+        type: 255
+      phone: 
+        permisions: bla3
+        type: 255
+    permisions: bla1
+  estado: 
+    columns: 
+      customer: 
+        permisions: bla3
+        type: customer
+      fecha: 
+        permisions: bla3
+        type: date
+    permisions: bla1
