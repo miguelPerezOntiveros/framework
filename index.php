@@ -9,18 +9,6 @@
 	<!-- Bootstrap -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Installing PECL yaml
-		curl -O http://pear.php.net/go-pear.phar
-		sudo php -d detect_unicode=0 go-pear.phar
-		sudo pecl channel-update pecl.php.net
-		xcode-select --install
-		brew install autoconf
-		pecl install yaml
-		extension=yaml.so >> /private/etc/php.ini
-	-->
-	<!-- Running php server 
-		php -S localhost:8080
-	-->
 </head>
 <body>
 	<div class="container">
@@ -38,7 +26,7 @@
 					<textarea name="yaml" rows="30" style="width: 100%"></textarea>
 					<br><br>
 					<label for="input[name='db_host']">Database Host:</label><br>
-					<input type="text" name="db_host" value="localhost"/><br>
+					<input type="text" name="db_host" value="127.0.0.1"/><br>
 
 					<label for="input[name='db_user']">Database User:</label><br>
 					<input type="text" name="db_user" value="root"/><br>
@@ -46,6 +34,8 @@
 					<label for="input[name='db_pass']">Database Password:</label><br>
 					<input type="password" name="db_pass"/><br>
 					<br>
+					<!-- TODO: Import with drag and drop -->
+					<!-- TODO: Export should download a yaml file -->
 					<button class="btn btn-default">Import</button>
 					<button class="btn btn-default">Export</button>
 					<button style="float: right;" type="submit" class="btn btn-primary">Submit</button>
@@ -58,28 +48,25 @@
 					ini_set('display_errors', 'On');
 
 					function write($dir, $fileName, $contents) {
-						echo 'going to write at '.$dir;
-						if (!is_dir($dir)){
+						if (!is_dir($dir))
 						    mkdir($dir, 0755, true);
-							echo 'should have created |'.$dir.'|';
-						}
 						$fileName = $dir.'/'.$fileName;
 						file_put_contents($fileName, $contents);
 						return $fileName;
 					}
-					if($_POST['yaml']) {
+					if(isset($_POST['yaml'])) {
 						//GLOBAL
 						$config = yaml_parse($_POST['yaml']);
 
 						//CONF INTERPRETATION
 					   	//TODO: pass this to a shorter format.
-					   	//TODO: check if table permissions are added.
 						if(!isset($config['tables']['user_types'])){
 							$config['tables']['user_type'] = array();
 							$config['tables']['user_type']['columns'] = array();
 							$config['tables']['user_type']['columns']['name'] = array();
 							$config['tables']['user_type']['columns']['name']['permisions'] = 'System Administrator';
 							$config['tables']['user_type']['columns']['name']['type'] = '255';
+							$config['tables']['user_type']['permisions'] = 'System Administrator';
 						}
 						if(!isset($config['tables']['users'])){
 							$config['tables']['user'] = array();
@@ -92,7 +79,8 @@
 							$config['tables']['user']['columns']['pass']['type'] = '255';
 							$config['tables']['user']['columns']['type'] = array();
 							$config['tables']['user']['columns']['type']['permisions'] = 'System Administrator';
-							$config['tables']['user']['columns']['type']['type'] = 'user_types';
+							$config['tables']['user']['columns']['type']['type'] = 'user_type';
+							$config['tables']['user']['permisions'] = 'System Administrator';
 						}
 						echo "<h2>Interpretation</h2>";
 						echo $config['projectName']."<br>";						
@@ -107,27 +95,16 @@
 
 						write('temp/'.$config['projectName'], 'config.inc.php','<?php $config=unserialize(\''.serialize($config).'\');?>');
 
-						//TOOD: make sure we get feedback if db couldn´t be created
-
-						//TODO: how will we handle sessions? with a prefix/postfix/other? post I guess
-						//TODO: modify README.md
-						
 						//TODO: Develop Files in src:
-							//db connection.php
 							// crud_create.php
 							// crud_read.php
 							// crud_update.php
 							// crud_delete.php
 							// session.php
-							
-					   	//DB CONNECTION
-						/* TODO: generate db_connection.inc.php either here or in bash
-							<?php
-								$proy = $config['projectName'];
-								//mysql_connect('host', 'user', 'pass') or die(mysql_error());
-								//mysql_select_db($proy) or die(mysql_error());
-							?>
-						*/
+								//TODO: how will we handle sessions? with a prefix/postfix/other? post I guess
+						
+					   	//TODO: make sure we get feedback if db couldn´t be created. PHP will know if the 3 inputs are not submited.
+					   	//TODO: make sure we get feedback on sql errors.
 
 						//SQL
 						$sql = 'DROP DATABASE IF EXISTS '.$config['projectName'].';'.PHP_EOL;
@@ -149,21 +126,18 @@
 							}
 							$sql .= 'primary key(id));'.PHP_EOL;
 						}
-						$sql .= "INSERT INTO user_types(name) VALUES ('System Administrator');".PHP_EOL;
-						$sql .= "INSERT INTO user_types(name) VALUES ('User');".PHP_EOL;
-						$sql .= "INSERT INTO users(user, pass, type ) VALUES ('admin',  'admin', 1);".PHP_EOL;
-						$db_file_name = write('temp/'.$config['projectName'], $config['projectName'].'.sql.txt', $sql);
+						$sql .= "INSERT INTO user_type(name) VALUES ('System Administrator');".PHP_EOL;
+						$sql .= "INSERT INTO user_type(name) VALUES ('User');".PHP_EOL;
+						$sql .= "INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);".PHP_EOL;
+						$db_file_name = write('temp/'.$config['projectName'], $config['projectName'].'.sql', $sql);
 						echo "<h2>SQL</h2>";
 						echo "<pre>".$sql."</pre>";
-						echo "<a href='$db_file_name'>$db_file_name</a>";
-						//TODO: link looks funny
-
+						$db_file_location = 'projects/'.$config['projectName']."/".$config['projectName'].".sql";
+						echo "<a href='".$db_file_location."'>".$db_file_location."</a>";
+						
 						//RUN SCRIPT
 						echo "<h2>Build</h2>";
 						$command = './build.sh '.$config['projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' '.$_POST['db_pass'];
-						foreach ($config['tables'] as $table => $value) {
-							$command .= ' '.$table;
-						}
 						echo "<pre>".exec($command)."</pre>";						
 					}
 				?>

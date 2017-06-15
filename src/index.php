@@ -1,7 +1,6 @@
 <?php
 	require 'session.inc.php';
 	require 'config.inc.php';
-	require 'db_connection.inc.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,16 +26,14 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				proj Name: 
-				<?php
-					echo $config['projectName'].'<br>';
-					echo $config['tables']['user']['columns']['type']['permisions'];
-				?>
+				<div id="res"></div>
 			</div>
 		</div>
 	</div>
 	<script>
-		;
+		$.get('crud_read.php?table=user', function(data){
+			$('#res').text(data);
+		});
 	</script>
 	<?php
 		include 'menu.inc.php';
