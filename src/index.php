@@ -1,6 +1,7 @@
 <?php
-	include 'session.php';
-	include 'db_connection.php';
+	require 'session.inc.php';
+	require 'config.inc.php';
+	require 'db_connection.inc.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,12 +22,16 @@
 </head>
 <body>
 	<?php
-		include 'menu.php';
+		//require 'menu.php';
 	?>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				Hello world!
+				proj Name: 
+				<?php
+					echo $config['projectName'].'<br>';
+					echo $config['tables']['user']['columns']['type']['permisions'];
+				?>
 			</div>
 		</div>
 	</div>
@@ -34,7 +39,7 @@
 		;
 	</script>
 	<?php
-		include 'menu.php';
+		include 'menu.inc.php';
 	?>
 </body>
 </html>

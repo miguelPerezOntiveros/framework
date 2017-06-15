@@ -54,14 +54,17 @@
 
 			<div class="col-md-6">
 				<?php
-					function write($fileName, $contents) {
-						global $config;
-						$dir = 'projects/'.$config['projectName'].'/admin';
-						if (!is_dir($dir))
+					error_reporting(E_ALL | E_STRICT);
+					ini_set('display_errors', 'On');
+
+					function write($dir, $fileName, $contents) {
+						echo 'going to write at '.$dir;
+						if (!is_dir($dir)){
 						    mkdir($dir, 0755, true);
+							echo 'should have created |'.$dir.'|';
+						}
 						$fileName = $dir.'/'.$fileName;
-						$file = fopen($fileName, 'w') or die('Cannot open file');
-						fwrite($file, $contents);
+						file_put_contents($fileName, $contents);
 						return $fileName;
 					}
 					if($_POST['yaml']) {
@@ -70,25 +73,26 @@
 
 						//CONF INTERPRETATION
 					   	//TODO: pass this to a shorter format.
-						if($config['tables']['user_types'] == null){
-							$config['tables']['user_types'] = array();
-							$config['tables']['user_types']['columns'] = array();
-							$config['tables']['user_types']['columns']['name'] = array();
-							$config['tables']['user_types']['columns']['name']['permisions'] = 'System Administrator';
-							$config['tables']['user_types']['columns']['name']['type'] = '255';
+					   	//TODO: check if table permissions are added.
+						if(!isset($config['tables']['user_types'])){
+							$config['tables']['user_type'] = array();
+							$config['tables']['user_type']['columns'] = array();
+							$config['tables']['user_type']['columns']['name'] = array();
+							$config['tables']['user_type']['columns']['name']['permisions'] = 'System Administrator';
+							$config['tables']['user_type']['columns']['name']['type'] = '255';
 						}
-						if($config['tables']['users'] == null){
-							$config['tables']['users'] = array();
-							$config['tables']['users']['columns'] = array();
-							$config['tables']['users']['columns']['user'] = array();
-							$config['tables']['users']['columns']['user']['permisions'] = 'System Administrator';
-							$config['tables']['users']['columns']['user']['type'] = '255';
-							$config['tables']['users']['columns']['pass'] = array();
-							$config['tables']['users']['columns']['pass']['permisions'] = 'System Administrator';
-							$config['tables']['users']['columns']['pass']['type'] = '255';
-							$config['tables']['users']['columns']['type'] = array();
-							$config['tables']['users']['columns']['type']['permisions'] = 'System Administrator';
-							$config['tables']['users']['columns']['type']['type'] = 'user_types';
+						if(!isset($config['tables']['users'])){
+							$config['tables']['user'] = array();
+							$config['tables']['user']['columns'] = array();
+							$config['tables']['user']['columns']['user'] = array();
+							$config['tables']['user']['columns']['user']['permisions'] = 'System Administrator';
+							$config['tables']['user']['columns']['user']['type'] = '255';
+							$config['tables']['user']['columns']['pass'] = array();
+							$config['tables']['user']['columns']['pass']['permisions'] = 'System Administrator';
+							$config['tables']['user']['columns']['pass']['type'] = '255';
+							$config['tables']['user']['columns']['type'] = array();
+							$config['tables']['user']['columns']['type']['permisions'] = 'System Administrator';
+							$config['tables']['user']['columns']['type']['type'] = 'user_types';
 						}
 						echo "<h2>Interpretation</h2>";
 						echo $config['projectName']."<br>";						
@@ -100,19 +104,13 @@
 								$config['tables'][$table]['columns'][$column]['permisions']."<br>";
 							}
 					   	}
-						//TODO: write php conf representation to $config['projectName']/conf.php
+
+						write('temp/'.$config['projectName'], 'config.inc.php','<?php $config=unserialize(\''.serialize($config).'\');?>');
+
 						//TOOD: make sure we get feedback if db couldn´t be created
 
-						//TODO: tables/index.php should be copied from table_view.php, which hasn´t been created. crud read is a service.
-						//TODO: how will we handle sessions? with a prefix/postfix?
-						//TODO: db tables in singular
-						//TODO src/db_connection.php
-						//TODO src/crud_create.php
-						//TODO src/crud_read.php
-						//TODO src/crud_update.php
-						//TODO src/crud_delete.php
-						//TODO src/session.php
-						//TODO src/logo.png
+						//TODO: how will we handle sessions? with a prefix/postfix/other? post I guess
+						//TODO: modify README.md
 						
 						//TODO: Develop Files in src:
 							//db connection.php
@@ -120,11 +118,16 @@
 							// crud_read.php
 							// crud_update.php
 							// crud_delete.php
-							//logo.png
-							//session.php
-
+							// session.php
+							
 					   	//DB CONNECTION
-						//TODO: generate db_conf either here or in bash
+						/* TODO: generate db_connection.inc.php either here or in bash
+							<?php
+								$proy = $config['projectName'];
+								//mysql_connect('host', 'user', 'pass') or die(mysql_error());
+								//mysql_select_db($proy) or die(mysql_error());
+							?>
+						*/
 
 						//SQL
 						$sql = 'DROP DATABASE IF EXISTS '.$config['projectName'].';'.PHP_EOL;
@@ -137,7 +140,7 @@
 
 								if($type ==	 '\*')
 									$type = 'varchar(255)';
-								else if($config['tables'][$type] != null)
+								else if(isset($config['tables'][$type]))
 									$type = 'int, foreign key('.$column.') references '.$type.'(id)';
 								else if(is_numeric($type))
 									$type = 'varchar('.$type.')';
@@ -149,7 +152,7 @@
 						$sql .= "INSERT INTO user_types(name) VALUES ('System Administrator');".PHP_EOL;
 						$sql .= "INSERT INTO user_types(name) VALUES ('User');".PHP_EOL;
 						$sql .= "INSERT INTO users(user, pass, type ) VALUES ('admin',  'admin', 1);".PHP_EOL;
-						$db_file_name = write('../'.$config['projectName'].'.sql.txt', $sql);
+						$db_file_name = write('temp/'.$config['projectName'], $config['projectName'].'.sql.txt', $sql);
 						echo "<h2>SQL</h2>";
 						echo "<pre>".$sql."</pre>";
 						echo "<a href='$db_file_name'>$db_file_name</a>";
