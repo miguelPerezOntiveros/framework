@@ -11,7 +11,7 @@
 
 	?>
 		<div style="float: right;">
-			Welcome <b><?= $_SESSION['userName'] ?></b>! Privileges: <?= $_SESSION['type'] ?>
+			Welcome <b><?= $_SESSION['userName'] ?></b>! Privileges: <?= $_SESSION['type'] ?>. <a href="login.php">log out</a>
 		</div>
 	<hr>
 </div>

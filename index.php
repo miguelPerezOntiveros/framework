@@ -64,49 +64,62 @@
 							$config['tables']['user_type'] = array();
 							$config['tables']['user_type']['columns'] = array();
 							$config['tables']['user_type']['columns']['name'] = array();
-							$config['tables']['user_type']['columns']['name']['permisions'] = '/System Administrator/';
+							$config['tables']['user_type']['columns']['name']['permissions'] = '/System Administrator/';
 							$config['tables']['user_type']['columns']['name']['type'] = '255';
-							$config['tables']['user_type']['permisions'] = '/System Administrator/';
+							$config['tables']['user_type']['permissions'] = '/System Administrator/';
 						}
 						if(!isset($config['tables']['users'])){
 							$config['tables']['user'] = array();
 							$config['tables']['user']['columns'] = array();
 							$config['tables']['user']['columns']['user'] = array();
-							$config['tables']['user']['columns']['user']['permisions'] = '/System Administrator/';
+							$config['tables']['user']['columns']['user']['permissions'] = '/System Administrator/';
 							$config['tables']['user']['columns']['user']['type'] = '255';
 							$config['tables']['user']['columns']['pass'] = array();
-							$config['tables']['user']['columns']['pass']['permisions'] = '/System Administrator/';
+							$config['tables']['user']['columns']['pass']['permissions'] = '/System Administrator/';
 							$config['tables']['user']['columns']['pass']['type'] = '255';
 							$config['tables']['user']['columns']['type'] = array();
-							$config['tables']['user']['columns']['type']['permisions'] = '/System Administrator/';
+							$config['tables']['user']['columns']['type']['permissions'] = '/System Administrator/';
 							$config['tables']['user']['columns']['type']['type'] = 'user_type';
-							$config['tables']['user']['permisions'] = '/System Administrator/';
+							$config['tables']['user']['permissions'] = '/System Administrator/';
 						}
 						echo "<h2>Interpretation</h2>";
 						echo $config['projectName']."<br>";						
-						foreach ($config['tables'] as $table => $value) {
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;".$table."<br>";
-							foreach ($config['tables'][$table]['columns'] as $column => $value) {
+						foreach ($config['tables'] as $tableName => $table) {
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;".$tableName."<br>";
+							foreach ($config['tables'][$tableName]['columns'] as $column => $value) {
+								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions']))
+									$config['tables'][$tableName]['columns'][$column]['permissions'] = '/.*/';
 								echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$column." | ".
-								$config['tables'][$table]['columns'][$column]['type']." | ".
-								$config['tables'][$table]['columns'][$column]['permisions']."<br>";
+								$config['tables'][$tableName]['columns'][$column]['type']." | ".
+								$config['tables'][$tableName]['columns'][$column]['permissions']."<br>";
 							}
+							if(!isset($config['tables'][$tableName]['permissions_create']))
+								$config['tables'][$tableName]['permissions_create'] = '/.*/';
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;permissions_create: ".$config['tables'][$tableName]['permissions_create']."<br>";
+							if(!isset($config['tables'][$tableName]['permissions_read']))
+								$config['tables'][$tableName]['permissions_read'] = '/.*/';
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;permissions_read: ".$config['tables'][$tableName]['permissions_read']."<br>";
+							if(!isset($config['tables'][$tableName]['permissions_update']))
+								$config['tables'][$tableName]['permissions_update'] = '/.*/';
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;permissions_update: ".$config['tables'][$tableName]['permissions_update']."<br>";
+							if(!isset($config['tables'][$tableName]['permissions_delete']))
+								$config['tables'][$tableName]['permissions_delete'] = '/.*/';
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;permissions_delete: ".$config['tables'][$tableName]['permissions_delete']."<br>";
+							if(!isset($config['tables'][$tableName]['show']))
+								$config['tables'][$tableName]['show'] = key($config['tables'][$tableName]['columns']);
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: ".$config['tables'][$tableName]['show']."<br>";
 					   	}
 
 						write('temp/'.$config['projectName'], 'config.inc.php','<?php $config=unserialize(\''.serialize($config).'\');?>');
 
-						//TODO: permisos por altas, bajas, cambios y ver
-						//TODO: Nombre humano para columnas
-						//TODO: make sure DB connection get closed
-						//TODO: Validar largo máximo en inputs para varchars
 						//TODO: Develop Files in src:
 							// crud_create.php
 							// crud_read.php
 							// crud_update.php
 							// crud_delete.php
-							// session.php
-								//TODO: how will we handle sessions? with a prefix/postfix/other? post I guess
-						
+							
+						//TODO: should access to reference imply access to referenced column?
+
 					   	//TODO: open project in new tab?
 					   	//TODO: encript passwords in db
 

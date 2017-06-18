@@ -6,35 +6,30 @@ tables:
         type: 255
       value: 
         type: 1024
-    permisions: /.*/
+    permissions_create: /.*/
+    permissions_read: /System Administrator/
+    permissions_update: /.*/
+    permissions_delete: /.*/
     show: name
   gallery: 
     columns: 
       title: 
-        permisions: bla3
+        permissions: /bla3/
         type: 255
       image: 
-        permisions: bla3
         type: \*
-    permisions: bla1
   customer: 
     columns: 
       name: 
-        permisions: bla3
         type: 255
       email: 
-        permisions: bla3
         type: 255
       phone: 
-        permisions: bla3
         type: 255
     show: name
   estado: 
     columns: 
       customer: 
-        permisions: bla3
         type: customer
       fecha: 
-        permisions: bla3
         type: date
-    permisions: bla1

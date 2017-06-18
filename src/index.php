@@ -20,6 +20,8 @@
 		});
 	</script>
 	<?php
+		//TODO: Validar largo máximo en inputs para varchars
+						
 		include 'foot.inc.php';
 	?>
 </body>
