@@ -22,7 +22,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<h2>YAML</h2>
-				<form action="" method="POST">
+				<form action="" method="POST" id="yamlForm">
 					<textarea name="yaml" rows="30" style="width: 100%"></textarea>
 					<br><br>
 					<label for="input[name='db_host']">Database Host:</label><br>
@@ -56,7 +56,7 @@
 					}
 					if(isset($_POST['yaml'])) {
 						//GLOBAL
-						$config = yaml_parse($_POST['yaml']);
+						$config =  json_decode($_POST['yaml'], true);
 
 						//CONF INTERPRETATION
 					   	//TODO: pass this to a shorter format.
@@ -64,23 +64,23 @@
 							$config['tables']['user_type'] = array();
 							$config['tables']['user_type']['columns'] = array();
 							$config['tables']['user_type']['columns']['name'] = array();
-							$config['tables']['user_type']['columns']['name']['permisions'] = 'System Administrator';
+							$config['tables']['user_type']['columns']['name']['permisions'] = '/System Administrator/';
 							$config['tables']['user_type']['columns']['name']['type'] = '255';
-							$config['tables']['user_type']['permisions'] = 'System Administrator';
+							$config['tables']['user_type']['permisions'] = '/System Administrator/';
 						}
 						if(!isset($config['tables']['users'])){
 							$config['tables']['user'] = array();
 							$config['tables']['user']['columns'] = array();
 							$config['tables']['user']['columns']['user'] = array();
-							$config['tables']['user']['columns']['user']['permisions'] = 'System Administrator';
+							$config['tables']['user']['columns']['user']['permisions'] = '/System Administrator/';
 							$config['tables']['user']['columns']['user']['type'] = '255';
 							$config['tables']['user']['columns']['pass'] = array();
-							$config['tables']['user']['columns']['pass']['permisions'] = 'System Administrator';
+							$config['tables']['user']['columns']['pass']['permisions'] = '/System Administrator/';
 							$config['tables']['user']['columns']['pass']['type'] = '255';
 							$config['tables']['user']['columns']['type'] = array();
-							$config['tables']['user']['columns']['type']['permisions'] = 'System Administrator';
+							$config['tables']['user']['columns']['type']['permisions'] = '/System Administrator/';
 							$config['tables']['user']['columns']['type']['type'] = 'user_type';
-							$config['tables']['user']['permisions'] = 'System Administrator';
+							$config['tables']['user']['permisions'] = '/System Administrator/';
 						}
 						echo "<h2>Interpretation</h2>";
 						echo $config['projectName']."<br>";						
@@ -122,7 +122,7 @@
 							foreach ($config['tables'][$table]['columns'] as $column => $value) {
 								$type = $config['tables'][$table]['columns'][$column]['type'];
 
-								if($type ==	 '\*')
+								if($type == '\*')
 									$type = 'varchar(255)';
 								else if(isset($config['tables'][$type]))
 									$type = 'int, foreign key('.$column.') references '.$type.'(id)';
@@ -136,6 +136,7 @@
 						$sql .= "INSERT INTO user_type(name) VALUES ('System Administrator');".PHP_EOL;
 						$sql .= "INSERT INTO user_type(name) VALUES ('User');".PHP_EOL;
 						$sql .= "INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);".PHP_EOL;
+						$sql .= "INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);".PHP_EOL;
 						$db_file_name = write('temp/'.$config['projectName'], $config['projectName'].'.sql', $sql);
 						echo "<h2>SQL</h2>";
 						echo "<pre>".$sql."</pre>";
@@ -151,10 +152,14 @@
 			</div>
 		</div>
 	</div>
+	<script src="vendor/yamljs/yaml.js"></script>
 	<script>
 		$.get('default.yml', function(data){
 			$("textarea[name='yaml']").text(data);
-		})
+		});
+		$('#yamlForm').submit(function(e){
+			$('textarea[name=yaml]').val( JSON.stringify(YAML.parse($('textarea[name=yaml]').val())));
+		});
 	</script>
 </body>
 </html>

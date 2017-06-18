@@ -3,12 +3,11 @@ tables:
   content: 
     columns: 
       name: 
-        permisions: bla3
         type: 255
       value: 
-        permisions: bla3
         type: 1024
-    permisions: bla1
+    permisions: /.*/
+    show: name
   gallery: 
     columns: 
       title: 
@@ -29,7 +28,7 @@ tables:
       phone: 
         permisions: bla3
         type: 255
-    permisions: bla1
+    show: name
   estado: 
     columns: 
       customer: 

@@ -6,11 +6,7 @@
 <?php require 'head.inc.php'; ?>
 
 <body>
-	<?php
-		require 'menu.inc.php';
-		echo $_SESSION['userName'].'<br>';
-		echo $_SESSION['type'].'<br>';
-	?>
+	<?php require 'menu.inc.php'; ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -19,12 +15,12 @@
 		</div>
 	</div>
 	<script>
-		$.get('crud_read.php?table=user', function(data){
+		$.get(<?= '"crud_read.php?table='.$currentTable.'"' ?>, function(data){
 			$('#res').text(data);
 		});
 	</script>
 	<?php
-		include 'menu.inc.php';
+		include 'foot.inc.php';
 	?>
 </body>
 </html>
