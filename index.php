@@ -123,6 +123,8 @@
 					   	//TODO: open project in new tab?
 					   	//TODO: encript passwords in db
 
+						//TODO: make sure no sql injection is possile
+
 					   	//TODO: make sure we get feedback if db couldn´t be created. PHP will know if the 3 inputs are not submited.
 					   	//TODO: make sure we get feedback on sql errors.
 

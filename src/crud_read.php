@@ -41,7 +41,8 @@
 	if($result = $conn->query($sql))
 		while($row = $result->fetch_assoc())
 			$res[] = $row;
-	// return sql errors as json
+
+	// TODO: return sql errors as json
 	echo json_encode($res);
 	$conn->close();
 ?>

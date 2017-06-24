@@ -11,6 +11,11 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div id="res" style="color:green;"></div>
+
+				<form action=<?= '"crud_create.php?table='.$currentTable.'"' ?> method="POST">
+					Name: <input type="text" name="name"></input>
+					<input type="submit">Create test</input>
+				</form>
 			</div>
 		</div>
 	</div>

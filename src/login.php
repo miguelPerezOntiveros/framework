@@ -43,8 +43,6 @@
 
 <body>
 	<div id = "container">
-		<?php require 'menu.inc.php';?>
-		
 		<div id ="body">
 			<div class="container">
 				<div class="row">
