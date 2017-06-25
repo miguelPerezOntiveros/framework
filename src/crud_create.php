@@ -1,17 +1,16 @@
 <?php
-	isset($_GET['table']) || exit('No such table 0');
+	isset($_GET['table']) || exit('No such table');
 	
 	require 'config.inc.php';
 	require 'session.inc.php';
 
 	// Checking table permissions
 	if(!preg_match($config['tables'][$_GET['table']]['permissions_create'], $_SESSION['type']))
-		exit('No such table 1');
+		exit('No such table');
 	
 	// Checking column permissions
 	$allowedColumns = [];
 	$columnValues = [];
-	$values = [];
 	$toTraverse = $config['tables'][$_GET['table']]['columns'];
 	reset($toTraverse);
 	while ($column = current($toTraverse)) {
@@ -23,11 +22,10 @@
 	}
 
 	if(!count($allowedColumns))
-		exit('No such table 2');
+		exit('No such table');
 
 	//Executing Query
 	require 'db_connection.inc.php';
-	$res = array();
 	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',$allowedColumns).') VALUES (\''.implode('\', \'', $columnValues).'\');';	
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql))

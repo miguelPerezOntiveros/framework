@@ -13,8 +13,17 @@
 				<div id="res" style="color:green;"></div>
 
 				<form action=<?= '"crud_create.php?table='.$currentTable.'"' ?> method="POST">
-					Name: <input type="text" name="name"></input>
-					<input type="submit">Create test</input>
+					Name: <input type="text" name="name"/>
+					<input type="submit" value="Create test"/>
+				</form>
+				<form action=<?= '"crud_delete.php?table='.$currentTable.'"' ?> method="POST">
+					Id: <input type="text" name="id"/>
+					<input type="submit" value="Delete test"/>
+				</form>
+				<form action=<?= '"crud_update.php?table='.$currentTable.'"' ?> method="POST">
+					Id: <input type="text" name="id"/>
+					Name: <input type="text" name="name"/>
+					<input type="submit" value="Update test"/>
 				</form>
 			</div>
 		</div>

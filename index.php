@@ -128,6 +128,8 @@
 					   	//TODO: make sure we get feedback if db couldn´t be created. PHP will know if the 3 inputs are not submited.
 					   	//TODO: make sure we get feedback on sql errors.
 
+						//TODO: add 'show' prop to individual columns
+
 						//SQL
 						$sql = 'DROP DATABASE IF EXISTS '.$config['projectName'].';'.PHP_EOL;
 						$sql .= 'CREATE DATABASE '.$config['projectName'].';'.PHP_EOL;
@@ -160,7 +162,7 @@
 						
 						//RUN SCRIPT
 						echo "<h2>Build</h2>";
-						$command = './build.sh '.$config['projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' '.$_POST['db_pass'];
+						$command = './build.sh '.$config['projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' \''.$_POST['db_pass'].'\'';
 						echo "<pre>".exec($command)."</pre>";						
 					}
 				?>

@@ -13,7 +13,7 @@
 	// Checking column permissions
 	$tablesToJoin = [$_GET['table']];
 	$joinRules = ['1'];
-	$allowedColumns = [];
+	$allowedColumns = [$_GET['table'].'.id'];
 	$toTraverse = $config['tables'][$_GET['table']]['columns'];
 	reset($toTraverse);
 	while ($column = current($toTraverse)) {
@@ -30,7 +30,7 @@
 		next($toTraverse);
 	}
 
-	if(!count($allowedColumns))
+	if(count($allowedColumns) <= 1)
 		exit('No such table');
 
 	//Executing Query
