@@ -29,7 +29,7 @@
 				</form>
 			</div>
 		</div>
-	</div>
+	</div>ojnjnkjnkjn
 	<script>
 		$.get(<?= '"crud_read.php?table='.$currentTable.'"' ?>, function(data){
 			$('#res').text(data);
