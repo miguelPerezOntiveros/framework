@@ -1,5 +1,4 @@
 <?php
-	//TODO: Work in progress
 	isset($_GET['table']) && isset($_POST['id']) || exit('No such table');
 	
 	require 'config.inc.php';
@@ -15,7 +14,28 @@
 	reset($toTraverse);
 	while ($column = current($toTraverse)) {
 		if(preg_match( $toTraverse[key($toTraverse)]['permissions'], $_SESSION['type'])){
-			$columnValues[] = key($toTraverse).' = \''.$_POST[key($toTraverse)].'\'';
+			$columnValue = (isset($_POST[key($toTraverse)])? $_POST[key($toTraverse)]: 'Not present.');
+			// upload possible files start
+			if($column['type'] == '\*'){
+				for($now = time(); file_exists($target_file = 'uploads/'.$_GET['table'].$now.basename($_FILES[key($toTraverse)]['name'])); $now++)
+					;
+
+				// var_dump($_FILES[key($toTraverse)]);
+				// echo 'target file:  '.$target_file.'<br>';
+				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
+				if(!array_search(pathinfo($target_file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png')))
+					exit(json_encode((object) ["error" => "File type not supported"]));
+				
+				if ($_FILES[key($toTraverse)]["size"] > 1*1024*1024)
+					exit(json_encode((object) ["error" => "File too large"]));
+
+				if (!move_uploaded_file($_FILES[key($toTraverse)]["tmp_name"], $target_file))
+					exit(json_encode((object) ["error" => "Error during transfer"]));
+				$columnValue = $target_file;	
+			}
+			// upload possible files finish
+
+			$allowedColumns[] = key($toTraverse).' = \''.$columnValue.'\'';
 		}
 		next($toTraverse);
 	}
@@ -23,8 +43,43 @@
 	if(!count($allowedColumns))
 		exit('No such table');
 
-	//Executing Query
+	// TODO: checj how to handle all the possible errors
+
+	// Delete possibe files
 	require 'db_connection.inc.php';
+	$toTraverse = $config['tables'][$_GET['table']]['columns'];
+	reset($toTraverse);
+	$fileColumns = [];
+	while ($column = current($toTraverse)) {
+		if($toTraverse[key($toTraverse)]['type'] == '\*')
+			$fileColumns[] = key($toTraverse);
+		next($toTraverse);
+	}
+	if(count($fileColumns))
+	{
+		$sql = 'SELECT '.implode(', ', $fileColumns).' FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
+		error_log('INFO - sql:'.$sql);
+		if(!$result = $conn->query($sql))
+			echo json_encode((object) ["error" => "Error while retrieving entry"]);
+		else
+		{
+			if(!$row = $result->fetch_assoc())
+				echo json_encode((object) ["error" => "No files to delete anymore"]);
+			else{
+				$toTraverse2 = $row;
+				reset($toTraverse2);
+				while ($column2 = current($toTraverse2)) {
+					if(!unlink($row[key($toTraverse2)]))
+						echo json_encode((object) ["error" => "Error unlinking file"]);
+					else
+						echo json_encode((object) ["success" => "File deleted successfully"]);
+					next($toTraverse2);
+				}
+			}
+		}
+	}
+
+	//Executing Query
 	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$allowedColumns).' WHERE id=\''.$_POST['id'].'\';';	
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql))
