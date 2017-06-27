@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS andrea;
+CREATE DATABASE andrea;
+USE andrea;
+CREATE TABLE IF NOT EXISTS content(id int NOT NULL AUTO_INCREMENT, name varchar(255), value varchar(1024), primary key(id));
+CREATE TABLE IF NOT EXISTS gallery(id int NOT NULL AUTO_INCREMENT, title varchar(255), image varchar(255), primary key(id));
+CREATE TABLE IF NOT EXISTS customer(id int NOT NULL AUTO_INCREMENT, name varchar(255), email varchar(255), phone varchar(255), primary key(id));
+CREATE TABLE IF NOT EXISTS estado(id int NOT NULL AUTO_INCREMENT, customer int, foreign key(customer) references customer(id), fecha date, primary key(id));
+CREATE TABLE IF NOT EXISTS user_type(id int NOT NULL AUTO_INCREMENT, name varchar(255), primary key(id));
+CREATE TABLE IF NOT EXISTS user(id int NOT NULL AUTO_INCREMENT, user varchar(255), pass varchar(255), type int, foreign key(type) references user_type(id), primary key(id));
+INSERT INTO user_type(name) VALUES ('System Administrator');
+INSERT INTO user_type(name) VALUES ('User');
+INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);
+INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);
