@@ -1,4 +1,3 @@
 projects/*
-!projects/andrea/
 .DS_Store
 .idea/Framework.iml

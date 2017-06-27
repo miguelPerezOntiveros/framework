@@ -39,7 +39,7 @@
 	$sql = 'SELECT '.implode(', ', $allowedColumns).' FROM '.implode(', ', $tablesToJoin).' WHERE '.implode(' and ', $joinRules).';';	
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql))
-		while($row = $result->fetch_assoc())
+		while($row = $result->fetch_array(MYSQLI_NUM))
 			$res[] = $row;
 
 	// TODO: return sql errors as json

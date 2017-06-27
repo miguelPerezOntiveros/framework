@@ -5,7 +5,7 @@
 		$toTraverse = $config['tables'];
 		reset($toTraverse);
 		while ($table = current($toTraverse)) {
-		        echo '<span class=\'tab\'>'.key($toTraverse).'</span>';
+		        echo '<span onclick="renderTable(\''.key($toTraverse).'\');" class=\'tab\'>'.key($toTraverse).'</span>';
 		       next($toTraverse);
 		}
 
