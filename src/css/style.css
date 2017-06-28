@@ -1,3 +1,45 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+#footerDownContainer {
+	min-height: 100%;
+	position: relative;
+}
+#footerDownBody {
+	padding-bottom: 60px;
+}
+#footerDownFooter {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background: #f0f0f0;
+	border-top: #1173BD solid 0.1em;
+}
+
+
+.menu{
+	padding: 18px;
+	background: #f0f0f0;
+	border-bottom: #1173BD solid 0.1em;
+}
 .tab{
-	padding: 20px;
+	margin: 6px 14px;
+	padding-bottom: 6px;
+	color: #1173BD;
+}
+.tab:hover, .tab.active{
+	border-bottom: #1173BD solid 4px;
+}
+.bs-callout-left{
+	padding: 0 20px;
+	margin: 10px 0;
+	border: 1px solid #eee;
+	border-left-width: 5px;
+	border-radius: 3px;
+	border-color: #fff;
+	border-left-color: #428bca;
 }

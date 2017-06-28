@@ -8,7 +8,7 @@
 	if(!preg_match($config['tables'][$_GET['table']]['permissions_read'], $_SESSION['type']))
 		exit('No such table');
 	
-	//TODO: Allow for user specified columns
+	//TODO: Allow for user specified columns?
 
 	// Checking column permissions
 	$tablesToJoin = [$_GET['table']];
@@ -41,7 +41,7 @@
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql)){
 		while ($field = $result->fetch_field())
-			$fields[] = $field->name;
+			$fields[] = (object)[$field->name, $config['tables'][$_GET['table']]['columns'][$field->name]['type']]; 
 		while($row = $result->fetch_array(MYSQLI_NUM))
 			$res[] = $row;
 	}

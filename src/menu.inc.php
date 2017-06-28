@@ -5,13 +5,16 @@
 		$toTraverse = $config['tables'];
 		reset($toTraverse);
 		while ($table = current($toTraverse)) {
-		        echo '<span onclick="renderTable(\''.key($toTraverse).'\');" class=\'tab\'>'.key($toTraverse).'</span>';
-		       next($toTraverse);
+			$tableNameToShow = (isset($config['tables'][key($toTraverse)]['displayName'])? 
+							$config['tables'][key($toTraverse)]['displayName']: 
+							ucwords(str_replace("_"," ", key($toTraverse) )));
+			echo '<span onclick="renderTable(\''.key($toTraverse).'\', \''.$tableNameToShow.'\');" class=\'tab\' id=\'menu_'.key($toTraverse).'\'>'.$tableNameToShow.'</span>';
+			next($toTraverse);
 		}
 
 	?>
 		<div style="float: right;">
-			Welcome <b><?= $_SESSION['userName'] ?></b>! Privileges: <?= $_SESSION['type'] ?>. <a href="login.php">log out</a>
+			Welcome <b><?= $_SESSION['userName'] ?></b>! Privileges: <b><?= $_SESSION['type'] ?></b>
+			<span class="tab">Log out</span>
 		</div>
-	<hr>
 </div>
