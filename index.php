@@ -67,6 +67,7 @@
 							$config['tables']['user_type']['columns']['name']['permissions'] = '/System Administrator/';
 							$config['tables']['user_type']['columns']['name']['type'] = '255';
 							$config['tables']['user_type']['permissions'] = '/System Administrator/';
+							$config['tables']['user_type']['show'] = 'name';
 						}
 						if(!isset($config['tables']['users'])){
 							$config['tables']['user'] = array();
@@ -80,7 +81,8 @@
 							$config['tables']['user']['columns']['type'] = array();
 							$config['tables']['user']['columns']['type']['permissions'] = '/System Administrator/';
 							$config['tables']['user']['columns']['type']['type'] = 'user_type';
-							$config['tables']['user']['permissions'] = '/System Administrator/';
+							$config['tables']['user']['permissions'] = '/System Administrator/'; //TODO: make 'permissions' apply for all CRUD
+							$config['tables']['user']['show'] = 'user';
 						}
 						echo "<h2>Interpretation</h2>";
 						echo $config['projectName']."<br>";						

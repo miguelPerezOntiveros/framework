@@ -30,6 +30,7 @@ body {
 	margin: 6px 14px;
 	padding-bottom: 6px;
 	color: #1173BD;
+	cursor:pointer;
 }
 .tab:hover, .tab.active{
 	border-bottom: #1173BD solid 4px;

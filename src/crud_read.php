@@ -14,20 +14,25 @@
 	$tablesToJoin = [$_GET['table']];
 	$joinRules = ['1'];
 	$allowedColumns = [$_GET['table'].'.id'];
-	$toTraverse = $config['tables'][$_GET['table']]['columns'];
-	reset($toTraverse);
-	while ($column = current($toTraverse)) {
-		if(preg_match( $toTraverse[key($toTraverse)]['permissions'], $_SESSION['type']))
-			if(isset($config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']])){
-				$otherTable = $config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'];
-				$otherColumn = $config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']]['show'];
-				$tablesToJoin[] = $otherTable;
-				$allowedColumns[] = $otherTable.'.'.$otherColumn.' as '.key($toTraverse);
-				$joinRules[] = $_GET['table'].'.'.key($toTraverse).' = '.$otherTable.'.id';
-			}
-			else
-				$allowedColumns[] = $_GET['table'].'.'.key($toTraverse);
-		next($toTraverse);
+	if(isset($_GET['show'])) {
+		if(preg_match( $config['tables'][$_GET['table']]['columns'][$config['tables'][$_GET['table']]['show']]['permissions'], $_SESSION['type']))
+			$allowedColumns[] = $_GET['table'].'.'.$config['tables'][$_GET['table']]['show'];
+	} else{
+		$toTraverse = $config['tables'][$_GET['table']]['columns'];
+		reset($toTraverse);
+		while ($column = current($toTraverse)) {
+			if(preg_match( $toTraverse[key($toTraverse)]['permissions'], $_SESSION['type']))
+				if(isset($config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']])){
+					$otherTable = $config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'];
+					$otherColumn = $config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']]['show'];
+					$tablesToJoin[] = $otherTable;
+					$allowedColumns[] = $otherTable.'.'.$otherColumn.' as '.key($toTraverse);
+					$joinRules[] = $_GET['table'].'.'.key($toTraverse).' = '.$otherTable.'.id';
+				}
+				else
+					$allowedColumns[] = $_GET['table'].'.'.key($toTraverse);
+			next($toTraverse);
+		}
 	}
 
 	if(count($allowedColumns) <= 1)
