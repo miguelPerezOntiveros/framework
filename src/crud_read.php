@@ -1,12 +1,12 @@
 <?php
-	isset($_GET['table']) || exit('No such table');
+	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
 	
 	require 'config.inc.php';
 	require 'session.inc.php';
 
 	// Checking table permissions
 	if(!preg_match($config['tables'][$_GET['table']]['permissions_read'], $_SESSION['type']))
-		exit('No such table');
+		exit(json_encode((object) ["error" => "No such table."]));
 	
 	//TODO: Allow for user specified columns?
 
@@ -36,7 +36,7 @@
 	}
 
 	if(count($allowedColumns) <= 1)
-		exit('No such table');
+		exit(json_encode((object) ["error" => "No such table."]));
 
 	//Executing Query
 	require 'db_connection.inc.php';

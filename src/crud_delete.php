@@ -30,19 +30,17 @@
 		$sql = 'SELECT '.implode(', ', $fileColumns).' FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
 		error_log('INFO - sql:'.$sql);
 		if(!$result = $conn->query($sql))
-			echo json_encode((object) ["error" => "Error while retrieving entry"]);
+			exit(json_encode((object) ["error" => "Error while retrieving entry"]));
 		else
 		{
 			if(!$row = $result->fetch_assoc())
-				echo json_encode((object) ["error" => "No files to delete anymore"]);
+				exit(json_encode((object) ["error" => "No files to delete anymore"]));
 			else{
 				$toTraverse2 = $row;
 				reset($toTraverse2);
 				while ($column2 = current($toTraverse2)) {
 					if(!unlink($row[key($toTraverse2)]))
-						echo json_encode((object) ["error" => "Error unlinking file"]);
-					else
-						echo json_encode((object) ["success" => "File deleted successfully"]);
+						exit(json_encode((object) ["error" => "Error unlinking file"]));
 					next($toTraverse2);
 				}
 			}
@@ -55,7 +53,7 @@
 	if($result = $conn->query($sql))
 		echo json_encode((object) ["success" => "Entry deleted successfully"]);
 	else
-		echo json_encode((object) ["error" => $conn->error]);
+		exit(json_encode((object) ["error" => $conn->error]));
 
 	$conn->close();
 ?>

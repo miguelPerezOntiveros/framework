@@ -1,12 +1,12 @@
 <?php
-	isset($_GET['table']) || exit('No such table');
+	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
 	
 	require 'config.inc.php';
 	require 'session.inc.php';
 
 	// Checking table permissions
 	if(!preg_match($config['tables'][$_GET['table']]['permissions_create'], $_SESSION['type']))
-		exit('No such table');
+		exit(json_encode((object) ["error" => "login"]));
 	
 	//TODO: Single respnose for all errors
 
@@ -26,8 +26,9 @@
 				// var_dump($_FILES[key($toTraverse)]);
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
-				if(!array_search(pathinfo($target_file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png')))
-					exit(json_encode((object) ["error" => "File type not supported"]));
+				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
+				if(!array_search($ext, array('jpg', 'jpeg', 'gif', 'png')))
+					exit(json_encode((object) ["error" => "File type '".$ext."' not supported"]));
 				
 				if ($_FILES[key($toTraverse)]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
@@ -45,7 +46,7 @@
 	}
 
 	if(!count($allowedColumns))
-		exit('No such table');
+		exit(json_encode((object) ["error" => "No such table."]));
 
 	//Executing Query
 	require 'db_connection.inc.php';
