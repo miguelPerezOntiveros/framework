@@ -98,7 +98,7 @@
 				else if(e[1] == '\\*')
 					form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'">  <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><span class="glyphicon glyphicon-arrow-down" style="font-size: 3em;"></span><br><span class="catcherFilesLabel">Drop file here</span></div><br>';
 				else if(e[1] == 'date')
-					form += '<input type="date"/ required><br>';
+					form += '<input name="'+e[0]+'" type="date" required><br>';
 				else
 					form += '<select><option>TODO: References. I still need to fill those in</option></select><br>';
 			}

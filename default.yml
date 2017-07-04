@@ -17,18 +17,31 @@ tables:
         type: 255
       image: 
         type: \*
-  customer: 
+  service: 
     columns: 
       name: 
         type: 255
-      email: 
-        type: 255
-      phone: 
-        type: 255
-    show: name
-  estado: 
+      image: 
+        type: \*
+  client: 
     columns: 
-      customer: 
-        type: customer
-      fecha: 
-        type: date
+      name: 
+        type: 255
+      description: 
+        type: 255
+  statistics: 
+    columns: 
+      name: 
+        type: 255
+      value: 
+        type: 255
+  blog: 
+    columns: 
+      title: 
+        type: 255
+      summary: 
+        type: 255
+      body: 
+        type: 255
+      image: 
+        type: \*
