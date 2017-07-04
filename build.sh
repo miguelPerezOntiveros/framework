@@ -4,7 +4,7 @@
 mkdir -p projects/$argv[1]/admin
 cp -r src/* projects/$argv[1]/admin
 printf "<?php\n\t\$conn = new mysqli('"$argv[2]"', '"$argv[3]"', '"$argv[4]"', '"$argv[1]"');\n\tif (\$conn->connect_errno)\n\t\texit( json_encode((object) ['error' => 'Failed to connect to MySQL: ('.\$conn->connect_errno.')'.\$conn->connect_error]));\n?>" > projects/$argv[1]/admin/db_connection.inc.php
-printf "<?php\n\tsession_name('"$argv[1]"');\n\tsession_start();\n\tif(!isset(\$_SESSION['userName']) && basename(\$_SERVER['PHP_SELF']) != 'logIn.php'){\n\t\theader('Location: logIn.php');\n\t\texit();\n\t}\n?>" > projects/$argv[1]/admin/session.inc.php
+printf "<?php\n\tsession_name('"$argv[1]"');\n\tsession_start();\n\tif(!isset(\$_SESSION['userName']) && basename(\$_SERVER['PHP_SELF']) != 'login.php'){\n\t\theader('Location: logIn.php');\n\t\texit();\n\t}\n?>" > projects/$argv[1]/admin/session.inc.php
 mv temp/$argv[1]/*.php projects/$argv[1]/admin
 mv temp/$argv[1]/*.sql projects/$argv[1]
 rm -rf temp/$argv[1]
