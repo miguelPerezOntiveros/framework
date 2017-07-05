@@ -13,7 +13,7 @@
 	$toTraverse = $config['tables'][$_GET['table']]['columns'];
 	reset($toTraverse);
 	while ($column = current($toTraverse)) {
-		if(preg_match( $toTraverse[key($toTraverse)]['permissions'], $_SESSION['type'])){
+		if(preg_match( $toTraverse[key($toTraverse)]['permissions_udpate'], $_SESSION['type'])){
 			$columnValue = (isset($_POST[key($toTraverse)])? $_POST[key($toTraverse)]: 'Not present.');
 			// upload possible files start
 			if($column['type'] == '\*'){

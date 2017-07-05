@@ -4,10 +4,14 @@ tables:
     columns: 
       name: 
         type: 255
+        permissions_create: -
+        permissions_read: -
       value: 
         type: 1024
-    permissions_create: /.*/
-    permissions_read: /System Administrator/
+        permissions_create: -
+        permissions_read: -
+    permissions_create: -
+    permissions_read: -
     permissions_update: /.*/
     permissions_delete: /.*/
     show: name
@@ -39,6 +43,8 @@ tables:
     columns: 
       title: 
         type: 255
+      date: 
+        type: date
       summary: 
         type: 255
       body: 

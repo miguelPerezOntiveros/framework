@@ -2,27 +2,28 @@
 	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
 	
 	require 'config.inc.php';
-	require 'session.inc.php';
 
-	// Checking table permissions
-	if(!preg_match($config['tables'][$_GET['table']]['permissions_read'], $_SESSION['type']))
-		exit(json_encode((object) ["error" => "No such table."]));
-	
-	//TODO: Allow for user specified columns?
+	if($config['tables'][$_GET['table']]['permissions_read'] != '-'){
+		require 'session.inc.php';
+
+		// Checking table permissions
+		if(!preg_match($config['tables'][$_GET['table']]['permissions_read'], $_SESSION['type']))
+			exit(json_encode((object) ["error" => "No such table."]));
+	}
 
 	// Checking column permissions
 	$tablesToJoin = [$_GET['table']];
 	$joinRules = ['1'];
 	$allowedColumns = [$_GET['table'].'.id'];
-	if(isset($_GET['show'])) {
-		if(preg_match( $config['tables'][$_GET['table']]['columns'][$config['tables'][$_GET['table']]['show']]['permissions'], $_SESSION['type']))
+	if(isset($_GET['show'])) { // only asking for 'show' column
+		if($config['tables'][$_GET['table']]['columns'][$config['tables'][$_GET['table']]['show']]['permissions_read'] == '-' || preg_match( $config['tables'][$_GET['table']]['columns'][$config['tables'][$_GET['table']]['show']]['permissions_read'], $_SESSION['type']))
 			$allowedColumns[] = $_GET['table'].'.'.$config['tables'][$_GET['table']]['show'];
 	} else{
 		$toTraverse = $config['tables'][$_GET['table']]['columns'];
 		reset($toTraverse);
 		while ($column = current($toTraverse)) {
-			if(preg_match( $toTraverse[key($toTraverse)]['permissions'], $_SESSION['type']))
-				if(isset($config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']])){
+			if($toTraverse[key($toTraverse)]['permissions_read'] == '-' || preg_match( $toTraverse[key($toTraverse)]['permissions_read'], $_SESSION['type']))
+				if(isset($config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']])){ // column is a ref
 					$otherTable = $config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'];
 					$otherColumn = $config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']]['show'];
 					$tablesToJoin[] = $otherTable;

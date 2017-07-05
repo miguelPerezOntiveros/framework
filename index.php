@@ -89,11 +89,17 @@
 						foreach ($config['tables'] as $tableName => $table) {
 							echo "&nbsp;&nbsp;&nbsp;&nbsp;".$tableName."<br>";
 							foreach ($config['tables'][$tableName]['columns'] as $column => $value) {
-								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions']))
-									$config['tables'][$tableName]['columns'][$column]['permissions'] = '/.*/';
+								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions_create']))
+									$config['tables'][$tableName]['columns'][$column]['permissions_create'] = '/.*/';
+								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions_read']))
+									$config['tables'][$tableName]['columns'][$column]['permissions_read'] = '/.*/';
+								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions_update']))
+									$config['tables'][$tableName]['columns'][$column]['permissions_update'] = '/.*/';
 								echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$column." | ".
-								$config['tables'][$tableName]['columns'][$column]['type']." | ".
-								$config['tables'][$tableName]['columns'][$column]['permissions']."<br>";
+								"t= ".$config['tables'][$tableName]['columns'][$column]['type']." | ".
+								"c= ".$config['tables'][$tableName]['columns'][$column]['permissions_create']." | ".
+								"r= ".$config['tables'][$tableName]['columns'][$column]['permissions_read']." | ".
+								"u= ".$config['tables'][$tableName]['columns'][$column]['permissions_update']."<br>";
 							}
 							if(!isset($config['tables'][$tableName]['permissions_create']))
 								$config['tables'][$tableName]['permissions_create'] = '/.*/';

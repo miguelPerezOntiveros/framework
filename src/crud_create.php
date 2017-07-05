@@ -2,11 +2,14 @@
 	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
 	
 	require 'config.inc.php';
-	require 'session.inc.php';
 
-	// Checking table permissions
-	if(!preg_match($config['tables'][$_GET['table']]['permissions_create'], $_SESSION['type']))
-		exit(json_encode((object) ["error" => "login"]));
+	if($config['tables'][$_GET['table']]['permissions_create'] != '-'){
+		require 'session.inc.php';
+
+		// Checking table permissions
+		if(!preg_match($config['tables'][$_GET['table']]['permissions_create'], $_SESSION['type']))
+			exit(json_encode((object) ["error" => "login"]));
+	}
 	
 	//TODO: Single respnose for all errors
 
@@ -16,7 +19,7 @@
 	$toTraverse = $config['tables'][$_GET['table']]['columns'];
 	reset($toTraverse);
 	while ($column = current($toTraverse)) {
-		if(preg_match( $toTraverse[key($toTraverse)]['permissions'], $_SESSION['type'])){
+		if($toTraverse[key($toTraverse)]['permissions_create'] == '-' ||  preg_match( $toTraverse[key($toTraverse)]['permissions_create'], $_SESSION['type'])){
 			$columnValue = (isset($_POST[key($toTraverse)])? $_POST[key($toTraverse)]: 'Not present.');
 			// upload possible files start
 			if($column['type'] == '\*'){
