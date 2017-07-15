@@ -42,53 +42,59 @@
 <?php require 'head.inc.php';?>
 
 <body>
-	<div id = "container">
-		<div id ="body">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12 bs-callout-left">
-						<h2><?= $config['projectName'] ?></h2>
-					</div>
-					<br><br><br>
-				</div>
-				<br>
-				<div class=<?= '\'alert alert-danger '.(!$incorrectPassword? ' hidden': '').'\''?> role="alert">
-					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-					Invalid Credentials
-				</div>
+	<div id="footerDownContainer">
+		<div id="footerDownBody">
 
-				<div class="row">
-					<div class="col-lg-4 bs-callout-left col-lg-offset-4" style='background-color: #DDD'>
-						<br/><br/>
-						<form method="post" id='loginForm' action=<?="'".basename($_SERVER['SCRIPT_NAME'])."'"?>>
-							<div class="form-group">
-								<label for="userName">User name</label>
-								<input type="text" id="userName" name="userName" class="form-control" placeholder="User name">
+			<div id = "container">
+				<div id ="body">
+					<div class="container">
+						<div class="row">
+							<br><br>
+							<div class="col-lg-12 bs-callout-left">
+								<h2><?= $config['projectName'] ?></h2>
 							</div>
+							<br><br><br>
+						</div>
+						<br>
+						<div class=<?= '\'alert alert-danger '.(!$incorrectPassword? ' hidden': '').'\''?> role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							Invalid Credentials
+						</div>
 
-							<div class="form-group">
-								<label for="exampleInputFile">Password</label>
-								<input type="password" id="password" name="password" class="form-control" placeholder="Password">
+						<div class="row">
+							<div class="col-lg-4 bs-callout-left col-lg-offset-4" style='background-color: #DDD'>
+								<br/><br/>
+								<form method="post" id='loginForm' action=<?="'".basename($_SERVER['SCRIPT_NAME'])."'"?>>
+									<div class="form-group">
+										<label for="userName">User name</label>
+										<input type="text" id="userName" name="userName" class="form-control" placeholder="User name">
+									</div>
+
+									<div class="form-group">
+										<label for="exampleInputFile">Password</label>
+										<input type="password" id="password" name="password" class="form-control" placeholder="Password">
+									</div>
+									<br>
+									<p>	
+										<button style="width: 100%" type="button" class="btn btn-success" id='submitBtn' onclick="$('#loginForm').submit();">Log In</button>
+									</p>
+									<br>
+								</form>
 							</div>
-							<br>
-							<p>	
-								<button style="width: 100%" type="button" class="btn btn-success" id='submitBtn' onclick="$('#loginForm').submit();">Log In</button>
-								<br><br>
-								<button style="width: 100%" type="button" class="btn btn-warning">Create Account</button>
-							</p>
-							<br>
-						</form>
+						</div>
+						<script type="text/javascript">
+							$('.form-control').keypress(function(event) {
+								if (event.keyCode == 13 || event.which == 13) 
+									$('#loginForm').submit();
+							});
+						</script>
 					</div>
 				</div>
-				<script type="text/javascript">
-					$('.form-control').keypress(function(event) {
-						if (event.keyCode == 13 || event.which == 13) 
-							$('#loginForm').submit();
-					});
-				</script>
+				<div id="footerDownFooter">
+					<?php require 'foot.inc.php'; ?>
+				</div>
 			</div>
 		</div>
-		<?php require 'foot.inc.php';?>
 	</div>
 </body>
 </html>

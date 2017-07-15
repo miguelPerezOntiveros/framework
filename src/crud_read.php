@@ -27,9 +27,11 @@
 					$otherTable = $config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'];
 					$otherColumn = $config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']]['show'];
 					$tablesToJoin[] = $otherTable;
-					$allowedColumns[] = $otherTable.'.'.$otherColumn.' as '.key($toTraverse);
+					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.key($toTraverse).', "-", '.$otherTable.'.'.$otherColumn.') as '.key($toTraverse);
 					$joinRules[] = $_GET['table'].'.'.key($toTraverse).' = '.$otherTable.'.id';
 				}
+				else if($config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'] == 'boolean')
+					$allowedColumns[] = 'IF('.$_GET['table'].'.'.key($toTraverse).', "1-Yes", "0-No") as '.key($toTraverse);
 				else
 					$allowedColumns[] = $_GET['table'].'.'.key($toTraverse);
 			next($toTraverse);

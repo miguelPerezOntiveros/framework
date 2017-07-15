@@ -15,6 +15,6 @@
 	?>
 	<div style="float: right;">
 		Welcome <b><?= $_SESSION['userName'] ?></b>! Privileges: <b><?= $_SESSION['type'] ?></b>
-		<span class="tab">Log out</span>
+		<a href="login.php" style="text-decoration: none;"><span class="tab">Log out</span></a>
 	</div>
 </div>

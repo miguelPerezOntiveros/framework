@@ -1,53 +1,102 @@
-projectName: myProject1
+projectName: atomCreativa
 tables: 
   content: 
     columns: 
       name: 
         type: 255
-        permissions_create: -
         permissions_read: -
       value: 
-        type: 1024
-        permissions_create: -
+        type: 4096
         permissions_read: -
-    permissions_create: -
     permissions_read: -
-    permissions_update: /.*/
-    permissions_delete: /.*/
-    show: name
-  gallery: 
-    columns: 
-      title: 
-        type: 255
-      image: 
-        type: \*
   service: 
     columns: 
       name: 
         type: 255
-      image: 
-        type: \*
-  client: 
-    columns: 
-      name: 
-        type: 255
+        permissions_read: -
       description: 
         type: 255
+        permissions_read: -
+      image: 
+        type: \*
+        permissions_read: -
+    permissions_read: -
+  client: 
+    columns: 
+      image: 
+        type: \*
+        permissions_read: -
+    permissions_read: -
   statistics: 
     columns: 
-      name: 
+      description: 
         type: 255
       value: 
         type: 255
+      display: 
+        type: 255
+  landingPageResponses: 
+    columns: 
+      name: 
+        type: 255
+        permissions_create: -    
+      answers: 
+        type: 4096
+        permissions_create: -
+      date: 
+        type: date
+        permissions_create: -
+      time: 
+        type: 255
+        permissions_create: -
+    permissions_create: -
+  landingPages: 
+    columns: 
+      name: 
+        type: 255
+        permissions_read: -    
+      bannerTop: 
+        type: \*
+        permissions_read: -
+      logo: 
+        type: \*
+        permissions_read: -
+      text: 
+        type: 2048
+        permissions_read: -
+      bannerBottom: 
+        type: \*
+        permissions_read: -
+      footer: 
+        type: 255
+        permissions_read: -
+    permissions_read: -
+  contacts: 
+    columns: 
+      email: 
+        type: 255
+  author: 
+    columns: 
+      name: 
+        type: 255
+      color: 
+        type: 8
+      image: 
+        type: \*
+    show: name
   blog: 
     columns: 
       title: 
         type: 255
+      author:
+        type: author
       date: 
         type: date
-      summary: 
+      abstract: 
         type: 255
+      isLarge: 
+        type: boolean
       body: 
-        type: 255
+        type: 4096
       image: 
         type: \*

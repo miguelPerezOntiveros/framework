@@ -54,7 +54,10 @@
 		})
 		console.log(values);
 		$('#cu_form').find('textarea, select, input[type!="submit"]').each(function(i, e){
-			$(e).val(values[i]);
+			if($(e).is('select'))
+				$(e).val(values[i].split('-')[0])
+			else
+				$(e).val(values[i]);
 		})
 	}
 	handleDelete = function(e){
@@ -96,11 +99,20 @@
 				else if(!isNaN(e[1]))	
 						form += '<textarea  name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
 				else if(e[1] == '\\*')
-					form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'">  <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><span class="glyphicon glyphicon-arrow-down" style="font-size: 3em;"></span><br><span class="catcherFilesLabel">Drop file here</span></div><br>';
+					form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required>  <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><span class="glyphicon glyphicon-arrow-down" style="font-size: 3em;"></span><br><span class="catcherFilesLabel">Drop file here</span></div><br>';
 				else if(e[1] == 'date')
 					form += '<input name="'+e[0]+'" type="date" required><br>';
-				else
-					form += '<select><option>TODO: References. I still need to fill those in</option></select><br>';
+				else if(e[1] == 'boolean')
+					form += ' <select name="'+e[0]+'"><option value="0">0-No</option><option value="1">1-Yes</option></select><br>';
+				else{
+					form += '<select name="'+e[0]+'"></select><br>';
+					$.get('crud_read.php?table=' + e[1] + '&show=true', function(response){
+						response = JSON.parse(response);
+						$.each(response.data, function(i, el){
+							$('select[name="'+e[0]+'"]').append('<option value="'+el[0]+'">'+el[1]+'</option>');
+						});
+					});
+				}
 			}
 		});
 

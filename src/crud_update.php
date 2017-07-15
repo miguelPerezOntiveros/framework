@@ -1,19 +1,19 @@
 <?php
-	isset($_GET['table']) && isset($_POST['id']) || exit('No such table');
+	isset($_GET['table']) && isset($_POST['id']) || exit(json_encode((object) ["error" => "No such table"]));
 	
 	require 'config.inc.php';
 	require 'session.inc.php';
 
 	// Checking table permissions
 	if(!preg_match($config['tables'][$_GET['table']]['permissions_update'], $_SESSION['type']))
-		exit('No such table');
+		exit(json_encode((object) ["error" => "No such table"]));
 	
 	// Checking column permissions
 	$allowedColumns = [];
 	$toTraverse = $config['tables'][$_GET['table']]['columns'];
 	reset($toTraverse);
 	while ($column = current($toTraverse)) {
-		if(preg_match( $toTraverse[key($toTraverse)]['permissions_udpate'], $_SESSION['type'])){
+		if(preg_match( $toTraverse[key($toTraverse)]['permissions_update'], $_SESSION['type'])){
 			$columnValue = (isset($_POST[key($toTraverse)])? $_POST[key($toTraverse)]: 'Not present.');
 			// upload possible files start
 			if($column['type'] == '\*'){
@@ -41,7 +41,7 @@
 	}
 
 	if(!count($allowedColumns))
-		exit('No such table');
+		exit(json_encode((object) ["error" => "No such table"]));
 
 	// TODO: checj how to handle all the possible errors
 

@@ -60,28 +60,42 @@
 
 						//CONF INTERPRETATION
 					   	//TODO: pass this to a shorter format.
-						if(!isset($config['tables']['user_types'])){
+						if(!isset($config['tables']['user_type'])){
 							$config['tables']['user_type'] = array();
 							$config['tables']['user_type']['columns'] = array();
 							$config['tables']['user_type']['columns']['name'] = array();
-							$config['tables']['user_type']['columns']['name']['permissions'] = '/System Administrator/';
+							$config['tables']['user_type']['columns']['name']['permissions_read'] = '/System Administrator/';
+							$config['tables']['user_type']['columns']['name']['permissions_update'] = '/System Administrator/';
+							$config['tables']['user_type']['columns']['name']['permissions_create'] = '/System Administrator/';
 							$config['tables']['user_type']['columns']['name']['type'] = '255';
-							$config['tables']['user_type']['permissions'] = '/System Administrator/';
+							$config['tables']['user_type']['permissions_create'] = '/System Administrator/';
+							$config['tables']['user_type']['permissions_read'] = '/System Administrator/';
+							$config['tables']['user_type']['permissions_update'] = '/System Administrator/';
+							$config['tables']['user_type']['permissions_delete'] = '/System Administrator/';
 							$config['tables']['user_type']['show'] = 'name';
 						}
-						if(!isset($config['tables']['users'])){
+						if(!isset($config['tables']['user'])){
 							$config['tables']['user'] = array();
 							$config['tables']['user']['columns'] = array();
 							$config['tables']['user']['columns']['user'] = array();
-							$config['tables']['user']['columns']['user']['permissions'] = '/System Administrator/';
+							$config['tables']['user']['columns']['user']['permissions_read'] = '/System Administrator/';
+							$config['tables']['user']['columns']['user']['permissions_update'] = '/System Administrator/';
+							$config['tables']['user']['columns']['user']['permissions_create'] = '/System Administrator/';
 							$config['tables']['user']['columns']['user']['type'] = '255';
 							$config['tables']['user']['columns']['pass'] = array();
-							$config['tables']['user']['columns']['pass']['permissions'] = '/System Administrator/';
+							$config['tables']['user']['columns']['pass']['permissions_read'] = '/System Administrator/';
+							$config['tables']['user']['columns']['pass']['permissions_update'] = '/System Administrator/';
+							$config['tables']['user']['columns']['pass']['permissions_create'] = '/System Administrator/';
 							$config['tables']['user']['columns']['pass']['type'] = '255';
 							$config['tables']['user']['columns']['type'] = array();
-							$config['tables']['user']['columns']['type']['permissions'] = '/System Administrator/';
+							$config['tables']['user']['columns']['type']['permissions_read'] = '/System Administrator/';
+							$config['tables']['user']['columns']['type']['permissions_update'] = '/System Administrator/';
+							$config['tables']['user']['columns']['type']['permissions_create'] = '/System Administrator/';
 							$config['tables']['user']['columns']['type']['type'] = 'user_type';
-							$config['tables']['user']['permissions'] = '/System Administrator/'; //TODO: make 'permissions' apply for all CRUD
+							$config['tables']['user']['permissions_create'] = '/System Administrator/';
+							$config['tables']['user']['permissions_read'] = '/System Administrator/';
+							$config['tables']['user']['permissions_update'] = '/System Administrator/';
+							$config['tables']['user']['permissions_delete'] = '/System Administrator/';
 							$config['tables']['user']['show'] = 'user';
 						}
 						echo "<h2>Interpretation</h2>";
@@ -92,7 +106,7 @@
 								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions_create']))
 									$config['tables'][$tableName]['columns'][$column]['permissions_create'] = '/.*/';
 								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions_read']))
-									$config['tables'][$tableName]['columns'][$column]['permissions_read'] = '/.*/';
+									$config['tables'][$tableName]['columns'][$column]['permissions_read'] = '-';
 								if(!isset($config['tables'][$tableName]['columns'][$column]['permissions_update']))
 									$config['tables'][$tableName]['columns'][$column]['permissions_update'] = '/.*/';
 								echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$column." | ".
@@ -105,7 +119,7 @@
 								$config['tables'][$tableName]['permissions_create'] = '/.*/';
 							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;permissions_create: ".$config['tables'][$tableName]['permissions_create']."<br>";
 							if(!isset($config['tables'][$tableName]['permissions_read']))
-								$config['tables'][$tableName]['permissions_read'] = '/.*/';
+								$config['tables'][$tableName]['permissions_read'] = '-';
 							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;permissions_read: ".$config['tables'][$tableName]['permissions_read']."<br>";
 							if(!isset($config['tables'][$tableName]['permissions_update']))
 								$config['tables'][$tableName]['permissions_update'] = '/.*/';
