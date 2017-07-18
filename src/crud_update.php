@@ -23,8 +23,9 @@
 				// var_dump($_FILES[key($toTraverse)]);
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
-				if(!array_search(pathinfo($target_file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png')))
-					exit(json_encode((object) ["error" => "File type not supported"]));
+				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
+				if(array_search($ext, array('jpg', 'jpeg', 'gif', 'png')) === False )
+					exit(json_encode((object) ["error" => "File type '".$ext."' not supported"]));
 				
 				if ($_FILES[key($toTraverse)]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));

@@ -22,7 +22,9 @@
 		$toTraverse = $config['tables'][$_GET['table']]['columns'];
 		reset($toTraverse);
 		while ($column = current($toTraverse)) {
-			if($toTraverse[key($toTraverse)]['permissions_read'] == '-' || preg_match( $toTraverse[key($toTraverse)]['permissions_read'], $_SESSION['type']))
+			if(	(!isset($_GET['only']) || in_array(key($toTraverse), explode(",", $_GET['only']))) &&
+				($toTraverse[key($toTraverse)]['permissions_read'] == '-' || preg_match( $toTraverse[key($toTraverse)]['permissions_read'], $_SESSION['type']))
+				)	
 				if(isset($config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']])){ // column is a ref
 					$otherTable = $config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'];
 					$otherColumn = $config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']]['show'];
@@ -37,6 +39,8 @@
 			next($toTraverse);
 		}
 	}
+	if(isset($_GET['id']))
+		$joinRules[] = $_GET['table'].'.id = '.$_GET['id'];
 
 	if(count($allowedColumns) <= 1)
 		exit(json_encode((object) ["error" => "No such table."]));

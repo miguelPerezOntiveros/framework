@@ -22,11 +22,32 @@ tables:
         permissions_read: -
     permissions_read: -
   client: 
-    columns: 
-      image: 
-        type: \*
-        permissions_read: -
-    permissions_read: -
+    columns:
+      image:
+        type: "\\*"
+        permissions_read: "-"
+        permissions_create: "/.*/"
+        permissions_update: "/.*/"
+      image2:
+        type: "\\*"
+        permissions_read: "-"
+        permissions_create: "/.*/"
+        permissions_update: "/.*/"
+      useSecond: 
+        type: boolean
+        permissions_read: "-"
+        permissions_create: "/.*/"
+        permissions_update: "/.*/"
+      url:
+        type: 512
+        permissions_read: "-"
+        permissions_create: "/.*/"
+        permissions_update: "/.*/"
+    permissions_read: "-"
+    permissions_create: "/.*/"
+    permissions_update: "/.*/"
+    permissions_delete: "/.*/"
+    show: image
   statistics: 
     columns: 
       description: 
