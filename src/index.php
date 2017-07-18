@@ -44,10 +44,16 @@
 	handleCreate = function(){
 		window.crud_mode = 'create';
 		toggleForm();
+		$('input[type=file]').each(function(i, e){
+			e.required = true;
+		});
 	}
 	handleEdit = function(e){
 		window.crud_mode = 'update';
 		toggleForm();
+		$('input[type=file]').each(function(i, e){
+			e.required = false;
+		});
 		var values = [];
 		$(e).parent().parent().parent().find('td').slice(0, -1).each(function(i, e) {
 			values.push($(e).text());
@@ -68,6 +74,7 @@
 	}
 	toggleForm = function (){
 		$('#cu_form')[0].reset();
+		$('.catcherFilesLabel').text('');
 		$('#cu_form').toggle('slow');
 		if ($('#callout').hasClass('bs-callout-left'))
 			$('#callout').removeClass('bs-callout-left');

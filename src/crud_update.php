@@ -3,7 +3,7 @@
 	
 	require 'config.inc.php';
 	require 'session.inc.php';
-
+	error_log(json_encode($_FILES));
 	// Checking table permissions
 	if(!preg_match($config['tables'][$_GET['table']]['permissions_update'], $_SESSION['type']))
 		exit(json_encode((object) ["error" => "No such table"]));
@@ -13,10 +13,10 @@
 	$toTraverse = $config['tables'][$_GET['table']]['columns'];
 	reset($toTraverse);
 	while ($column = current($toTraverse)) {
-		if(preg_match( $toTraverse[key($toTraverse)]['permissions_update'], $_SESSION['type'])){
-			$columnValue = (isset($_POST[key($toTraverse)])? $_POST[key($toTraverse)]: 'Not present.');
+		if(preg_match( $toTraverse[key($toTraverse)]['permissions_update'], $_SESSION['type'])) {
 			// upload possible files start
-			if($column['type'] == '\*'){
+			if($column['type'] == '\*' && $_FILES[key($toTraverse)]['size'] > 0 ) {
+
 				for($now = time(); file_exists($target_file = 'uploads/'.$_GET['table'].$now.basename($_FILES[key($toTraverse)]['name'])); $now++)
 					;
 
@@ -32,11 +32,12 @@
 
 				if (!move_uploaded_file($_FILES[key($toTraverse)]["tmp_name"], $target_file))
 					exit(json_encode((object) ["error" => "Error during transfer"]));
-				$columnValue = $target_file;	
+				$allowedColumns[] = key($toTraverse).' = \''.$target_file.'\'';
 			}
-			// upload possible files finish
-
-			$allowedColumns[] = key($toTraverse).' = \''.$columnValue.'\'';
+			// upload possible files end
+			if($column['type'] != '\*' ){
+				$allowedColumns[] = key($toTraverse).' = \''.$_POST[key($toTraverse)].'\'';
+			}
 		}
 		next($toTraverse);
 	}
@@ -44,7 +45,7 @@
 	if(!count($allowedColumns))
 		exit(json_encode((object) ["error" => "No such table"]));
 
-	// TODO: checj how to handle all the possible errors
+	// TODO: check how to handle all the possible sql errors
 
 	// Delete possibe files
 	require 'db_connection.inc.php';
@@ -52,7 +53,7 @@
 	reset($toTraverse);
 	$fileColumns = [];
 	while ($column = current($toTraverse)) {
-		if($toTraverse[key($toTraverse)]['type'] == '\*')
+		if($toTraverse[key($toTraverse)]['type'] == '\*' && $_FILES[key($toTraverse)]['size'] > 0)
 			$fileColumns[] = key($toTraverse);
 		next($toTraverse);
 	}
