@@ -24,7 +24,7 @@
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
 				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
-				if(array_search($ext, array('jpg', 'jpeg', 'gif', 'png')) === False )
+				if(array_search($ext, array('jpg', 'jpeg', 'gif', 'png', 'pdf')) === False )
 					exit(json_encode((object) ["error" => "File type '".$ext."' not supported"]));
 				
 				if ($_FILES[key($toTraverse)]["size"] > 1*1024*1024)

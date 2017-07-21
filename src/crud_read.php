@@ -42,6 +42,9 @@
 	if(isset($_GET['id']))
 		$joinRules[] = $_GET['table'].'.id = '.$_GET['id'];
 
+	if(isset($_GET['where']))
+		$joinRules[] = $_GET['table'].'.'.$_GET['where'].' = "'.$_GET['equals'].'"';
+
 	if(count($allowedColumns) <= 1)
 		exit(json_encode((object) ["error" => "No such table."]));
 

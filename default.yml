@@ -88,6 +88,12 @@ tables:
       bannerBottom: 
         type: \*
         permissions_read: -
+      file: 
+        type: \*
+        permissions_read: -
+      centerDownload: 
+        type: boolean
+        permissions_read: -
       footer: 
         type: 255
         permissions_read: -
