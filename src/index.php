@@ -56,7 +56,7 @@
 		});
 		var values = [];
 		$(e).parent().parent().parent().find('td').slice(0, -1).each(function(i, e) {
-			values.push($(e).text());
+			values.push($(e).html());
 		})
 		console.log(values);
 		$('#cu_form').find('textarea, select, input[type!="submit"]').each(function(i, e){
