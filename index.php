@@ -58,6 +58,8 @@
 						//GLOBAL
 						$config =  json_decode($_POST['yaml'], true);
 
+						//var_dump($config);
+
 						//CONF INTERPRETATION
 					   	//TODO: pass this to a shorter format.
 						if(!isset($config['tables']['user_type'])){
