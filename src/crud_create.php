@@ -37,7 +37,7 @@
 					exit(json_encode((object) ["error" => "File too large"]));
 
 				if (!move_uploaded_file($_FILES[key($toTraverse)]["tmp_name"], $target_file))
-					exit(json_encode((object) ["error" => "Error during transfer"]));
+					exit(json_encode((object) ["error" => "Folder does not exist."]));
 				$columnValue = $target_file;	
 			}
 			// upload possible files finish
