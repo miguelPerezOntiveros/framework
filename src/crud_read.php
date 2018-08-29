@@ -27,10 +27,11 @@
 				)	
 				if(isset($config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']])){ // column is a ref
 					$otherTable = $config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'];
+					$otherTableAlias = key($toTraverse).'Table';
 					$otherColumn = $config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']]['show'];
-					$tablesToJoin[] = $otherTable;
-					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.key($toTraverse).', "-", '.$otherTable.'.'.$otherColumn.') as '.key($toTraverse);
-					$joinRules[] = $_GET['table'].'.'.key($toTraverse).' = '.$otherTable.'.id';
+					$tablesToJoin[] = $otherTable.' '.$otherTableAlias;
+					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.key($toTraverse).', "-", '.$otherTableAlias.'.'.$otherColumn.') as '.key($toTraverse);
+					$joinRules[] = $_GET['table'].'.'.key($toTraverse).' = '.$otherTableAlias.'.id';
 				}
 				else if($config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'] == 'boolean')
 					$allowedColumns[] = 'IF('.$_GET['table'].'.'.key($toTraverse).', "1-Yes", "0-No") as '.key($toTraverse);
