@@ -23,7 +23,8 @@
 			<div class="col-md-6">
 				<h2>YAML</h2>
 				<form action="" method="POST" id="yamlForm">
-					<textarea name="yaml" rows="30" style="width: 100%"></textarea>
+					<textarea name="json" rows="30" style="width: 100%"></textarea>
+					<textarea name="yaml" rows="30" style="width: 100%" hidden></textarea>
 					<br><br>
 					<label for="input[name='db_host']">Database Host:</label><br>
 					<input type="text" name="db_host" value="127.0.0.1"/><br>
@@ -56,7 +57,7 @@
 					}
 					if(isset($_POST['yaml'])) {
 						//GLOBAL
-						$config =  json_decode($_POST['yaml'], true);
+						$config =  json_decode($_POST['json'], true);
 
 						//var_dump($config);
 
@@ -133,26 +134,10 @@
 								$config['tables'][$tableName]['show'] = key($config['tables'][$tableName]['columns']);
 							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: ".$config['tables'][$tableName]['show']."<br>";
 					   	}
-
 						write('temp/'.$config['projectName'], 'config.inc.php','<?php $config=unserialize(\''.serialize($config).'\');?>');
 
-						//TODO: Develop Files in src:
-							// crud_create.php
-							// crud_read.php
-							// crud_update.php
-							// crud_delete.php
-							
-						//TODO: should access to reference imply access to referenced column?
-
-					   	//TODO: open project in new tab?
-					   	//TODO: encript passwords in db
-
-						//TODO: make sure no sql injection is possile
-
-					   	//TODO: make sure we get feedback if db couldn´t be created. PHP will know if the 3 inputs are not submited.
-					   	//TODO: make sure we get feedback on sql errors.
-
-						//TODO: add1 'show' prop to individual columns
+						//YAML
+						write('temp/'.$config['projectName'], $config['projectName'].'.yml', $_POST['yaml']);
 
 						//SQL
 						$sql = 'DROP DATABASE IF EXISTS '.$config['projectName'].';'.PHP_EOL;
@@ -178,7 +163,8 @@
 						$sql .= "INSERT INTO user_type(name) VALUES ('User');".PHP_EOL;
 						$sql .= "INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);".PHP_EOL;
 						$sql .= "INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);".PHP_EOL;
-						$db_file_name = write('temp/'.$config['projectName'], $config['projectName'].'.sql', $sql);
+						write('temp/'.$config['projectName'], $config['projectName'].'.sql', $sql);
+						
 						echo "<h2>SQL</h2>";
 						echo "<pre>".$sql."</pre>";
 						$db_file_location = 'projects/'.$config['projectName']."/".$config['projectName'].".sql";
@@ -196,10 +182,11 @@
 	<script src="vendor/yamljs/yaml.js"></script>
 	<script>
 		$.get('default.yml', function(data){
-			$("textarea[name='yaml']").text(data);
+			$("textarea[name='json']").text(data);
 		});
 		$('#yamlForm').submit(function(e){
-			$('textarea[name=yaml]').val( JSON.stringify(YAML.parse($('textarea[name=yaml]').val())));
+			$('textarea[name=yaml]').val( $('textarea[name=json]').val());
+			$('textarea[name=json]').val( JSON.stringify(YAML.parse($('textarea[name=json]').val())));
 		});
 	</script>
 </body>
