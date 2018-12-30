@@ -3,11 +3,11 @@
 	
 	require 'config.inc.php';
 
-	if($config['tables'][$_GET['table']]['permissions_create'] != '-'){
+	if($config[$_GET['table']]['_permissions']['create'] != '-'){
 		require 'session.inc.php';
 
 		// Checking table permissions
-		if(!preg_match($config['tables'][$_GET['table']]['permissions_create'], $_SESSION['type']))
+		if(!preg_match($config[$_GET['table']]['_permissions']['create'], $_SESSION['type']))
 			exit(json_encode((object) ["error" => "login"]));
 	}
 	
@@ -15,37 +15,35 @@
 
 	// Checking column permissions
 	$allowedColumns = [];
-	$columnValues = [];
-	$toTraverse = $config['tables'][$_GET['table']]['columns'];
-	reset($toTraverse);
-	while ($column = current($toTraverse)) {
-		if($toTraverse[key($toTraverse)]['permissions_create'] == '-' ||  preg_match( $toTraverse[key($toTraverse)]['permissions_create'], $_SESSION['type'])){
-			$columnValue = (isset($_POST[key($toTraverse)])? $_POST[key($toTraverse)]: 'Not present.');
+	$values = [];
+	foreach ($config[$_GET['table']] as $column_key => $column) {
+		if($column_key[0] == '_')
+			continue;
+		if($column['permissions_create'] == '-' ||  preg_match( $column['permissions_create'], $_SESSION['type'])){
+			$value = (isset($_POST[$column_key])? $_POST[$column_key]: 'Not present.');
 			// upload possible files start
 			if($column['type'] == '\*'){
-				for($now = time(); file_exists($target_file = 'uploads/'.$_GET['table'].$now.basename($_FILES[key($toTraverse)]['name'])); $now++)
+				for($now = time(); file_exists($target_file = 'uploads/'.$_GET['table'].$now.basename($_FILES[$column_key]['name'])); $now++)
 					;
-
-				// var_dump($_FILES[key($toTraverse)]);
+				// var_dump($_FILES[$column_key]);
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
 				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
-				if(array_search($ext, array('jpg', 'jpeg', 'gif', 'png', 'pdf')) === False )
+				if(array_search(strtolower($ext), array('jpg', 'jpeg', 'gif', 'png', 'pdf')) === False )
 					exit(json_encode((object) ["error" => "File type '".$ext."' not supported"]));
 				
-				if ($_FILES[key($toTraverse)]["size"] > 1*1024*1024)
+				if ($_FILES[$column_key]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
 
-				if (!move_uploaded_file($_FILES[key($toTraverse)]["tmp_name"], $target_file))
+				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], $target_file))
 					exit(json_encode((object) ["error" => "Folder does not exist."]));
-				$columnValue = $target_file;	
+				$value = $target_file;	
 			}
-			// upload possible files finish
+			// upload possible files end
 
-			$allowedColumns[] = key($toTraverse);
-			$columnValues[] = $columnValue;
+			$allowedColumns[] = $column_key;
+			$values[] = $value;
 		}
-		next($toTraverse);
 	}
 
 	if(!count($allowedColumns))
@@ -53,7 +51,7 @@
 
 	//Executing Query
 	require 'db_connection.inc.php';
-	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',$allowedColumns).') VALUES (\''.implode('\', \'', $columnValues).'\');';	
+	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',$allowedColumns).') VALUES (\''.implode('\', \'', $values).'\');';	
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql))
 		echo json_encode((object) ["success" => "Entry added successfully"]);

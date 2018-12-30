@@ -13,7 +13,7 @@
 		return array();
 	}
 
-	session_name($config['projectName']);
+	session_name($config['_projectName']);
 	session_start();
 	unset($_SESSION['userName']);
 	unset($_SESSION['type']);
@@ -25,7 +25,7 @@
 		if(count($userInfo) == 0) 
 			$incorrectPassword = true;
 		else {
-			session_name($config['projectName']);
+			session_name($config['_projectName']);
 			session_start();
 			$_SESSION['userName']= $_POST['userName'];		
 			$_SESSION['type'] = $userInfo[0];
@@ -51,7 +51,7 @@
 						<div class="row">
 							<br><br>
 							<div class="col-lg-12 bs-callout-left">
-								<h2><?= $config['projectName'] ?></h2>
+								<h2><?= $config['_projectName'] ?></h2>
 							</div>
 							<br><br><br>
 						</div>

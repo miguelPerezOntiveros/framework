@@ -1,15 +1,14 @@
 <div class="menu">
 	<?php 
-		$currentTable = isset($_GET['table'])? $_GET['table']:  key($config['tables']);
+		$currentTable = isset($_GET['table'])? $_GET['table']:  key($config);
 		// Iterate through tables
-		$toTraverse = $config['tables'];
-		reset($toTraverse);
-		while ($table = current($toTraverse)) {
-			$tableNameToShow = (isset($config['tables'][key($toTraverse)]['displayName'])? 
-							$config['tables'][key($toTraverse)]['displayName']: 
-							ucwords(str_replace("_"," ", key($toTraverse) )));
-			echo '<span onclick="loadSection(\''.key($toTraverse).'\', \''.$tableNameToShow.'\');" class=\'tab\' id=\'menu_'.key($toTraverse).'\'>'.$tableNameToShow.'</span>';
-			next($toTraverse);
+		foreach ($config as $table => $value) {
+			if($table[0] == '_')
+				continue;
+			$tableNameToShow = (isset($config[$table]['displayName'])? 
+							$config[$table]['displayName']: 
+							ucwords(str_replace("_"," ", $table )));
+			echo '<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\');" class=\'tab\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>';
 		}
 
 	?>

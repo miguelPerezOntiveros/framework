@@ -3,11 +3,11 @@
 	
 	require 'config.inc.php';
 
-	if($config['tables'][$_GET['table']]['permissions_read'] != '-'){
+	if($config[$_GET['table']]['_permissions']['read'] != '-'){
 		require 'session.inc.php';
 
 		// Checking table permissions
-		if(!preg_match($config['tables'][$_GET['table']]['permissions_read'], $_SESSION['type']))
+		if(!preg_match($config[$_GET['table']]['_permissions']['read'], $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
 	}
 
@@ -16,28 +16,27 @@
 	$joinRules = ['1'];
 	$allowedColumns = [$_GET['table'].'.id'];
 	if(isset($_GET['show'])) { // only asking for 'show' column
-		if($config['tables'][$_GET['table']]['columns'][$config['tables'][$_GET['table']]['show']]['permissions_read'] == '-' || preg_match( $config['tables'][$_GET['table']]['columns'][$config['tables'][$_GET['table']]['show']]['permissions_read'], $_SESSION['type']))
-			$allowedColumns[] = $_GET['table'].'.'.$config['tables'][$_GET['table']]['show'];
+		if($config[$_GET['table']][$config[$_GET['table']]['show']]['permissions_read'] == '-' || preg_match( $config[$_GET['table']][$config[$_GET['table']]['show']]['permissions_read'], $_SESSION['type']))
+			$allowedColumns[] = $_GET['table'].'.'.$config[$_GET['table']]['show'];
 	} else{
-		$toTraverse = $config['tables'][$_GET['table']]['columns'];
-		reset($toTraverse);
-		while ($column = current($toTraverse)) {
-			if(	(!isset($_GET['only']) || in_array(key($toTraverse), explode(",", $_GET['only']))) &&
-				($toTraverse[key($toTraverse)]['permissions_read'] == '-' || preg_match( $toTraverse[key($toTraverse)]['permissions_read'], $_SESSION['type']))
+		foreach ($config[$_GET['table']] as $column_key => $column) {
+			if($column_key[0] == '_')
+				continue;
+			if(	(!isset($_GET['only']) || in_array($column_key, explode(",", $_GET['only']))) &&
+				($column['permissions_read'] == '-' || preg_match( $column['permissions_read'], $_SESSION['type']))
 				)	
-				if(isset($config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']])){ // column is a ref
-					$otherTable = $config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'];
-					$otherTableAlias = key($toTraverse).'Table';
-					$otherColumn = $config['tables'][$config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type']]['show'];
+				if(isset($config[$column['type']])){ // column is a ref
+					$otherTable = $column['type'];
+					$otherTableAlias = $column_key.'Table';
+					$otherColumn = $config[$column['type']]['show'];
 					$tablesToJoin[] = $otherTable.' '.$otherTableAlias;
-					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.key($toTraverse).', "-", '.$otherTableAlias.'.'.$otherColumn.') as '.key($toTraverse);
-					$joinRules[] = $_GET['table'].'.'.key($toTraverse).' = '.$otherTableAlias.'.id';
+					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.$column_key.', "-", '.$otherTableAlias.'.'.$otherColumn.') as '.$column_key;
+					$joinRules[] = $_GET['table'].'.'.$column_key.' = '.$otherTableAlias.'.id';
 				}
-				else if($config['tables'][$_GET['table']]['columns'][key($toTraverse)]['type'] == 'boolean')
-					$allowedColumns[] = 'IF('.$_GET['table'].'.'.key($toTraverse).', "1-Yes", "0-No") as '.key($toTraverse);
+				else if($column['type'] == 'boolean')
+					$allowedColumns[] = 'IF('.$_GET['table'].'.'.$column_key.', "1-Yes", "0-No") as '.$column_key;
 				else
-					$allowedColumns[] = $_GET['table'].'.'.key($toTraverse);
-			next($toTraverse);
+					$allowedColumns[] = $_GET['table'].'.'.$column_key;
 		}
 	}
 	if(isset($_GET['id']))
@@ -57,7 +56,7 @@
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql)){
 		while ($field = $result->fetch_field())
-			$fields[] = (object)[$field->name, $config['tables'][$_GET['table']]['columns'][$field->name]['type']]; 
+			$fields[] = (object)[$field->name, $config[$_GET['table']][$field->name]['type']]; 
 		while($row = $result->fetch_array(MYSQLI_NUM))
 			$res[] = $row;
 	}

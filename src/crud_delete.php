@@ -2,11 +2,14 @@
 	isset($_GET['table']) && isset($_POST['id']) || exit('No such table');
 	
 	require 'config.inc.php';
-	require 'session.inc.php';
 
-	// Checking table permissions
-	if(!preg_match($config['tables'][$_GET['table']]['permissions_delete'], $_SESSION['type']))
-		exit('No such table');
+	if($config[$_GET['table']]['_permissions']['delete'] != '-'){
+		require 'session.inc.php';
+
+		// Checking table permissions
+		if(!preg_match($config[$_GET['table']]['_permissions']['delete'], $_SESSION['type']))
+			exit(json_encode((object) ["error" => "No such table."]));
+	}
 	
 	// Todo check what would happen with the 2 queries if one didn´t complete, take a look at passing logic to the db
 	// Todo handle all errors first
@@ -16,13 +19,12 @@
 	require 'db_connection.inc.php';
 
 	// Delete possibe files
-	$toTraverse = $config['tables'][$_GET['table']]['columns'];
-	reset($toTraverse);
 	$fileColumns = [];
-	while ($column = current($toTraverse)) {
-		if($toTraverse[key($toTraverse)]['type'] == '\*')
-			$fileColumns[] = key($toTraverse);
-		next($toTraverse);
+	foreach ($config[$_GET['table']] as $column_key => $column) {
+		if($column_key[0] == '_')
+			continue;
+		if($column['type'] == '\*')
+			$fileColumns[] = $column_key;
 	}
 	if(count($fileColumns))
 	{
@@ -35,15 +37,10 @@
 		{
 			if(!$row = $result->fetch_assoc())
 				exit(json_encode((object) ["error" => "No files to delete anymore"]));
-			else{
-				$toTraverse2 = $row;
-				reset($toTraverse2);
-				while ($column2 = current($toTraverse2)) {
-					if(!unlink($row[key($toTraverse2)]))
-						exit(json_encode((object) ["error" => "Error unlinking file"]));
-					next($toTraverse2);
-				}
-			}
+			else
+				foreach ($row as $file_key => $file)
+					if(!unlink($file))
+						exit(json_encode((object) ["error" => "Error unlinking file"]));	
 		}
 	}
 

@@ -1,7 +1,6 @@
 # framework 1.5
 ### TODO
 - improve documentation
-- uploads folder is not being created so no images can be uploaded.
 - I should look into extending the projects from within, issuing create table statements
 - I should allow for back and forward browser button functionality at index.php (you can't currently reach the same tab you were on)
 - I shouldnt be changing the actual file names on image uploads
@@ -16,6 +15,8 @@
 - make sure we get feedback on sql errors.
 - add 'show' prop to individual columns
 - stop usign the temp folder?
+- address the todo's on index.php
+- modifying a row with image is not autofilling all values
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

@@ -1,129 +1,33 @@
-projectName: atomCreativaB
-tables: 
+_projectName: miguelp
+project: 
+  title: 
+  description: 
+  image: 
+    type: '\*'
+  video: 
+  tags: 
+certification: 
+  title: 
+  description: 
+  image: 
+    type: '\*'
+experience: 
+  title: 
+  description: 
+award: 
+  title: 
+  description: 
+link: 
+  title: 
+  description: 
+blogEntry: 
+  title: 
+  description: 
+  image: 
+    type: '\*'
+  video: 
+  tags: 
   content: 
-    columns: 
-      name: 
-        type: 255
-        permissions_read: -
-      value: 
-        type: 4096
-        permissions_read: -
-    permissions_read: -
-  service: 
-    columns: 
-      name: 
-        type: 255
-        permissions_read: -
-      description: 
-        type: 255
-        permissions_read: -
-      image: 
-        type: \*
-        permissions_read: -
-    permissions_read: -
-  client: 
-    columns:
-      image:
-        type: "\\*"
-        permissions_read: "-"
-        permissions_create: "/.*/"
-        permissions_update: "/.*/"
-      image2:
-        type: "\\*"
-        permissions_read: "-"
-        permissions_create: "/.*/"
-        permissions_update: "/.*/"
-      useSecond: 
-        type: boolean
-        permissions_read: "-"
-        permissions_create: "/.*/"
-        permissions_update: "/.*/"
-      url:
-        type: 512
-        permissions_read: "-"
-        permissions_create: "/.*/"
-        permissions_update: "/.*/"
-    permissions_read: "-"
-    permissions_create: "/.*/"
-    permissions_update: "/.*/"
-    permissions_delete: "/.*/"
-    show: image
-  statistics: 
-    columns: 
-      description: 
-        type: 255
-      value: 
-        type: 255
-      display: 
-        type: 255
-  landingPageResponses: 
-    columns: 
-      name: 
-        type: 255
-        permissions_create: -    
-      answers: 
-        type: 4096
-        permissions_create: -
-      date: 
-        type: date
-        permissions_create: -
-      time: 
-        type: 255
-        permissions_create: -
-    permissions_create: -
-  landingPages: 
-    columns: 
-      name: 
-        type: 255
-        permissions_read: -    
-      bannerTop: 
-        type: \*
-        permissions_read: -
-      logo: 
-        type: \*
-        permissions_read: -
-      text: 
-        type: 2048
-        permissions_read: -
-      bannerBottom: 
-        type: \*
-        permissions_read: -
-      file: 
-        type: \*
-        permissions_read: -
-      centerDownload: 
-        type: boolean
-        permissions_read: -
-      footer: 
-        type: 255
-        permissions_read: -
-    permissions_read: -
-  contacts: 
-    columns: 
-      email: 
-        type: 255
-  author: 
-    columns: 
-      name: 
-        type: 255
-      color: 
-        type: 8
-      image: 
-        type: \*
-    show: name
-  blog: 
-    columns: 
-      title: 
-        type: 255
-      author:
-        type: author
-      date: 
-        type: date
-      abstract: 
-        type: 255
-      isLarge: 
-        type: boolean
-      body: 
-        type: 4096
-      image: 
-        type: \*
+toDo: 
+  title: 
+  description:    
