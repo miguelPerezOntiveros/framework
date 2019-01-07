@@ -28,17 +28,18 @@ https://www.npmjs.com/package/yamljs
 ### When you click 'Submit'
 
 #### index.php
-- writes temp/projectName/config.inc.php
-- writes temp/projectName/projectName.yml
-- writes temp/projectName/projectName.sql
-- runs ./build.sh projectName db_host db_user db_pass
+- runs ./build_pre.sh projectName db_host db_user db_pass imageTables
+- writes projectName/admin/config.inc.php
+- writes projectName/projectName.yml
+- writes projectName/projectName.sql
+- runs ./build_post.sh projectName db_host db_user db_pass imageTables
 
-#### build.sh
-- creates projects/projectName/admin
+#### build_pre.sh
+- recreates folder projects/projectName/admin/uploads
 - writes src/* files into it
 - writes projects/projectName/admin/db_connection.inc.php
 - writes projects/projectName/admin/session.inc.php
-- moves temp/projectName/*.php into projects/projectName/admin
-- moves temp/projectName/*.* into projects/projectName
-- removes temp/projectName
+- creates individual upload folders for tables with files
+
+#### build_post.sh
 - runs projects/projectName/projectName.sql against db
