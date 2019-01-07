@@ -20,11 +20,11 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<h2>YAML</h2>
-				<form action="" method="POST" id="yamlForm">
-					<textarea name="json" rows="30" style="width: 100%"></textarea>
-					<textarea name="yaml" rows="30" style="width: 100%" hidden></textarea>
+				<form action="" method="POST" id="yamlForm" style="border: 1px solid black; padding: 5px;">
+					<textarea name="json" rows="50" style="width: 100%"></textarea>
+					<textarea name="yaml" rows="50" style="width: 100%" hidden></textarea>
 					<br><br>
 					<label for="input[name='db_host']">Database Host:</label><br>
 					<input type="text" name="db_host" value="127.0.0.1"/><br>
@@ -43,25 +43,15 @@
 				</form><br>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-8">
 				<?php
-					error_reporting(E_ALL | E_STRICT);
-					ini_set('display_errors', 'On');
+					// error_reporting(E_ALL | E_STRICT);
+					// ini_set('display_errors', 'On');
 
-					function write($dir, $fileName, $contents) {
-						if (!is_dir($dir))
-						    mkdir($dir, 0755, true);
-						$fileName = $dir.'/'.$fileName;
-						file_put_contents($fileName, $contents);
-						return $fileName;
-					}
 					if(isset($_POST['yaml'])) {
-						//GLOBAL
 						$config =  json_decode($_POST['json'], true);
 
-						//var_dump($config);
-
-						//CONF INTERPRETATION
+						// Config
 					   	//TODO: pass this to a shorter format.
 						if(!isset($config['user_type'])){
 							$config['user_type'] = array();
@@ -102,68 +92,69 @@
 							$config['user']['_show'] = 'user';
 						}
 						echo "<h2>Interpretation</h2>";
-						echo $config['_projectName']."<br>";						
-						foreach ($config as $table => $value) {
-							if($table[0] == '_')
+						echo $config['_projectName']."<br>";
+						$imageTables = array(); 				
+						foreach ($config as $table_key => &$table) {
+							if($table_key[0] == '_')
+								continue;
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;".$table_key."<br>";
+							foreach ($table as $column_key => &$column) {
+								if($column_key[0] == '_')
 									continue;
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;".$table."<br>";
-							foreach ($config[$table] as $column => $value) {
-								if($column[0] == '_')
-									continue;
-								if(!isset($config[$table][$column]['permissions_create']))
-									$config[$table][$column]['permissions_create'] = '/.*/';
-								if(!isset($config[$table][$column]['permissions_read']))
-									$config[$table][$column]['permissions_read'] = '-';
-								if(!isset($config[$table][$column]['permissions_update']))
-									$config[$table][$column]['permissions_update'] = '/.*/';
-								if(!isset($config[$table][$column]['type']))
-									$config[$table][$column]['type'] = '255';
-								echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$column." | ".
-								"t= ".$config[$table][$column]['type']." | ".
-								"c= ".$config[$table][$column]['permissions_create']." | ".
-								"r= ".$config[$table][$column]['permissions_read']." | ".
-								"u= ".$config[$table][$column]['permissions_update']."<br>";
+								if($column['type'] == '\*' && !in_array($table_key, $imageTables))
+									$imageTables[] = $table_key;
+								if(!isset($column['permissions_create']))
+									$column['permissions_create'] = '/.*/';
+								if(!isset($column['permissions_read']))
+									$column['permissions_read'] = '-';
+								if(!isset($column['permissions_update']))
+									$column['permissions_update'] = '/.*/';
+								if(!isset($column['type']))
+									$column['type'] = '255';
+								echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$column_key." | ".
+								"t= ".$column['type']." | ".
+								"c= ".$column['permissions_create']." | ".
+								"r= ".$column['permissions_read']." | ".
+								"u= ".$column['permissions_update']."<br>";
 							}
-							if(!isset($config[$table]['_permissions']['create']))
-								$config[$table]['_permissions']['create'] = '/.*/';
-							if(!isset($config[$table]['_permissions']['read']))
-								$config[$table]['_permissions']['read'] = '-';
-							if(!isset($config[$table]['_permissions']['update']))
-								$config[$table]['_permissions']['update'] = '/.*/';
-							if(!isset($config[$table]['_permissions']['delete']))
-								$config[$table]['_permissions']['delete'] = '/.*/';
-							if(!isset($config[$table]['_show']))
-								$config[$table]['_show'] = key($config[$table]);
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions create: ".$config[$table]['_permissions']['create']."<br>";
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions read: ".$config[$table]['_permissions']['read']."<br>";
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions update: ".$config[$table]['_permissions']['update']."<br>";
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions delete: ".$config[$table]['_permissions']['delete']."<br>";
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: ".$config[$table]['_show']."<br>";
+							if(!isset($table['_permissions']['create']))
+								$table['_permissions']['create'] = '/.*/';
+							if(!isset($table['_permissions']['read']))
+								$table['_permissions']['read'] = '-';
+							if(!isset($table['_permissions']['update']))
+								$table['_permissions']['update'] = '/.*/';
+							if(!isset($table['_permissions']['delete']))
+								$table['_permissions']['delete'] = '/.*/';
+							if(!isset($table['_show']))
+								$table['_show'] = key($table);
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions create: ".$table['_permissions']['create']."<br>";
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions read: ".$table['_permissions']['read']."<br>";
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions update: ".$table['_permissions']['update']."<br>";
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_permissions delete: ".$table['_permissions']['delete']."<br>";
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show: ".$table['_show']."<br>";
 					   	}
-						write('temp/'.$config['_projectName'], 'config.inc.php','<?php $config=unserialize(\''.serialize($config).'\');?>');
 
-						//YAML
-						write('temp/'.$config['_projectName'], $config['_projectName'].'.yml', $_POST['yaml']);
-
-						//SQL
+					echo "</div>";
+					echo '<div class="col-md-12">';
+						// SQL
 						$sql = 'DROP DATABASE IF EXISTS '.$config['_projectName'].';'.PHP_EOL;
 						$sql .= 'CREATE DATABASE '.$config['_projectName'].';'.PHP_EOL;
 						$sql .= 'USE '.$config['_projectName'].';'.PHP_EOL;
-						foreach ($config as $table => $value) {
-							if($table[0] == '_')
+						foreach ($config as $table_key => &$table) {
+							if($table_key[0] == '_')
 									continue;
-							$sql .= 'CREATE TABLE IF NOT EXISTS '.$table.'(id int NOT NULL AUTO_INCREMENT, ';
-							foreach ($config[$table] as $column => $value) {
-								if($column[0] == '_')
+							$sql .= 'CREATE TABLE IF NOT EXISTS '.$table_key.'(id int NOT NULL AUTO_INCREMENT, ';
+							foreach ($table as $column_key => &$column) {
+								if($column_key[0] == '_')
 									continue;
-								$type = $config[$table][$column]['type'];
+								$type = $column['type'];
 								if($type == '\*') // file type
 									$type = 'varchar(255)';
 								else if(isset($config[$type])) // type matches the name of a table
-									$type = 'int, foreign key('.$column.') references '.$type.'(id)';
+									$type = 'int, foreign key('.$column_key.') references '.$type.'(id)';
 								else if(is_numeric($type))
 									$type = 'varchar('.$type.')';
-								$sql .= $column.' '.$type.', ';
+								$sql .= $column_key.' '.$type.', ';
 							}
 							$sql .= 'primary key(id));'.PHP_EOL;
 						}
@@ -171,17 +162,24 @@
 						$sql .= "INSERT INTO user_type(name) VALUES ('User');".PHP_EOL;
 						$sql .= "INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);".PHP_EOL;
 						$sql .= "INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);".PHP_EOL;
-						write('temp/'.$config['_projectName'], $config['_projectName'].'.sql', $sql);
 
 						echo "<h2>SQL</h2>";
 						echo "<pre>".$sql."</pre>";
 						$db_file_location = 'projects/'.$config['_projectName']."/".$config['_projectName'].".sql";
 						echo "<a href='".$db_file_location."'>".$db_file_location."</a>";
 						
-						//RUN SCRIPT
+						// Run _pre script
 						echo "<h2>Build</h2>";
-						$command = './build.sh '.$config['_projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' "'.$_POST['db_pass'].'"';
-						echo "<pre>".exec($command)."</pre>";						
+						$params = $config['_projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' "'.$_POST['db_pass'].'" '.implode(',', $imageTables);
+						exec('./build_pre.sh '.$params);
+
+						// Write files
+						file_put_contents('projects/'.$config['_projectName'].'/admin/config.inc.php', '<?php $config=unserialize(\''.serialize($config).'\');?>');
+						file_put_contents('projects/'.$config['_projectName'].'/'.$config['_projectName'].'.yml', $_POST['yaml']);
+						file_put_contents('projects/'.$config['_projectName'].'/'.$config['_projectName'].'.sql', $sql);	
+
+						// Run _post script
+						echo "<pre>".exec('./build_post.sh '.$params)."</pre>";
 					}
 				?>
 			</div>

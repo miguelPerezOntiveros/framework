@@ -1,26 +1,36 @@
 #!/bin/sh
 
-# set PHP server port
+# defaults
 web_port=8080
-if ! [ $# -eq 0 ]
-then
-	web_port=$1
-fi
-# set DB server port
 db_port=3306
-if [ $# -gt 1 ]
-then
-	db_port=$2
-fi
+
+# check options
+while [ ! $# -eq 0 ]
+do
+	case "$1" in
+		--db-port|-db)
+			db_port=$2
+			shift
+			;;
+		--web-port|-web)
+			web_port=$2
+			shift
+			;;
+		*)
+			echo "Usage: ./start.sh [-db|--db-port db_port] [-web|--web-port web_port]"
+			exit
+	esac
+	shift
+done
 
 # Check if the PHP port is free
-while echo exit | nc localhost $web_port;  do
+while echo exit | nc localhost $web_port > /dev/null;  do
 	echo 'Waiting for port '$web_port' to become available.'
 	sleep 1;
 done
 # Check if something is listening on the DB port
-while ! echo exit | nc localhost $db_port;  do
-	echo 'Waiting for DB to become active on port '$db_port'.'
+while ! echo exit | nc localhost $db_port > /dev/null;  do
+	echo 'DB not available on port '$db_port'. Will restart'
 	sudo /usr/local/mysql/support-files/mysql.server restart &
 	sleep 5;
 done

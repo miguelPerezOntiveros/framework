@@ -23,7 +23,7 @@
 			$value = (isset($_POST[$column_key])? $_POST[$column_key]: 'Not present.');
 			// upload possible files start
 			if($column['type'] == '\*'){
-				for($now = time(); file_exists($target_file = 'uploads/'.$_GET['table'].$now.basename($_FILES[$column_key]['name'])); $now++)
+				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
 					;
 				// var_dump($_FILES[$column_key]);
 				// echo 'target file:  '.$target_file.'<br>';
@@ -35,7 +35,7 @@
 				if ($_FILES[$column_key]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
 
-				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], $target_file))
+				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], 'uploads/'.$_GET['table'].'/'.$target_file))
 					exit(json_encode((object) ["error" => "Folder does not exist."]));
 				$value = $target_file;	
 			}

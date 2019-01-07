@@ -22,8 +22,7 @@
 		if(preg_match( $column['permissions_update'], $_SESSION['type'])) {
 			// upload possible files start
 			if($column['type'] == '\*' && $_FILES[$column_key]['size'] > 0 ) {
-
-				for($now = time(); file_exists($target_file = 'uploads/'.$_GET['table'].$now.basename($_FILES[$column_key]['name'])); $now++)
+				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
 					;
 
 				// var_dump($_FILES[$column_key]);
@@ -36,7 +35,7 @@
 				if ($_FILES[$column_key]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
 
-				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], $target_file))
+				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], 'uploads/'.$_GET['table'].'/'.$target_file))
 					exit(json_encode((object) ["error" => "Error during transfer"]));
 				$allowedColumns[] = $column_key.' = \''.$target_file.'\'';
 			}
@@ -66,7 +65,7 @@
 				exit(json_encode((object) ["error" => "No files to delete anymore"]));
 			else
 				foreach ($row as $file_key => $file)
-					if(!unlink($file))
+					if(!unlink('uploads/'.$_GET['table'].'/'.$file))
 						exit(json_encode((object) ["error" => "Error unlinking file"]));
 		}
 	}

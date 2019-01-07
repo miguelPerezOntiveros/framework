@@ -14,9 +14,9 @@
 - make sure we get feedback if db couldn´t be created. PHP will know if the 3 inputs are not submited.
 - make sure we get feedback on sql errors.
 - add 'show' prop to individual columns
-- stop usign the temp folder?
 - address the todo's on index.php
-- modifying a row with image is not autofilling all values
+- Figure out a way to create content that is not published sucerely (possibly the where parameter on the read service)
+- Upgrade to bootstrap 4.0
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

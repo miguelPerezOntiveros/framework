@@ -39,7 +39,7 @@
 				exit(json_encode((object) ["error" => "No files to delete anymore"]));
 			else
 				foreach ($row as $file_key => $file)
-					if(!unlink($file))
+					if(!unlink('uploads/'.$_GET['table'].'/'.$file))
 						exit(json_encode((object) ["error" => "Error unlinking file"]));	
 		}
 	}

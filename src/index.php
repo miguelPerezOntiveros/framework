@@ -62,6 +62,8 @@
 		$('#cu_form').find('textarea, select, input[type!="submit"]').each(function(i, e){
 			if($(e).is('select'))
 				$(e).val(values[i].split('-')[0])
+			else if ($(e).attr('type') == 'file')
+				; // don't fill in value for files
 			else
 				$(e).val(values[i]);
 		})
@@ -97,7 +99,7 @@
 	doForm = function(columns){
 		var form = '';
 		$.each(columns, function(i, e) {
-			if(i==0)
+			if(i==0) // The id row will be hidden to the user
 				form += '<input type="hidden" name ="'+e[0]+'"/><br>';
 			else{
 				form += '<b>'+e[0]+':</b></br>'
@@ -106,7 +108,7 @@
 				else if(!isNaN(e[1]))	
 						form += '<textarea  name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
 				else if(e[1] == '\\*')
-					form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required>  <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><span class="glyphicon glyphicon-arrow-down" style="font-size: 3em;"></span><br><span class="catcherFilesLabel">Drop file here</span></div><br>';
+					form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><span class="glyphicon glyphicon-arrow-down" style="font-size: 3em;"></span><br>(Current file will persist if no new file is chosen)<span class="catcherFilesLabel">Drop file here</span></div><br>';
 				else if(e[1] == 'date')
 					form += '<input name="'+e[0]+'" type="date" required><br>';
 				else if(e[1] == 'boolean')
@@ -153,9 +155,8 @@
 				$("#feedbackModal").modal("show");
 				return;
 			}
-						
 
-			if( $.fn.DataTable.isDataTable( '#table' ) ){
+			if( $.fn.DataTable.isDataTable('#table')){
 				 $('#table').DataTable().destroy();
 			}
 			
@@ -165,7 +166,7 @@
 			$.each(data.columns, function(i, e){
 				$('tr').append('<th>'+e[0]+'</th>');
 				if(e[1] == '\\*')
-					columns.push({ "render": function (data, type, full, meta) {return "<a href='"+data+"'><img style='width:60px;' src='"+data+"'/></a>"; } });
+					columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
 				else
 					columns.push({});
 			});
