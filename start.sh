@@ -36,5 +36,6 @@ while ! echo exit | nc localhost $db_port > /dev/null;  do
 done
 
 # Run the PHP server and open a web browser tab to it
+printf "<?php\n\t\$db_port = "$db_port";\n?>" > start_settings.inc.php
 open http://localhost:$web_port
 php -S localhost:$web_port

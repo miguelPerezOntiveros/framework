@@ -3,10 +3,8 @@
 - improve documentation
 - I should look into extending the projects from within, issuing create table statements
 - I should allow for back and forward browser button functionality at index.php (you can't currently reach the same tab you were on)
-- I shouldnt be changing the actual file names on image uploads
 - I should reverse engineer sql dumps to my yaml syntax
 - change the user and user type table names to avoid collisions? 
-- allow UI to ask for a DB port
 - should access to reference imply access to referenced column?
 - open project in new tab?
 - encript passwords in db
@@ -17,6 +15,8 @@
 - address the todo's on index.php
 - Figure out a way to create content that is not published sucerely (possibly the where parameter on the read service)
 - Upgrade to bootstrap 4.0
+
+- To change mysql port: sudo vi /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

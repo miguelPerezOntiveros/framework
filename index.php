@@ -34,7 +34,10 @@
 
 					<label for="input[name='db_pass']">Database Password:</label><br>
 					<input type="password" name="db_pass"/><br>
-					<br>
+					Port: <?php
+					require 'start_settings.inc.php';
+					echo $db_port; ?>
+					<br><br>
 					<!-- TODO: Import with drag and drop -->
 					<!-- TODO: Export should download a yaml file -->
 					<button class="btn btn-default">Import</button>
@@ -170,8 +173,7 @@
 						
 						// Run _pre script
 						echo "<h2>Build</h2>";
-						$params = $config['_projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' "'.$_POST['db_pass'].'" '.implode(',', $imageTables);
-						exec('./build_pre.sh '.$params);
+						exec('./build_pre.sh '.$config['_projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' "'.$_POST['db_pass'].'" '.implode(',', $imageTables));
 
 						// Write files
 						file_put_contents('projects/'.$config['_projectName'].'/admin/config.inc.php', '<?php $config=unserialize(\''.serialize($config).'\');?>');
@@ -179,7 +181,7 @@
 						file_put_contents('projects/'.$config['_projectName'].'/'.$config['_projectName'].'.sql', $sql);	
 
 						// Run _post script
-						echo "<pre>".exec('./build_post.sh '.$params)."</pre>";
+						echo "<pre>".exec('./build_post.sh '.$config['_projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' "'.$_POST['db_pass'].'" '.$db_port)."</pre>";
 					}
 				?>
 			</div>
