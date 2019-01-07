@@ -25,7 +25,17 @@
 ### JS yaml library used
 https://www.npmjs.com/package/yamljs
 
+### When you run 'sudo ./start'
+- the start script runs, check usage with -h
+
+#### start.sh
+- checks is web port is free
+- checks if db port is listening and restarts db bif not
+- creates start_settings.inc.php
+- starts the php server and opens the url for you
+
 ### When you click 'Submit'
+- index.php sends the form data to itself
 
 #### index.php
 - runs ./build_pre.sh projectName db_host db_user db_pass imageTables
