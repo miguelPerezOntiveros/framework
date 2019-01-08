@@ -1,23 +1,50 @@
 #!/bin/sh
 
 # defaults
-web_port=8080
+db_user="root"
+db_pass="admin"
+db_host="127.0.0.1"
 db_port=3306
+web_port=80
+
+atLeast2Args () {
+	if [ $1 -lt 2 ]; then
+	    echo "Option '"$2"' requires an argument"
+		exit 1    
+	fi
+}
 
 # check options
 while [ ! $# -eq 0 ]
 do
 	case "$1" in
-		--db-port|-db)
+		--db-user|-u)
+			atLeast2Args $# $1
+			db_user=$2
+			shift
+			;;
+		--db-pass|-P)
+			atLeast2Args $# $1
+			db_pass=$2
+			shift
+			;;
+		--db-host|-h)
+			atLeast2Args $# $1
+			db_host=$2
+			shift
+			;;
+		--db-port|-p)
+			atLeast2Args $# $1
 			db_port=$2
 			shift
 			;;
 		--web-port|-web)
+			atLeast2Args $# $1
 			web_port=$2
 			shift
 			;;
 		*)
-			echo "Usage: ./start.sh [-db|--db-port db_port] [-web|--web-port web_port]"
+			echo "Usage: ./start.sh [--db-user|-u db_user][--db-pass|-P db_pass][--db-host|-h db_host][--db-port|-p db_port][-web|--web-port web_port]"
 			exit
 	esac
 	shift
@@ -36,6 +63,6 @@ while ! echo exit | nc localhost $db_port > /dev/null;  do
 done
 
 # Run the PHP server and open a web browser tab to it
-printf "<?php\n\t\$db_port = "$db_port";\n?>" > start_settings.inc.php
+printf "<?php\n\t\$db_user = '"$db_user"';\n\t\$db_pass = '"$db_pass"';\n\t\$db_host = '"$db_host"';\n\t\$db_port = '"$db_port"';\n?>" > start_settings.inc.php
 open http://localhost:$web_port
-php -S localhost:$web_port
+sudo php -S localhost:$web_port

@@ -20,24 +20,35 @@
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-md-12">
+				<h2>Current projects</h2>
+				<?php
+					require 'start_settings.inc.php';
+					$conn = new mysqli($db_host, $db_user, $db_pass, 'information_schema', $db_port);
+					if ($conn->connect_errno)
+						exit( json_encode((object) ['error' => 'Failed to connect to MySQL: ('.$conn->connect_errno.')'.$conn->connect_error]));
+					
+					$sql = "select SCHEMA_NAME from SCHEMATA where SCHEMA_NAME NOT IN('mysql', 'information_schema', 'performance_schema', 'sys');";
+					if($result = $conn->query($sql)){
+						while($row = $result->fetch_array(MYSQLI_NUM))
+							echo $row[0].'<br>';
+					}
+				?>
+			</div>
+
+
 			<div class="col-md-4">
 				<h2>YAML</h2>
 				<form action="" method="POST" id="yamlForm" style="border: 1px solid black; padding: 5px;">
 					<textarea name="json" rows="50" style="width: 100%"></textarea>
 					<textarea name="yaml" rows="50" style="width: 100%" hidden></textarea>
 					<br><br>
-					<label for="input[name='db_host']">Database Host:</label><br>
-					<input type="text" name="db_host" value="127.0.0.1"/><br>
-
-					<label for="input[name='db_user']">Database User:</label><br>
-					<input type="text" name="db_user" value="root"/><br>
-
-					<label for="input[name='db_pass']">Database Password:</label><br>
-					<input type="password" name="db_pass"/><br>
-					Port: <?php
-					require 'start_settings.inc.php';
-					echo $db_port; ?>
-					<br><br>
+					<?php
+						echo 'User: '.$db_user.'<br>'; 
+						echo 'Port: '.$db_port.'<br>'; 
+						echo 'Host: '.$db_host.'<br>'; 
+					?>
+					<br>
 					<!-- TODO: Import with drag and drop -->
 					<!-- TODO: Export should download a yaml file -->
 					<button class="btn btn-default">Import</button>
@@ -45,6 +56,7 @@
 					<button style="float: right;" type="submit" class="btn btn-primary">Submit</button>
 				</form><br>
 			</div>
+
 
 			<div class="col-md-8">
 				<?php
@@ -173,7 +185,7 @@
 						
 						// Run _pre script
 						echo "<h2>Build</h2>";
-						exec('./build_pre.sh '.$config['_projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' "'.$_POST['db_pass'].'" '.implode(',', $imageTables));
+						exec('./build_pre.sh '.$config['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
 						// Write files
 						file_put_contents('projects/'.$config['_projectName'].'/admin/config.inc.php', '<?php $config=unserialize(\''.serialize($config).'\');?>');
@@ -181,7 +193,7 @@
 						file_put_contents('projects/'.$config['_projectName'].'/'.$config['_projectName'].'.sql', $sql);	
 
 						// Run _post script
-						echo "<pre>".exec('./build_post.sh '.$config['_projectName'].' '.$_POST['db_host'].' '.$_POST['db_user'].' "'.$_POST['db_pass'].'" '.$db_port)."</pre>";
+						echo "<pre>".exec('./build_post.sh '.$config['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port)."</pre>";
 					}
 				?>
 			</div>

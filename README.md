@@ -15,8 +15,7 @@
 - address the todo's on index.php
 - Figure out a way to create content that is not published sucerely (possibly the where parameter on the read service)
 - Upgrade to bootstrap 4.0
-
-- To change mysql port: sudo vi /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+- Am I able to override what I show for a column?
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server
@@ -53,3 +52,6 @@ https://www.npmjs.com/package/yamljs
 
 #### build_post.sh
 - runs projects/projectName/projectName.sql against db
+
+
+- To change mysql port: sudo vi /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
