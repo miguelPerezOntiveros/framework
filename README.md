@@ -16,6 +16,8 @@
 - Figure out a way to create content that is not published sucerely (possibly the where parameter on the read service)
 - Upgrade to bootstrap 4.0
 - Am I able to override what I show for a column?
+- Change over to mysqli
+- Revise logging, currently only using error_log
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server
@@ -53,5 +55,5 @@ https://www.npmjs.com/package/yamljs
 #### build_post.sh
 - runs projects/projectName/projectName.sql against db
 
-
+### Notes
 - To change mysql port: sudo vi /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist

@@ -16,8 +16,8 @@
 	$joinRules = ['1'];
 	$allowedColumns = [$_GET['table'].'.id'];
 	if(isset($_GET['show'])) { // only asking for 'show' column
-		if($config[$_GET['table']][$config[$_GET['table']]['show']]['permissions_read'] == '-' || preg_match( $config[$_GET['table']][$config[$_GET['table']]['show']]['permissions_read'], $_SESSION['type']))
-			$allowedColumns[] = $_GET['table'].'.'.$config[$_GET['table']]['show'];
+		if($config[$_GET['table']][$config[$_GET['table']]['_show']]['permissions_read'] == '-' || preg_match( $config[$_GET['table']][$config[$_GET['table']]['_show']]['permissions_read'], $_SESSION['type']))
+			$allowedColumns[] = $_GET['table'].'.'.$config[$_GET['table']]['_show'];
 	} else{
 		foreach ($config[$_GET['table']] as $column_key => $column) {
 			if($column_key[0] == '_')
@@ -28,7 +28,7 @@
 				if(isset($config[$column['type']])){ // column is a ref
 					$otherTable = $column['type'];
 					$otherTableAlias = $column_key.'Table';
-					$otherColumn = $config[$column['type']]['show'];
+					$otherColumn = $config[$otherTable]['_show'];
 					$tablesToJoin[] = $otherTable.' '.$otherTableAlias;
 					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.$column_key.', "-", '.$otherTableAlias.'.'.$otherColumn.') as '.$column_key;
 					$joinRules[] = $_GET['table'].'.'.$column_key.' = '.$otherTableAlias.'.id';

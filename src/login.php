@@ -6,8 +6,8 @@
 		$sql = 'select user, pass, name from user, user_type where type = user_type.id and user = \''.$_POST['userName'].'\'';
 		$result = $conn->query($sql);
 
-		if ($result->num_rows > 0 && $row = $result->fetch_assoc()) 
-			return array( $row['name']);
+		if ($result->num_rows > 0 && $row = $result->fetch_array(MYSQLI_NUM))
+			return $row;
 			
 		$conn->close();
 		return array();
@@ -22,13 +22,14 @@
 	$incorrectPassword = false; 
 	if(isset($_POST['userName']) && isset($_POST['password']) ){
 		$userInfo = checkPassword($conn);
-		if(count($userInfo) == 0) 
+		error_log($_POST['userName'].' is trying to log in');
+		if(count($userInfo) == 0 || $userInfo[1] != $_POST['password']) 
 			$incorrectPassword = true;
 		else {
 			session_name($config['_projectName']);
 			session_start();
 			$_SESSION['userName']= $_POST['userName'];		
-			$_SESSION['type'] = $userInfo[0];
+			$_SESSION['type'] = $userInfo[2];
 
 			header('Location: index.php');
 			exit('I should have redirected');
@@ -48,21 +49,20 @@
 			<div id = "container">
 				<div id ="body">
 					<div class="container">
-						<div class="row">
-							<br><br>
-							<div class="col-lg-12 bs-callout-left">
+						<div class="row" style="padding-top: 3em;">
+							<div class="col-12 bs-callout-left">
 								<h2><?= $config['_projectName'] ?></h2>
 							</div>
 							<br><br><br>
 						</div>
 						<br>
-						<div class=<?= '\'alert alert-danger '.(!$incorrectPassword? ' hidden': '').'\''?> role="alert">
-							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<div class=<?= '\'alert alert-danger \''?> <?= (!$incorrectPassword? ' hidden': '') ?> role="alert">
+							<i class="fas fa-exclamation-circle"></i>
 							Invalid Credentials
 						</div>
 
 						<div class="row">
-							<div class="col-lg-4 bs-callout-left col-lg-offset-4" style='background-color: #DDD'>
+							<div class="col-4 bs-callout-left offset-lg-4" style='background-color: #DDD'>
 								<br/><br/>
 								<form method="post" id='loginForm' action=<?="'".basename($_SERVER['SCRIPT_NAME'])."'"?>>
 									<div class="form-group">
@@ -82,12 +82,6 @@
 								</form>
 							</div>
 						</div>
-						<script type="text/javascript">
-							$('.form-control').keypress(function(event) {
-								if (event.keyCode == 13 || event.which == 13) 
-									$('#loginForm').submit();
-							});
-						</script>
 					</div>
 				</div>
 				<div id="footerDownFooter">
@@ -96,5 +90,12 @@
 			</div>
 		</div>
 	</div>
+	<?php require 'body_bottom.inc.php'; ?>
+	<script type="text/javascript">
+		$('.form-control').keypress(function(event) {
+			if (event.keyCode == 13 || event.which == 13) 
+				$('#loginForm').submit();
+		});
+	</script>
 </body>
 </html>

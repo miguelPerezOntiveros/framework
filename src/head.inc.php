@@ -3,20 +3,14 @@
 ?>
 
 <head>
-	<meta charset="UTF-8">
-	<title><?= $config['projectName']?></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- jQuery -->
-	<script src="vendor/jquery-2.2.4/jquery-2.2.4.min.js"></script>
-
-	<!-- Bootstrap -->
-	<script src="vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-	<link href="vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-
-	<!-- datatables -->
-	<script src="vendor/datatables-1.10.15/jquery.dataTables.min.js"></script>
+	<!-- DataTables, Bootstrap, FA -->
 	<link href="vendor/datatables-1.10.15/jquery.dataTables.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/style.css">
 
-	<!-- Custom css -->
-	<link href="css/style.css" rel="stylesheet">	
+	<title><?= $config['projectName']?></title>
 </head>
