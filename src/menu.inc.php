@@ -5,7 +5,7 @@
 					<span></span>
 					<span></span>
 				</button>
-			    <span style="color: white; padding-left: 10px; ">Welcome <?= $_SESSION['userName'] ?>! (<?= $_SESSION['type']?>)</span>
+			    <span class="navbar_welcome">Welcome <?= $_SESSION['userName'] ?>! (<?= $_SESSION['type']?>)</span>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>

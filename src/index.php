@@ -4,33 +4,7 @@
 <?php require 'head.inc.php'; ?>
 <body>
 	<div class="sidebarWrapper_wrapper">
-		<nav class="sidebarWrapper_sidebar active">
-			<div class="sidebar-header">
-				<h3>My CMS</h3>
-			</div>
-			<ul class="list-unstyled">
-				<li>
-					<a href="#">Contact</a>
-				</li>
-				<li class="active">
-					<a href="#homeSubmenu" data-toggle="collapse" class="dropdown-toggle">Home</a>
-					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li>
-							<a href="#">Home 1</a>
-						</li>
-						<li>
-							<a href="#">Home 2</a>
-						</li>
-						<li>
-							<a href="#">Home 3</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="#">Contact</a>
-				</li>
-			</ul>
-		</nav>
+		<?php require 'sidebar.inc.php'; ?>
 		<div class="sidebarWrapper_page">
 			<div class="footerDown_container">
 				<div class="footerDown_body">

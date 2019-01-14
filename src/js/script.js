@@ -33,7 +33,7 @@ handleDelete = function(e){
 }
 toggleForm = function (){
 	$('.form_element')[0].reset();
-	$('.catcherFilesLabel').text('');
+	$('.catcherFilesLabel').text('Drop file here');
 	$('.form_element').toggle('slow');
 	if ($('.form').hasClass('bs-callout-left'))
 		$('.form').removeClass('bs-callout-left');
@@ -65,7 +65,7 @@ doForm = function(columns){
 			else if(!isNaN(e[1]))	
 				form += '<textarea  name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
 			else if(e[1] == '\\*')
-				form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><span class="glyphicon glyphicon-arrow-down" style="font-size: 3em;"></span><br>(Current file will persist if no new file is chosen)<span class="catcherFilesLabel">Drop file here</span></div><br>';
+				form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
 			else if(e[1] == 'date')
 				form += '<input name="'+e[0]+'" type="date" required><br>';
 			else if(e[1] == 'boolean')
@@ -180,5 +180,7 @@ $(document).ready(function() {
 	$('.sidebar_trigger').on('click', function () {
 		$('.sidebarWrapper_sidebar').toggleClass('active');
 		$(this).toggleClass('active');
+		if(!$('.sidebarWrapper_sidebar').hasClass('active'))
+			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
 	});
 });

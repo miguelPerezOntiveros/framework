@@ -1,4 +1,5 @@
 <?php
+	error_reporting(E_ALL ^ E_NOTICE); 
 	isset($_GET['table']) && isset($_POST['id']) || exit('No such table');
 	
 	require 'config.inc.php';

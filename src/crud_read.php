@@ -1,4 +1,5 @@
 <?php
+	error_reporting(E_ALL ^ E_NOTICE); 
 	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
 	
 	require 'config.inc.php';
