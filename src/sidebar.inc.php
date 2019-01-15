@@ -5,11 +5,11 @@
 				<span><h3>Maker Mike</h3></span>
 			</div>
 			<ul class="list-unstyled">
-				<li>
-					<a href="/">Home</a>
+				<li class=<?php echo (dirname($_SERVER['REQUEST_URI']) == '/'?'active':'') ?>>
+					<a href="/?sidebar=1">Home</a>
 				</li>
-				<li>
-					<a href="/projects/maker_mike/admin/index.php">Maker</a>
+				<li class=<?php echo (dirname($_SERVER['REQUEST_URI']) == '/projects/maker_mike/admin'?'active':'') ?>>
+					<a href="/projects/maker_mike/admin/index.php?sidebar=1">Maker</a>
 				</li>
 				<li>
 					<a href="#projectsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Projects</a>
@@ -54,6 +54,17 @@
 						</li>
 						<li class="tab" id="menu_user">
 							<a href="#" onclick="loadSection(\'user\', \'User\');">User</a>
+						</li>';
+					if($config['_projectName'] == 'maker_mike' && dirname($_SERVER['REQUEST_URI']) == '/projects/maker_mike/admin')
+						echo '
+						<li style="border-top: 1px solid #000032; color: #3bb6d4;">
+							<p>'.$config['_projectName'].'</p>
+		                </li>
+		                <li class="tab">
+							<a href="#" onclick="loadSection(\'page\', \'Page\');">Page</a>
+						</li>
+						<li class="tab">
+							<a href="#" onclick="loadSection(\'portlet\', \'Portlet\');">Portlet</a>
 						</li>';
 				?>
             </ul>

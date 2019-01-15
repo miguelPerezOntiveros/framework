@@ -281,7 +281,7 @@ require 'src/session.inc.php'; ?>
 					</div>	
 				</div>
 				<div class="footerDown_footer">
-					FOOTER
+					<?php require 'src/foot.inc.php'; ?>
 				</div>
 			</div>
 		</div>

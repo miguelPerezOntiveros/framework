@@ -22,11 +22,19 @@
 - You can notice the sidebar gets split while the animation is playing
 - revise footer, add links/icons/etc
 - close submenus on sidebar automatically?
-- hide the plus button when editting?
+- hide the plus button when editting? Make it into an X when the form is open. Animate it?
 - sidebar button should match style of the top navigation button
 - sidebar file should be general, not project specific
 - top bar should never go double-lined
 - I need a better logo
+- Document all php 'require' paths
+- don't show html on datatables data
+- Log out should intuitivly log you out of what you want it to
+- I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
+- How do I manage CMS-wide users?
+- No top menu tables on 'home'
+- add side bar to login?
+- show display name for projects
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server
