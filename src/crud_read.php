@@ -2,7 +2,10 @@
 	error_reporting(E_ALL ^ E_NOTICE); 
 	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
 	
-	require 'config.inc.php';
+	if($_GET['project'] == 'mike_maker')
+		require '../config.inc.php';
+	else
+		require '../projects/'.$_GET['project'].'/admin/config.inc.php';
 
 	if($config[$_GET['table']]['_permissions']['read'] != '-'){
 		require 'session.inc.php';

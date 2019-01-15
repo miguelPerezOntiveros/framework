@@ -24,6 +24,9 @@
 - close submenus on sidebar automatically?
 - hide the plus button when editting?
 - sidebar button should match style of the top navigation button
+- sidebar file should be general, not project specific
+- top bar should never go double-lined
+- I need a better logo
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

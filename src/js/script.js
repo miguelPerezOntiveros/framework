@@ -72,7 +72,7 @@ doForm = function(columns){
 				form += ' <select name="'+e[0]+'"><option value="0">0-No</option><option value="1">1-Yes</option></select><br>';
 			else{
 				form += '<select name="'+e[0]+'"></select><br>';
-				$.get('crud_read.php?table=' + e[1] + '&show=true', function(response){
+				$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
 					response = JSON.parse(response);
 					$.each(response.data, function(i, el){
 						$('select[name="'+e[0]+'"]').append('<option value="'+el[0]+'">'+el[1]+'</option>');
@@ -103,7 +103,7 @@ doTable = function(name, displayName, thenDoForm) {
 	window.name = name = name || window.name; 
 	window.displayName = displayName = displayName || window.displayName; 
 
-	$.get('crud_read.php?table=' + name, function(data){
+	$.get('/src/crud_read.php?project='+window._projectName+'&table=' + name, function(data){
 		console.log(data);
 		data = JSON.parse(data);
 		if(data.error){
@@ -142,13 +142,13 @@ doTable = function(name, displayName, thenDoForm) {
 		});
 }
 $(document).ready(function() {
-	var endpoint = {"create": "crud_create.php", "update": "crud_update.php", "delete":"crud_delete.php"};
+	var endpoint = {"create": "/src/crud_create.php", "update": "/src/crud_update.php", "delete":"/src/crud_delete.php"};
 	$('.form_element').submit(function(e){
 		e.preventDefault();
 		var formData = new FormData($('.form_element')[0]);
 		$.ajax({
 			type: "POST",
-			url: endpoint[window.crud_mode] + "?table=" + window.name,
+			url: endpoint[window.crud_mode] + '?project='+window._projectName+'&table=' + window.name,
 			data: formData,
 			success: function(data) {
 				response = JSON.parse(data);
@@ -176,7 +176,7 @@ $(document).ready(function() {
 				processData: false
 			});
 	});
-	$('.tab:first').click();
+	$('li>.tab:first').click();
 	$('.sidebar_trigger').on('click', function () {
 		$('.sidebarWrapper_sidebar').toggleClass('active');
 		$(this).toggleClass('active');

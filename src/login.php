@@ -1,6 +1,6 @@
 <?php
+	require_once 'config.inc.php';
 	require 'db_connection.inc.php';
-	require 'config.inc.php';
 
 	function checkPassword($conn){
 		$sql = 'select user, pass, name from user, user_type where type = user_type.id and user = \''.$_POST['userName'].'\'';

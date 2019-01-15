@@ -1,7 +1,9 @@
-<?php require 'session.inc.php'; ?>
+<?php 	require_once 'config.inc.php';
+require 'session.inc.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php require 'head.inc.php'; ?>
+<?php 
+require 'head.inc.php'; ?>
 <body>
 	<div class="sidebarWrapper_wrapper">
 		<?php require 'sidebar.inc.php'; ?>
@@ -22,7 +24,7 @@
 							<div class="col-12 form bs-callout-left">
 								<br>
 								<button type="button" onclick="handleCreate();" class="btn btn-primary"><i class="fas fa-plus"></i></button>
-								<form class="form_element"></form>
+								<form id="cu_form" class="form_element"></form>
 							</div>
 
 							<div class="col-12">
@@ -39,6 +41,7 @@
 		</div>
 	</div>
 	<?php require 'body_bottom.inc.php'; ?>
-	<script src="js/script.js"></script>
+	<script>window._projectName = <?= "'".$config['_projectName']."'" ?></script>
+	<script src="/src/js/script.js"></script>
 </body>
 </html>

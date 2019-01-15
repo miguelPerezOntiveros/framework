@@ -1,11 +1,11 @@
 
-			<nav class="navbar navbar-expand-lg navbar-dark">
-				<button type="button" class="sidebar_trigger active">
+			<nav class="navbar navbar-expand-lg navbar-dark topbar_topbar">
+				<button type="button" class=<?php echo '"sidebar_trigger '.($_GET['sidebar']==1?'':'active').'"' ?>>
 					<span></span>
 					<span></span>
 					<span></span>
 				</button>
-			    <span class="navbar_welcome">Welcome <?= $_SESSION['userName'] ?>! (<?= $_SESSION['type']?>)</span>
+			    <span class="navbar_project"><?php echo $config['_projectName']?></span>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -14,7 +14,7 @@
 						$currentTable = isset($_GET['table'])? $_GET['table']:  key($config);
 						// Iterate through tables
 						foreach ($config as $table => $value) {
-							if($table[0] == '_')
+							if($table[0] == '_' || $table == 'user' || $table == 'user_type' || $table == 'page' || $table == 'portlet')
 								continue;
 							$tableNameToShow = $config[$table]['displayName'] ?: ucwords(str_replace("_"," ", $table ));
 							echo '
@@ -22,9 +22,13 @@
 								<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\');" class=\'tab nav-link\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>
 							</li>';
 						}?>
-				            <li class="nav-item">
-				                <a class="tab nav-link" href="login.php"><i class="fas fa-sign-out-alt"></i></a>
-				            </li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+									<span class="dropdown-header" style="text-align:right;">Welcome <?= $_SESSION['userName'] ?>!<br>(<?= $_SESSION['type']?>)</span>
+									<a class="dropdown-item" href="login.php" style="text-align:right;">Log out <i class="fas fa-sign-out-alt"></i></a>
+								</div>
+							</li>
 					</ul>
 				</div>
 			</nav>

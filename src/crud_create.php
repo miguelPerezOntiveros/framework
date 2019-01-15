@@ -2,7 +2,10 @@
 	error_reporting(E_ALL ^ E_NOTICE); 
 	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
 	
-	require 'config.inc.php';
+	if($_GET['project'] == 'mike_maker')
+		require '../config.inc.php';
+	else
+		require '../projects/'.$_GET['project'].'/admin/config.inc.php';
 
 	if($config[$_GET['table']]['_permissions']['create'] != '-'){
 		require 'session.inc.php';
@@ -36,7 +39,7 @@
 				if ($_FILES[$column_key]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
 
-				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], 'uploads/'.$_GET['table'].'/'.$target_file))
+				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$target_file))
 					exit(json_encode((object) ["error" => "Folder does not exist."]));
 				$value = $target_file;	
 			}

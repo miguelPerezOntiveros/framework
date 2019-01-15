@@ -39,8 +39,8 @@ nav {
 .nav-link.active{
 	color: #f5f5f5;
 }
-.navbar_welcome{
-	color: #f5f5f5;
+.navbar_project{
+	color: #3bb6d4;
 	padding-left: 10px; 
 }
 h2 {
@@ -94,6 +94,10 @@ footer{
 	color:#666;
 }
 
+.topbar_topbar{
+	border-bottom: 2px solid #3bb6d4;
+	height: 56px;
+}
 
 /* Sidebar */
 .sidebar_trigger {
@@ -114,10 +118,11 @@ footer{
 	color: #fff;
 	transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
 	transform-origin: bottom left;
-	border-right: 1px solid #000032;
+	border-right: 1px solid #3bb6d4;
 }
-.sidebarWrapper_sidebar ul li a {
+.sidebarWrapper_sidebar ul li a, .sidebarWrapper_sidebar ul li p {
     display: block;
+    margin-bottom: 0;
 }
 .sidebarWrapper_sidebar.active {
 	margin-left: -250px;

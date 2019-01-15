@@ -2,7 +2,10 @@
 	error_reporting(E_ALL ^ E_NOTICE); 
 	isset($_GET['table']) && isset($_POST['id']) || exit('No such table');
 	
-	require 'config.inc.php';
+	if($_GET['project'] == 'mike_maker')
+		require '../config.inc.php';
+	else
+		require '../projects/'.$_GET['project'].'/admin/config.inc.php';
 
 	if($config[$_GET['table']]['_permissions']['delete'] != '-'){
 		require 'session.inc.php';
@@ -29,7 +32,7 @@
 	}
 	if(count($fileColumns))
 	{
-		error_log(count('cols: '.$fileColumns));
+		error_log('cols: '.count($fileColumns));
 		$sql = 'SELECT '.implode(', ', $fileColumns).' FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
 		error_log('INFO - sql:'.$sql);
 		if(!$result = $conn->query($sql))
@@ -40,7 +43,7 @@
 				exit(json_encode((object) ["error" => "No files to delete anymore"]));
 			else
 				foreach ($row as $file_key => $file)
-					if(!unlink('uploads/'.$_GET['table'].'/'.$file))
+					if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$file))
 						exit(json_encode((object) ["error" => "Error unlinking file"]));	
 		}
 	}
