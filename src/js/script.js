@@ -13,17 +13,17 @@ handleEdit = function(e){
 	});
 	var values = [];
 	$(e).parent().parent().parent().find('td').slice(0, -1).each(function(i, e) {
-		values.push($(e).html());
+		values.push($(e).text());
 	})
 	console.log(values);
 	$('.form_element').find('textarea, select, input[type!="submit"]').each(function(i, e){
 		if($(e).is('select'))
 			$(e).val(values[i].split('-')[0])
 		else if ($(e).attr('type') == 'file')
-		; // don't fill in value for files
-	else
-		$(e).val(values[i]);
-})
+			; // don't fill in value for files
+		else
+			$(e).val(values[i]);
+	})
 }
 handleDelete = function(e){
 	window.crud_mode = 'delete';
@@ -124,7 +124,7 @@ doTable = function(name, displayName, thenDoForm) {
 			if(e[1] == '\\*')
 				columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
 			else
-				columns.push({});
+				columns.push({ "render": $.fn.dataTable.render.text() });
 		});
 		columns.push({
 			defaultContent: '<center><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></center>'

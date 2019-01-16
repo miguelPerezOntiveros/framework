@@ -65,4 +65,4 @@ done
 # Run the PHP server and open a web browser tab to it
 printf "<?php\n\t\$db_user = '"$db_user"';\n\t\$db_pass = '"$db_pass"';\n\t\$db_host = '"$db_host"';\n\t\$db_port = '"$db_port"';\n?>" > start_settings.inc.php
 open http://localhost:$web_port
-sudo php -S localhost:$web_port
+sudo php -S 0.0.0.0:$web_port

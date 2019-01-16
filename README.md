@@ -35,6 +35,12 @@
 - No top menu tables on 'home'
 - add side bar to login?
 - show display name for projects
+- SYNDICATION
+- make sure edit and trash icons are always level
+- page creator
+	- actual page should define $url, require config, require page.php
+	- create page.php as a simbolic link to /src/page.php 
+- verify session on pages? would need to be able to mark pages as private as well
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server
