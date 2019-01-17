@@ -8,9 +8,9 @@
 - should access to reference imply access to referenced column?
 - open project in new tab?
 - encript passwords in db
-- make sure no sql injection is possile
-- make sure we get feedback if db couldn´t be created. PHP will know if the 3 inputs are not submited.
-- make sure we get feedback on sql errors.
+- make sure no sql injection is possile, use pdo's
+- make sure we get feedback if db couldn´t be created.
+- make sure we get feedback on any sql errors.
 - add 'show' prop to individual columns
 - address the todo's on index.php
 - Figure out a way to create content that is not published sucerely (possibly the where parameter on the read service)
@@ -43,6 +43,8 @@
 - verify session on pages? would need to be able to mark pages as private as well
 - change 'html' field for 'content'?
 - can the viewer be soft linked in?
+- should restrict from making pages under admin or using double dots
+- should find a friendlier and more secure way for adding in the query on thr portlets 
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

@@ -45,7 +45,7 @@
 				if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row[$file_key]))
 					exit(json_encode((object) ["error" => "Error unlinking file"]));
 			//Possible extension of the service
-			$ext = '../ext/'.$config['_projectName'].'.'.$_GET['table'].'.d.php';
+			$ext = '../projects/'.$config['_projectName'].'/admin/ext/'.$_GET['table'].'.d.php';
 			if(file_exists($ext))
 				require($ext);
 		}

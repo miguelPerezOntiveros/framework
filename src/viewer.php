@@ -1,4 +1,5 @@
 <?php
+	require_once 'config.inc.php';
 	require 'session.inc.php'; 
 	
 	if($_SESSION['userName'] == 'System Administrator'){
@@ -6,7 +7,5 @@
 		exit();
 	}
 
-	require_once 'config.inc.php';
 	echo json_encode($config);
-
 ?>

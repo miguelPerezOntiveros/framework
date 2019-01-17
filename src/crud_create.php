@@ -49,7 +49,7 @@
 		exit(json_encode((object) ["error" => "No such table."]));
 
 	//Possible extension of the service
-	$ext = '../ext/'.$config['_projectName'].'.'.$_GET['table'].'.c.php';
+	$ext = '../projects/'.$config['_projectName'].'/admin/ext/'.$_GET['table'].'.c.php';
 	if(file_exists($ext))
 		require($ext);
 

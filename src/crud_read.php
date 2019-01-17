@@ -65,7 +65,7 @@
 			$data[] = $row;
 	}
 
-	$ext = '../ext/'.$config['_projectName'].'.'.$_GET['table'].'.r.php';
+	$ext = '../projects/'.$_GET['project'].'/admin/ext/'.$_GET['table'].'.r.php';
 	if(file_exists($ext))
 		require($ext);
 
