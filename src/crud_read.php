@@ -54,18 +54,22 @@
 
 	//Executing Query
 	require 'db_connection.inc.php';
-	$res = array();
-	$fields = array();
+	$data = array();
+	$columns = array();
 	$sql = 'SELECT '.implode(', ', $allowedColumns).' FROM '.implode(', ', $tablesToJoin).' WHERE '.implode(' and ', $joinRules).';';	
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql)){
-		while ($field = $result->fetch_field())
-			$fields[] = (object)[$field->name, $config[$_GET['table']][$field->name]['type']]; 
+		while ($column = $result->fetch_field())
+			$columns[] = (object)[$column->name, $config[$_GET['table']][$column->name]['type']]; 
 		while($row = $result->fetch_array(MYSQLI_NUM))
-			$res[] = $row;
+			$data[] = $row;
 	}
 
+	$ext = '../ext/'.$config['_projectName'].'.'.$_GET['table'].'.r.php';
+	if(file_exists($ext))
+		require($ext);
+
 	// TODO: return sql errors as json
-	echo json_encode((object) ['data' => $res, 'columns' => $fields]);
+	echo json_encode((object) ['data' => $data, 'columns' => $columns]);
 	$conn->close();
 ?>

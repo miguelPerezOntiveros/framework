@@ -41,6 +41,8 @@
 	- actual page should define $url, require config, require page.php
 	- create page.php as a simbolic link to /src/page.php 
 - verify session on pages? would need to be able to mark pages as private as well
+- change 'html' field for 'content'?
+- can the viewer be soft linked in?
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server
@@ -69,10 +71,11 @@ https://www.npmjs.com/package/yamljs
 - runs ./build_post.sh projectName db_host db_user db_pass imageTables
 
 #### build_pre.sh
-- recreates folder projects/projectName/admin/uploads
-- writes src/* files into it
-- writes projects/projectName/admin/db_connection.inc.php
-- writes projects/projectName/admin/session.inc.php
+- removes project folder
+- creates folder projects/projectName/admin/uploads
+- moves into project 'admin' folde
+- creates soft links to index, login
+- copies viewer
 - creates individual upload folders for tables with files
 
 #### build_post.sh

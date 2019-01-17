@@ -15,11 +15,8 @@
 			exit(json_encode((object) ["error" => "login"]));
 	}
 	
-	//TODO: Single respnose for all errors
-
 	// Checking column permissions
-	$allowedColumns = [];
-	$values = [];
+	$row = [];
 	foreach ($config[$_GET['table']] as $column_key => $column) {
 		if($column_key[0] == '_')
 			continue;
@@ -44,18 +41,21 @@
 				$value = $target_file;	
 			}
 			// upload possible files end
-
-			$allowedColumns[] = $column_key;
-			$values[] = $value;
+			$row[$column_key] = $value;
 		}
 	}
 
-	if(!count($allowedColumns))
+	if(!count($row))
 		exit(json_encode((object) ["error" => "No such table."]));
+
+	//Possible extension of the service
+	$ext = '../ext/'.$config['_projectName'].'.'.$_GET['table'].'.c.php';
+	if(file_exists($ext))
+		require($ext);
 
 	//Executing Query
 	require 'db_connection.inc.php';
-	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',$allowedColumns).') VALUES (\''.implode('\', \'', $values).'\');';	
+	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (\''.implode('\', \'', array_values($row)).'\');';	
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql))
 		echo json_encode((object) ["success" => "Entry added successfully"]);

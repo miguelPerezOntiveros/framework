@@ -30,21 +30,24 @@
 		if($column['type'] == '\*')
 			$fileColumns[] = $column_key;
 	}
-	if(count($fileColumns))
+	
+	error_log('file cols: '.count($fileColumns));
+	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
+	error_log('INFO - sql:'.$sql);
+	if(!$result = $conn->query($sql))
+		exit(json_encode((object) ["error" => "Error while retrieving entry"]));
+	else
 	{
-		error_log('cols: '.count($fileColumns));
-		$sql = 'SELECT '.implode(', ', $fileColumns).' FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
-		error_log('INFO - sql:'.$sql);
-		if(!$result = $conn->query($sql))
-			exit(json_encode((object) ["error" => "Error while retrieving entry"]));
-		else
-		{
-			if(!$row = $result->fetch_assoc())
-				exit(json_encode((object) ["error" => "No files to delete anymore"]));
-			else
-				foreach ($row as $file_key => $file)
-					if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$file))
-						exit(json_encode((object) ["error" => "Error unlinking file"]));	
+		if(!$row = $result->fetch_assoc())
+			exit(json_encode((object) ["error" => "No files to delete anymore"]));
+		else{
+			foreach ($fileColumns as $file_key)
+				if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row[$file_key]))
+					exit(json_encode((object) ["error" => "Error unlinking file"]));
+			//Possible extension of the service
+			$ext = '../ext/'.$config['_projectName'].'.'.$_GET['table'].'.d.php';
+			if(file_exists($ext))
+				require($ext);
 		}
 	}
 

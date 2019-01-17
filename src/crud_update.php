@@ -15,8 +15,8 @@
 			exit(json_encode((object) ["error" => "No such table."]));
 	}
 	
-	// Checking column permissions
-	$allowedColumns = [];
+	// Checking column permissions and if any files to delete
+	$row = [];
 	$fileColumns = [];
 	foreach ($config[$_GET['table']] as $column_key => $column) {
 		if($column_key[0] == '_')
@@ -41,41 +41,47 @@
 
 				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$target_file))
 					exit(json_encode((object) ["error" => "Error during transfer"]));
-				$allowedColumns[] = $column_key.' = \''.$target_file.'\'';
+				$row[$column_key] = $target_file;
 			}
 			// upload possible files end
 			if($column['type'] != '\*' ){
-				$allowedColumns[] = $column_key.' = \''.$_POST[$column_key].'\'';
+				$row[$column_key] = $_POST[$column_key];
 			}
 		}
 	}
 
-	if(!count($allowedColumns))
+	if(!count($row))
 		exit(json_encode((object) ["error" => "No such table"]));
 
 	// TODO: check how to handle all the possible sql errors
 
-	// Delete possibe files
 	require 'db_connection.inc.php';
-	if(count($fileColumns))
+	
+	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
+	error_log('INFO - sql:'.$sql);
+	if(!$result = $conn->query($sql))
+		exit(json_encode((object) ["error" => "Error while retrieving entry"]));
+	else
 	{
-		$sql = 'SELECT '.implode(', ', $fileColumns).' FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
-		error_log('INFO - sql:'.$sql);
-		if(!$result = $conn->query($sql))
-			exit(json_encode((object) ["error" => "Error while retrieving entry"]));
-		else
-		{
-			if(!$row = $result->fetch_assoc())
-				exit(json_encode((object) ["error" => "No files to delete anymore"]));
-			else
-				foreach ($row as $file_key => $file)
-					if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$file))
-						exit(json_encode((object) ["error" => "Error unlinking file"]));
+		if(!$row_old = $result->fetch_assoc())
+			exit(json_encode((object) ["error" => "No files to delete anymore"]));
+		else{
+			foreach ($fileColumns as $file_key)
+				if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row_old[$file_key]))
+					exit(json_encode((object) ["error" => "Error unlinking file"]));
+			//Possible extension of the service
+			$ext = '../ext/'.$config['_projectName'].'.'.$_GET['table'].'.u.php';
+			if(file_exists($ext))
+				require($ext);
 		}
 	}
 
 	//Executing Query
-	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$allowedColumns).' WHERE id=\''.$_POST['id'].'\';';	
+	$sql_keys = [];
+	foreach ($row as $key => $value) {
+		$sql_keys[] = $key.' = \''.$value.'\'';
+	}
+	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$sql_keys).' WHERE id=\''.$_POST['id'].'\';';	
 	error_log('INFO - sql:' .$sql);
 	if($result = $conn->query($sql))
 		echo json_encode((object) ["success" => "Entry updated successfully"]);
