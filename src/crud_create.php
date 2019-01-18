@@ -56,7 +56,7 @@
 	//Executing Query
 	require 'db_connection.inc.php';
 	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (\''.implode('\', \'', array_values($row)).'\');';	
-	error_log('INFO - sql:' .$sql);
+	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
 	if($result = $conn->query($sql))
 		echo json_encode((object) ["success" => "Entry added successfully"]);
 	else

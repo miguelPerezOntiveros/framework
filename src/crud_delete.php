@@ -53,7 +53,7 @@
 
 	// Executing Query	
 	$sql = 'DELETE FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';	
-	error_log('INFO - sql:'.$sql);
+	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
 	if($result = $conn->query($sql))
 		echo json_encode((object) ["success" => "Entry deleted successfully"]);
 	else

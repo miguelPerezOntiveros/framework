@@ -31,60 +31,63 @@
 			$_SESSION['userName']= $_POST['userName'];		
 			$_SESSION['type'] = $userInfo[2];
 
-			header('Location: index.php');
+			header('Location: index.php?sidebar='.$_GET['sidebar']);
+
 			exit('I should have redirected');
 		}
 	}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <?php require 'head.inc.php';?>
-
 <body>
-	<div id="footerDownContainer">
-		<div id="footerDownBody">
-
-			<div id = "container">
-				<div id ="body">
-					<div class="container">
-						<div class="row" style="padding-top: 3em;">
-							<div class="col-12 bs-callout-left">
-								<h2><?= $config['_projectName'] ?></h2>
-							</div>
-							<br><br><br>
-						</div>
-						<br>
-						<div class=<?= '\'alert alert-danger \''?> <?= (!$incorrectPassword? ' hidden': '') ?> role="alert">
-							<i class="fas fa-exclamation-circle"></i>
-							Invalid Credentials
-						</div>
-
-						<div class="row">
-							<div class="col-4 bs-callout-left offset-lg-4" style='background-color: #DDD'>
-								<br/><br/>
-								<form method="post" id='loginForm' action=<?="'".basename($_SERVER['SCRIPT_NAME'])."'"?>>
-									<div class="form-group">
-										<label for="userName">User name</label>
-										<input type="text" id="userName" name="userName" class="form-control" placeholder="User name">
+	<div class="sidebarWrapper_wrapper">
+		<?php require 'sidebar.inc.php'; ?>
+		<div class="sidebarWrapper_page">
+			<div class="footerDown_container">
+				<div class="footerDown_body">
+					<?php require 'menu.inc.php'; ?>
+					<div id = "container">
+						<div id ="body">
+							<div class="container">
+								<div class="row" style="padding-top: 3em;">
+									<div class="col-12 bs-callout-left">
+										<h2><?= $config['_projectName'] ?></h2>
 									</div>
+									<br><br><br>
+								</div>
+								<br>
+								<div class=<?= '\'alert alert-danger \''?> <?= (!$incorrectPassword? ' hidden': '') ?> role="alert">
+									<i class="fas fa-exclamation-circle"></i>
+									Invalid Credentials
+								</div>
 
-									<div class="form-group">
-										<label for="exampleInputFile">Password</label>
-										<input type="password" id="password" name="password" class="form-control" placeholder="Password">
+								<div class="row">
+									<div class="col-4 bs-callout-left offset-lg-4" style='background-color: #DDD'>
+										<br/><br/>
+										<form method="post" id='loginForm' name='loginForm' action=<?="'".basename($_SERVER['SCRIPT_NAME'])."?sidebar='"?>>
+											<div class="form-group">
+												<label for="userName">User name</label>
+												<input type="text" id="userName" name="userName" class="form-control" placeholder="User name">
+											</div>
+
+											<div class="form-group">
+												<label for="exampleInputFile">Password</label>
+												<input type="password" id="password" name="password" class="form-control" placeholder="Password">
+											</div>
+											<br>
+											<p>	
+												<button style="width: 100%" type="button" class="btn btn-success" id='submitBtn' onclick="document.loginForm.action += $('.sidebarWrapper_sidebar').hasClass('active')?'':'1'; $('#loginForm').submit();">Log In</button>
+											</p>
+											<br>
+										</form>
 									</div>
-									<br>
-									<p>	
-										<button style="width: 100%" type="button" class="btn btn-success" id='submitBtn' onclick="$('#loginForm').submit();">Log In</button>
-									</p>
-									<br>
-								</form>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div id="footerDownFooter">
+				<div class="footerDown_footer">
 					<?php require 'foot.inc.php'; ?>
 				</div>
 			</div>
@@ -93,8 +96,17 @@
 	<?php require 'body_bottom.inc.php'; ?>
 	<script type="text/javascript">
 		$('.form-control').keypress(function(event) {
-			if (event.keyCode == 13 || event.which == 13) 
+			if (event.keyCode == 13 || event.which == 13) {
+				debugger;
+				document.loginForm.action += $('.sidebarWrapper_sidebar').hasClass('active')?'':'1';
 				$('#loginForm').submit();
+			}
+		});
+		$('.sidebar_trigger').on('click', function () {
+			$('.sidebarWrapper_sidebar').toggleClass('active');
+			$(this).toggleClass('active');
+			if(!$('.sidebarWrapper_sidebar').hasClass('active'))
+				$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
 		});
 	</script>
 </body>

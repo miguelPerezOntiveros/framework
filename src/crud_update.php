@@ -58,7 +58,7 @@
 	require 'db_connection.inc.php';
 	
 	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
-	error_log('INFO - sql:'.$sql);
+	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
 	if(!$result = $conn->query($sql))
 		exit(json_encode((object) ["error" => "Error while retrieving entry"]));
 	else
@@ -82,7 +82,7 @@
 		$sql_keys[] = $key.' = \''.$value.'\'';
 	}
 	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$sql_keys).' WHERE id=\''.$_POST['id'].'\';';	
-	error_log('INFO - sql:' .$sql);
+	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
 	if($result = $conn->query($sql))
 		echo json_encode((object) ["success" => "Entry updated successfully"]);
 	else

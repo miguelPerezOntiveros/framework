@@ -3,7 +3,7 @@
 	session_start();
 	if(!isset($_SESSION['userName']) && basename($_SERVER['PHP_SELF']) != 'login.php'){
 		if(file_exists('login.php'))
-			header('Location: login.php');
+			header('Location: login.php?sidebar='.$_GET['sidebar']);
 		exit();
 	}
 ?>

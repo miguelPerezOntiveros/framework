@@ -37,11 +37,8 @@
 - show display name for projects
 - SYNDICATION
 - make sure edit and trash icons are always level
-- page creator
-	- actual page should define $url, require config, require page.php
-	- create page.php as a simbolic link to /src/page.php 
-- verify session on pages? would need to be able to mark pages as private as well
-- change 'html' field for 'content'?
+- verify session on pages from page table? would need to be able to mark pages as private as well
+- change 'html' field for 'content' on page table?
 - can the viewer be soft linked in?
 - should restrict from making pages under admin or using double dots
 - should find a friendlier and more secure way for adding in the query on thr portlets 
@@ -73,15 +70,12 @@ https://www.npmjs.com/package/yamljs
 - runs ./build_post.sh projectName db_host db_user db_pass imageTables
 
 #### build_pre.sh
-- removes project folder
-- creates folder projects/projectName/admin/uploads
-- moves into project 'admin' folde
-- creates soft links to index, login
-- copies viewer
-- creates individual upload folders for tables with files
+- recreates the project folder
+- creates soft links to index, login and viewer, and to page table service extenders
+- creates individual upload folders for tables with files, and one for all service extensions
 
 #### build_post.sh
-- runs projects/projectName/projectName.sql against db
+- creates database
 
 ### Notes
 - To change mysql port: sudo vi /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist

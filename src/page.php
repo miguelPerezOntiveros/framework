@@ -13,8 +13,8 @@
 	}
 
 	function processPage($page, $conn) {
-		return preg_replace_callback('/<make-mike-portlet>.*?<\/make-mike-portlet>/', function ($matches) use (&$conn) {
-				$portletName = preg_replace('/<make-mike-portlet>(.*)<\/make-mike-portlet>/', '$1', $matches[0]);
+		return preg_replace_callback('/<mm-portlet>.*?<\/mm-portlet>/', function ($matches) use (&$conn) {
+				$portletName = preg_replace('/<mm-portlet>(.*)<\/mm-portlet>/', '$1', $matches[0]);
 				return processPortlet($portletName, $conn);
 		}, $page);
 	}
@@ -42,8 +42,8 @@
 	}
 
 	function processTemplate($template, $templateRow) {
-		return preg_replace_callback('/<make-mike-variable>.*?<\/make-mike-variable>/', function ($matches) use (&$templateRow) {
-			$variableName = preg_replace('/<make-mike-variable>(.*)<\/make-mike-variable>/', '$1', $matches[0]);
+		return preg_replace_callback('/<mm-variable>.*?<\/mm-variable>/', function ($matches) use (&$templateRow) {
+			$variableName = preg_replace('/<mm-variable>(.*)<\/mm-variable>/', '$1', $matches[0]);
 			return $templateRow[$variableName];
 		}, $template);
 	}

@@ -35,10 +35,8 @@ toggleForm = function (){
 	$('.form_element')[0].reset();
 	$('.catcherFilesLabel').text('Drop file here');
 	$('.form_element').toggle('slow');
-	if ($('.form').hasClass('bs-callout-left'))
-		$('.form').removeClass('bs-callout-left');
-	else
-		$('.form').addClass('bs-callout-left');
+	if ($('.form').toggleClass('bs-callout-left'))
+	$('.form_plus').toggleClass('rotated');
 }
 
 loadSection = function(name, displayName){

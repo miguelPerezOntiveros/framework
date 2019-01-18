@@ -57,7 +57,7 @@
 	$data = array();
 	$columns = array();
 	$sql = 'SELECT '.implode(', ', $allowedColumns).' FROM '.implode(', ', $tablesToJoin).' WHERE '.implode(' and ', $joinRules).';';	
-	error_log('INFO - sql:' .$sql);
+	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
 	if($result = $conn->query($sql)){
 		while ($column = $result->fetch_field())
 			$columns[] = (object)[$column->name, $config[$_GET['table']][$column->name]['type']]; 

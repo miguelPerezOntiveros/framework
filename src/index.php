@@ -2,8 +2,7 @@
 require 'session.inc.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
-require 'head.inc.php'; ?>
+<?php require 'head.inc.php'; ?>
 <body>
 	<div class="sidebarWrapper_wrapper">
 		<?php require 'sidebar.inc.php'; ?>
@@ -23,7 +22,7 @@ require 'head.inc.php'; ?>
 
 							<div class="col-12 form bs-callout-left">
 								<br>
-								<button type="button" onclick="handleCreate();" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+								<button type="button" onclick="handleCreate();" class="btn btn-primary"><i class="fas fa-plus form_plus"></i></button>
 								<form id="cu_form" class="form_element"></form>
 							</div>
 
