@@ -8,13 +8,16 @@ require 'src/session.inc.php'; ?>
 										<?php
 							require_once 'src/db_connection.inc.php';
 
-									// error_reporting(E_ALL | E_STRICT);
-									// ini_set('display_errors', 'On');
+									error_reporting(E_ALL | E_STRICT);
+									ini_set('display_errors', 'On');
 
 									if(isset($_POST['yaml'])) {
 										$config =  json_decode($_POST['json'], true);
 
 										// Config
+										if(!isset($config['_show'])){
+											$config['_show'] = $config['_projectName'];
+										}
 										if(!isset($config['page'])){
 											$config['page'] = array(
 												'name' => array(

@@ -5,7 +5,7 @@
 					<span></span>
 					<span></span>
 				</button>
-			    <span class="navbar_project"><?php echo $config['_projectName']?></span>
+			    <span class="navbar_project"><?php echo $config['_show']?></span>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>

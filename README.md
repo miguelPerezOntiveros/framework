@@ -24,7 +24,6 @@
 - close submenus on sidebar automatically?
 - hide the plus button when editting? Make it into an X when the form is open. Animate it?
 - sidebar button should match style of the top navigation button
-- sidebar file should be general, not project specific
 - top bar should never go double-lined
 - I need a better logo
 - Document all php 'require' paths
@@ -34,14 +33,14 @@
 - How do I manage CMS-wide users?
 - No top menu tables on 'home'
 - add side bar to login?
-- show display name for projects
 - SYNDICATION
 - make sure edit and trash icons are always level
 - verify session on pages from page table? would need to be able to mark pages as private as well
 - change 'html' field for 'content' on page table?
-- can the viewer be soft linked in?
 - should restrict from making pages under admin or using double dots
-- should find a friendlier and more secure way for adding in the query on thr portlets 
+- should find a friendlier and more secure way for adding in the query on portlets 
+- manage projects from the Maker tab
+- recreating the maker_mike project should include the extensions or just not be possible
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server
