@@ -49,9 +49,8 @@
 		exit(json_encode((object) ["error" => "No such table."]));
 
 	//Possible extension of the service
-	$ext = '../projects/'.$config['_projectName'].'/admin/ext/'.$_GET['table'].'.c.php';
-	if(file_exists($ext))
-		require($ext);
+	$postfix = 'c';
+	require 'ext.inc.php';
 
 	//Executing Query
 	require 'db_connection.inc.php';

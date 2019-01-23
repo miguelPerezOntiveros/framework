@@ -45,5 +45,14 @@ require 'session.inc.php'; ?>
 		window._show = <?= "'".$config['_show']."'" ?>;
 	</script>
 	<script src="/src/js/script.js"></script>
+	<?php 
+		$ext1 = 'ext/'.$config['_projectName'].'.ext.js';
+		$ext2 = '../../../src/js/'.$config['_projectName'].'.ext.js';
+
+		if(file_exists($ext1))
+			echo '<script src='.$ext1.'></script>';
+		else if(file_exists($ext2))
+			echo '<script src='.$ext2.'></script>';
+	?>
 </body>
 </html>

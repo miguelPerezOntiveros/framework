@@ -65,9 +65,9 @@
 			$data[] = $row;
 	}
 
-	$ext = '../projects/'.$_GET['project'].'/admin/ext/'.$_GET['table'].'.r.php';
-	if(file_exists($ext))
-		require($ext);
+	//Possible extension of the service
+	$postfix = 'r';
+	require 'ext.inc.php';
 
 	// TODO: return sql errors as json
 	echo json_encode((object) ['data' => $data, 'columns' => $columns]);

@@ -40,7 +40,9 @@
 - should restrict from making pages under admin or using double dots
 - should find a friendlier and more secure way for adding in the query on portlets 
 - manage projects from the Maker tab
-- recreating the maker_mike project should include the extensions or just not be possible
+- maker: Import with drag and drop
+- maker: Export should download a yaml file
+- reload sidebar projects on project creation, create a service for that?
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

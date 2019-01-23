@@ -44,10 +44,10 @@
 			foreach ($fileColumns as $file_key)
 				if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row[$file_key]))
 					exit(json_encode((object) ["error" => "Error unlinking file"]));
+			
 			//Possible extension of the service
-			$ext = '../projects/'.$config['_projectName'].'/admin/ext/'.$_GET['table'].'.d.php';
-			if(file_exists($ext))
-				require($ext);
+			$postfix = 'd';
+			require 'ext.inc.php';
 		}
 	}
 
