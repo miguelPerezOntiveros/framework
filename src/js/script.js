@@ -184,4 +184,9 @@ $(document).ready(function() {
 		if(!$('.sidebarWrapper_sidebar').hasClass('active'))
 			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
 	});
+	$.get('sidebar_projects.php', function(res){
+		JSON.parse(res).forEach(function(e, i){
+			$('.sidebar_projects').append('<li class="'+(window._projectName == e? 'active':'')+'"><a href="/projects/'+e+'/admin/index.php?sidebar=1">'+e+'</a></li>');
+		});
+	});
 });

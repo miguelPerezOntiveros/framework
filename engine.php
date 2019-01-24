@@ -9,7 +9,7 @@
 
 		// Config
 		if(!isset($newConfig['_show'])){
-			$newConfig['_show'] = $newConfig['_projectName'];
+			$newConfig['_show'] = ucwords(str_replace("_"," ", $newConfig['_projectName'] ));
 		}
 		if(!isset($newConfig['page'])){
 			$newConfig['page'] = array(

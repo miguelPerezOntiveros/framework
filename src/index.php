@@ -22,7 +22,7 @@ require 'session.inc.php'; ?>
 
 							<div class="col-12 form bs-callout-left">
 								<br>
-								<button type="button" onclick="handleCreate();" class="btn btn-primary"><i class="fas fa-plus form_plus"></i></button>
+								<button type="button" onclick="handleCreate();" class="btn btn-primary form_plus_button"><i class="fas fa-plus form_plus"></i></button>
 								<form id="cu_form" class="form_element"></form>
 							</div>
 

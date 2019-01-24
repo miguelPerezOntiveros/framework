@@ -43,6 +43,7 @@
 - maker: Import with drag and drop
 - maker: Export should download a yaml file
 - reload sidebar projects on project creation, create a service for that?
+store config in an editable format
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

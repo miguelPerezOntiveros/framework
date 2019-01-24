@@ -10,21 +10,23 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav ml-auto"> <?php 
-						$currentTable = isset($_GET['table'])? $_GET['table']: array_keys($config)[2];
+					<ul class="navbar-nav ml-auto"> 
+						<?php 
+							$currentTable = isset($_GET['table'])? $_GET['table']: array_keys($config)[2];
+							
+							foreach ($config as $table => $value) {
+								if($table[0] == '_' || $table == 'user' || $table == 'user_type' || $table == 'page' || $table == 'portlet')
+									continue;
+								if($value['_permissions']['read'] != '-' && (!isset($_SESSION['userName']) || !preg_match('/'.$config[$currentTable]['_permissions']['read'].'/', $_SESSION['type'])))
+									continue;
 
-						foreach ($config as $table => $value) {
-							if($table[0] == '_' || $table == 'user' || $table == 'user_type' || $table == 'page' || $table == 'portlet')
-								continue;
-							if($value['_permissions']['read'] != '-' && (!isset($_SESSION['userName']) || !preg_match('/'.$config[$currentTable]['_permissions']['read'].'/', $_SESSION['type'])))
-								continue;
-
-							$tableNameToShow = $config[$table]['displayName'] ?: ucwords(str_replace("_"," ", $table ));
-							echo '
-							<li class="nav-item">
-								<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\');" class=\'tab nav-link\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>
-							</li>';
-						}?>
+								$tableNameToShow = $config[$table]['displayName'] ?: ucwords(str_replace("_"," ", $table ));
+								echo '
+								<li class="nav-item">
+									<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\');" class=\'tab nav-link\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>
+								</li>';
+							}
+						?>
 							<li class=<?php echo '"nav-item dropdown '.(!$_SESSION['userName']?'d-none':'').'"' ?>>
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

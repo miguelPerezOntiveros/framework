@@ -4,14 +4,14 @@ project:
   title: 
   description: 
   image: 
-    type: '\*'
+    type: '*'
   video: 
   tags: 
 certification: 
   title: 
   description: 
   image: 
-    type: '\*'
+    type: '*'
 experience: 
   title: 
   description: 
@@ -25,7 +25,7 @@ blogEntry:
   title: 
   description: 
   image: 
-    type: '\*'
+    type: '*'
   video: 
   tags: 
   content: 

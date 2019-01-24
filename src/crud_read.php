@@ -27,7 +27,7 @@
 			if($column_key[0] == '_')
 				continue;
 			if(	(!isset($_GET['only']) || in_array($column_key, explode(",", $_GET['only']))) &&
-				($column['permissions_read'] == '-' || preg_match( $column['permissions_read'], $_SESSION['type']))
+				($column['permissions_read'] == '-' )
 				)	
 				if(isset($config[$column['type']])){ // column is a ref
 					$otherTable = $column['type'];
