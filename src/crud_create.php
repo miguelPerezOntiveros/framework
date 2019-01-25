@@ -23,7 +23,7 @@
 		if($column['permissions_create'] == '-' ||  preg_match( $column['permissions_create'], $_SESSION['type'])){
 			$value = (isset($_POST[$column_key])? $_POST[$column_key]: 'Not present.');
 			// upload possible files start
-			if($column['type'] == '\*'){
+			if($column['type'] == '*'){
 				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
 					;
 				// var_dump($_FILES[$column_key]);

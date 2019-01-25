@@ -40,11 +40,11 @@ require 'session.inc.php'; ?>
 		</div>
 	</div>
 	<?php require 'body_bottom.inc.php'; ?>
+	<script src="/src/js/script.js"></script>
 	<script>
 		window._projectName = <?= "'".$config['_projectName']."'" ?>;
 		window._show = <?= "'".$config['_show']."'" ?>;
 	</script>
-	<script src="/src/js/script.js"></script>
 	<?php 
 		$ext1 = 'ext/'.$config['_projectName'].'.ext.js';
 		$ext2 = '../../../src/js/'.$config['_projectName'].'.ext.js';

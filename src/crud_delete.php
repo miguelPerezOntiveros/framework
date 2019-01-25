@@ -27,7 +27,7 @@
 	foreach ($config[$_GET['table']] as $column_key => $column) {
 		if($column_key[0] == '_')
 			continue;
-		if($column['type'] == '\*')
+		if($column['type'] == '*')
 			$fileColumns[] = $column_key;
 	}
 	

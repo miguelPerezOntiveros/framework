@@ -95,19 +95,32 @@
 	</div>
 	<?php require 'body_bottom.inc.php'; ?>
 	<script type="text/javascript">
-		$('.form-control').keypress(function(event) {
-			if (event.keyCode == 13 || event.which == 13) {
-				debugger;
-				document.loginForm.action += $('.sidebarWrapper_sidebar').hasClass('active')?'':'1';
-				$('#loginForm').submit();
-			}
+		$(document).ready(function() {
+			$('.form-control').keypress(function(event) {
+				if (event.keyCode == 13 || event.which == 13) {
+					debugger;
+					document.loginForm.action += $('.sidebarWrapper_sidebar').hasClass('active')?'':'1';
+					$('#loginForm').submit();
+				}
+			});
+			$('.sidebar_trigger').on('click', function () {
+				$('.sidebarWrapper_sidebar').toggleClass('active');
+				$(this).toggleClass('active');
+				if(!$('.sidebarWrapper_sidebar').hasClass('active'))
+					$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
+			});
+			doSidebarProjects();
 		});
-		$('.sidebar_trigger').on('click', function () {
-			$('.sidebarWrapper_sidebar').toggleClass('active');
-			$(this).toggleClass('active');
-			if(!$('.sidebarWrapper_sidebar').hasClass('active'))
-				$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
-		});
+		doSidebarProjects = function(){
+			console.log('in do sidebar projects');
+			$.get('sidebar_projects.php', function(res){
+				var sidebarProjectsHTML = '';
+				JSON.parse(res).forEach(function(e, i){
+					sidebarProjectsHTML += '<li class="'+(window._projectName == e? 'active':'')+'"><a href="/projects/'+e+'/admin/index.php?sidebar=1">'+e+'</a></li>';
+				});
+				$('.sidebar_projects').html(sidebarProjectsHTML);
+			});
+		}
 	</script>
 </body>
 </html>

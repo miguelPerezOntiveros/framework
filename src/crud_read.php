@@ -10,6 +10,7 @@
 	if($config[$_GET['table']]['_permissions']['read'] != '-'){
 		require 'session.inc.php';
 
+		error_log('read permissions for this "'.$_GET['table'].'" table: '.$config[$_GET['table']]['_permissions']['read']);
 		// Checking table permissions
 		if(!preg_match($config[$_GET['table']]['_permissions']['read'], $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
@@ -27,7 +28,7 @@
 			if($column_key[0] == '_')
 				continue;
 			if(	(!isset($_GET['only']) || in_array($column_key, explode(",", $_GET['only']))) &&
-				($column['permissions_read'] == '-' )
+				($column['permissions_read'] == '-' || preg_match( $column['permissions_read'], $_SESSION['type']))
 				)	
 				if(isset($config[$column['type']])){ // column is a ref
 					$otherTable = $column['type'];

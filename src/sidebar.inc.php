@@ -5,10 +5,10 @@
 				<span><h3>Maker Mike</h3></span>
 			</div>
 			<ul class="list-unstyled">
-				<li class=<?php echo (dirname($_SERVER['REQUEST_URI']) == '/'?'active':'') ?>>
-					<a href="/?sidebar=1">Home</a>
+				<li class=<?php echo (explode('?', $_SERVER['REQUEST_URI'], 2)[0] == '/projects/maker_mike/admin/home.php'?'active':'') ?>>
+					<a href="/projects/maker_mike/admin/home.php?sidebar=1">Home</a>
 				</li>
-				<li class=<?php echo (dirname($_SERVER['REQUEST_URI']) == '/projects/maker_mike/admin'?'active':'') ?>>
+				<li class=<?php echo (explode('?', $_SERVER['REQUEST_URI'], 2)[0] == '/projects/maker_mike/admin/index.php'?'active':'') ?>>
 					<a href="/projects/maker_mike/admin/index.php?sidebar=1">Maker</a>
 				</li>
 				<li>

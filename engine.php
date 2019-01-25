@@ -140,7 +140,7 @@
 			foreach ($table as $column_key => &$column) {
 				if($column_key[0] == '_')
 					continue;
-				if($column['type'] == '\*' && !in_array($table_key, $imageTables))
+				if($column['type'] == '*' && !in_array($table_key, $imageTables))
 					$imageTables[] = $table_key;
 				if(!isset($column['permissions_create']))
 					$column['permissions_create'] = '/.*/';
@@ -179,7 +179,7 @@
 				if($column_key[0] == '_')
 					continue;
 				$type = $column['type'];
-				if($type == '\*') // file type
+				if($type == '*') // file type
 				$type = 'varchar(255)';
 				else if(isset($newConfig[$type])) // type matches the name of a table
 				$type = 'int, foreign key('.$column_key.') references '.$type.'(id)';

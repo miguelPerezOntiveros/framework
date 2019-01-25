@@ -26,7 +26,9 @@ nav {
 	border-top: 2px solid #3bb6d4;
 	color: #fff;
 }
-
+.row_buttons button{
+	margin: 2px 5px;
+}
 
 .menu{
 	padding: 18px;
@@ -181,7 +183,7 @@ a[data-toggle="collapse"] {
 .sidebar_trigger {
 	width: 40px;
 	height: 40px;
-	background: #f5f5f5;
+	background: #000032;
 	cursor: pointer;
 }
 .sidebar_trigger span {
@@ -206,6 +208,27 @@ a[data-toggle="collapse"] {
 	transform: none;
 	opacity: 1;
 	margin: 5px auto;
+}
+#navbarSupportedContent:not(.show){
+	height: 40px;
+}
+.topbar_trigger {
+	width: 40px;
+	height: 40px;
+	background: #000032;
+	cursor: pointer;
+	padding: 1px 7px 2px;
+	border-width: 0;
+}
+.topbar_trigger span {
+	transform: none;
+    opacity: 1;
+    margin: 5px auto;
+    width: 80%;
+    height: 2px;
+    display: block;
+    background: #555;
+	margin: 5px auto; 
 }
 @media (max-width: 768px) {
 	.sidebarWrapper_sidebar {

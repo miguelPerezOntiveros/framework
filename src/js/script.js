@@ -62,7 +62,7 @@ doForm = function(columns){
 				form += '<input type="text" name ="'+e[0]+'"/><br>';
 			else if(!isNaN(e[1]))	
 				form += '<textarea  name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
-			else if(e[1] == '\\*')
+			else if(e[1] == '*')
 				form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
 			else if(e[1] == 'date')
 				form += '<input name="'+e[0]+'" type="date" required><br>';
@@ -97,13 +97,17 @@ doForm = function(columns){
 	$('.form_element').hide();
 }
 
-doTable = function(name, displayName, thenDoForm) {
+doTable = function(name, displayName, thenDoForm){
 	window.name = name = name || window.name; 
 	window.displayName = displayName = displayName || window.displayName; 
 
 	$.get('/src/crud_read.php?project='+window._projectName+'&table=' + name, function(data){
 		console.log(data);
 		data = JSON.parse(data);
+
+		if (typeof doTablePreHook === "function")
+			doTablePreHook();
+
 		if(data.error){
 			$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i></span>&nbsp;Error: '+data.error+'</div>');
 			$("#feedbackModal").modal("show");
@@ -119,7 +123,7 @@ doTable = function(name, displayName, thenDoForm) {
 		var columns = [];
 		$.each(data.columns, function(i, e){
 			$('tr').append('<th>'+e[0]+'</th>');
-			if(e[1] == '\\*')
+			if(e[1] == '*')
 				columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
 			else
 				if(e['display'] == 'html')
@@ -128,19 +132,32 @@ doTable = function(name, displayName, thenDoForm) {
 					columns.push({ "render": $.fn.dataTable.render.text() });
 		});
 		columns.push({
-			defaultContent: '<center><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></center>'
+			defaultContent: '<center class="row_buttons"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></center>'
 		});
 		$('tr').append('<th></th>');
 
-			// DataTable
-			$('.table_element').DataTable({
-				"data": data.data,
-				"columns": columns
-			});
-
-			if(thenDoForm)
-				doForm(data.columns);
+		// DataTable
+		$('.table_element').DataTable({
+			"data": data.data,
+			"columns": columns
 		});
+
+		if (typeof doTablePostHook === "function")
+			doTablePostHook();
+
+		if(thenDoForm)
+			doForm(data.columns);
+	});
+}
+doSidebarProjects = function(){
+	console.log('in do sidebar projects');
+	$.get('sidebar_projects.php', function(res){
+		var sidebarProjectsHTML = '';
+		JSON.parse(res).forEach(function(e, i){
+			sidebarProjectsHTML += '<li class="'+(window._projectName == e? 'active':'')+'"><a href="/projects/'+e+'/admin/index.php?sidebar=1">'+e+'</a></li>';
+		});
+		$('.sidebar_projects').html(sidebarProjectsHTML);
+	});
 }
 $(document).ready(function() {
 	var endpoint = {"create": "/src/crud_create.php", "update": "/src/crud_update.php", "delete":"/src/crud_delete.php"};
@@ -184,9 +201,5 @@ $(document).ready(function() {
 		if(!$('.sidebarWrapper_sidebar').hasClass('active'))
 			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
 	});
-	$.get('sidebar_projects.php', function(res){
-		JSON.parse(res).forEach(function(e, i){
-			$('.sidebar_projects').append('<li class="'+(window._projectName == e? 'active':'')+'"><a href="/projects/'+e+'/admin/index.php?sidebar=1">'+e+'</a></li>');
-		});
-	});
+	doSidebarProjects();
 });
