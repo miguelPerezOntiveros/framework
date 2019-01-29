@@ -40,6 +40,7 @@ require 'session.inc.php'; ?>
 		</div>
 	</div>
 	<?php require 'body_bottom.inc.php'; ?>
+	<script src="/src/js/common.js"></script>
 	<script src="/src/js/script.js"></script>
 	<script>
 		window._projectName = <?= "'".$config['_projectName']."'" ?>;

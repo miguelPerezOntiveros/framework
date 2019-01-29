@@ -7,6 +7,16 @@
 
 		$newConfig =  json_decode($_POST['config'], true);
 
+		// Check if it already exists
+		$ext_sql = "select SCHEMA_NAME from information_schema.SCHEMATA where SCHEMA_NAME NOT IN('maker_mike');";
+		error_log($ext_sql);
+		if($ext_result = $conn->query($ext_sql))
+			while($ext_row = $ext_result->fetch_array(MYSQLI_NUM))
+				if($newConfig['_projectName'] == $ext_row[0]){
+					error_log('Did not create project '.$ext_row[0].' because it already existed or has an invalid name.');
+					exit(json_encode((object) ["error" => 'Did not create project '.$ext_row[0].' because it already existed or has an invalid name.']));
+				}
+
 		// Config
 		if(!isset($newConfig['_show'])){
 			$newConfig['_show'] = ucwords(str_replace("_"," ", $newConfig['_projectName'] ));
@@ -198,7 +208,7 @@
 		echo exec($_SERVER["DOCUMENT_ROOT"].'/build_pre.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
 		// Write files
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/admin/config.inc.php', '<?php $config=unserialize(\''.serialize($newConfig).'\');?>');
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($newConfig).'\', true);?>');
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.yml', $_POST['yaml']);
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.sql', $sql);	
 

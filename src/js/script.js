@@ -41,6 +41,7 @@ toggleForm = function (){
 
 loadSection = function(name, displayName){
 	$('.form').removeClass('bs-callout-left');
+	$('.form_plus').removeClass('rotated');
 	doTable(name, displayName, true);
 	doMenu(name, displayName);
 }
@@ -61,7 +62,7 @@ doForm = function(columns){
 			if(e[1] == 'int' || e[1] == 'double' || e[1] == 'float')
 				form += '<input type="text" name ="'+e[0]+'"/><br>';
 			else if(!isNaN(e[1]))	
-				form += '<textarea  name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
+				form += '<textarea name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
 			else if(e[1] == '*')
 				form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
 			else if(e[1] == 'date')
@@ -109,7 +110,7 @@ doTable = function(name, displayName, thenDoForm){
 			doTablePreHook();
 
 		if(data.error){
-			$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i></span>&nbsp;Error: '+data.error+'</div>');
+			$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i></span>&nbsp;'+data.error+'</div>');
 			$("#feedbackModal").modal("show");
 			return;
 		}
@@ -149,16 +150,6 @@ doTable = function(name, displayName, thenDoForm){
 			doForm(data.columns);
 	});
 }
-doSidebarProjects = function(){
-	console.log('in do sidebar projects');
-	$.get('sidebar_projects.php', function(res){
-		var sidebarProjectsHTML = '';
-		JSON.parse(res).forEach(function(e, i){
-			sidebarProjectsHTML += '<li class="'+(window._projectName == e? 'active':'')+'"><a href="/projects/'+e+'/admin/index.php?sidebar=1">'+e+'</a></li>';
-		});
-		$('.sidebar_projects').html(sidebarProjectsHTML);
-	});
-}
 $(document).ready(function() {
 	var endpoint = {"create": "/src/crud_create.php", "update": "/src/crud_update.php", "delete":"/src/crud_delete.php"};
 	$('.form_element').submit(function(e){
@@ -175,8 +166,13 @@ $(document).ready(function() {
 				if(response.error)
 					if(response.error == 'login')
 						window.location = 'login.php';
-					else
-						$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation">&nbsp;Error: '+response.error+'</div>');
+					else{
+						$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i>&nbsp;'+response.error+'</div>');
+						console.log('ERROR: ' + response.error);
+						setTimeout(function(){
+							$("#feedbackModal").modal("hide");
+						}, 3000);
+					}
 					else{
 						$('.modal_body').html('<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i>&nbsp;'+response.success+'</div>');								
 						setTimeout(function(){

@@ -19,7 +19,6 @@
 - close submenus on sidebar automatically?
 - hide the plus button when editting? Make it into an X when the form is open. Animate it?
 - sidebar button should match style of the top navigation button
-- I need a better logo
 - improve documentation
 	- Document all php 'require' paths
 	- Document extention files and hooks for front and backend
@@ -28,17 +27,22 @@
 - How do I manage CMS-wide users?
 - SYNDICATION
 - verify session on pages from page table? would need to be able to mark pages as private as well
-- html field size on pages
 - should restrict from making pages under admin or using double dots
-- should find a friendlier and more secure way for adding in the query on portlets 
 - maker_mike Import with drag and drop
 - maker_mike Export should download a yaml file
-- store config in an editable format
-- don't allow for deleteion of the makermike db
-- should project with the same name be able to get created?
-- top bar should never go double-lined
-- as the home page is now part of the maker_mike project, I can delete all checks for who the caller is (at what relative directory he calls from)
-- place db settings on the setting table of maker_mike
+- should find a friendlier and more secure way for adding in the query on portlets 
+- I need a better logo
+
+- git ls-files | xargs wc -l
+
+#### Recreating the maker_mike project
+- you will loose all project table entries on the maker tab, so they will be in a limbo as the dabases will continue to exist
+- run your yaml on the maker tab
+- run these extra commands needed to enable the home page:
+	- cd projects/maker_mike/admin/
+	- sudo ln -s /Users/miguel/git/framework/src/maker_mike.home.php .
+	- sudo mv maker_mike.home.php home.php
+- delete the entry from the project table on the maker tab, the actual database will not be deleted
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server
@@ -68,7 +72,7 @@ https://www.npmjs.com/package/yamljs
 
 #### build_pre.sh
 - recreates the project folder
-- creates soft links to index, login and viewer, and to page table service extenders
+- creates soft links to index, login and viewer, and to page table service extenders.
 - creates individual upload folders for tables with files, and one for all service extensions
 
 #### build_post.sh

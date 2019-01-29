@@ -12,7 +12,7 @@ require 'session.inc.php'; ?>
 					<?php require 'menu.inc.php'; ?>
 					<div class="container">
 						<div class="row">
-							<h2><br>Welcome to <b>Framework 1.5</b>!</h2>
+							<h2><br>Welcome to <b>Maker Mike 1.5</b>!</h2>
 						</div>
 						<br><br><br>
 						<div class="row">
@@ -21,7 +21,7 @@ require 'session.inc.php'; ?>
 							<img src="/src/logo.png" alt="">
 							<br><br><br><br>
 							<br><br><br>
-							<h4>In verison 1.5 of the framework, you can manage all your projects from one same place, an create pages and portlets for them.</<h4></h4>
+							<h4>In verison 1.5 of Maker Mike, you can manage all your projects from one same place, as well as create pages and portlets for them.</<h4></h4>
 							<br><br><br><br><br><br>
 							<br><br><br><br><br><br>	
 							</div>							
@@ -35,6 +35,7 @@ require 'session.inc.php'; ?>
 		</div>
 	</div>
 	<?php require 'body_bottom.inc.php'; ?>
+	<script src="/src/js/common.js"></script>
 	<script>
 		$(document).ready(function() {
 			$('.sidebar_trigger').on('click', function () {
@@ -45,16 +46,6 @@ require 'session.inc.php'; ?>
 			});
 			doSidebarProjects();
 		});
-		doSidebarProjects = function(){
-			console.log('in do sidebar projects');
-			$.get('sidebar_projects.php', function(res){
-				var sidebarProjectsHTML = '';
-				JSON.parse(res).forEach(function(e, i){
-					sidebarProjectsHTML += '<li class="'+(window._projectName == e? 'active':'')+'"><a href="/projects/'+e+'/admin/index.php?sidebar=1">'+e+'</a></li>';
-				});
-				$('.sidebar_projects').html(sidebarProjectsHTML);
-			});
-		}
 	</script>
 </body>
 </html>

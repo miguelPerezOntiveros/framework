@@ -94,6 +94,7 @@
 		</div>
 	</div>
 	<?php require 'body_bottom.inc.php'; ?>
+	<script src="/src/js/common.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.form-control').keypress(function(event) {
@@ -111,16 +112,6 @@
 			});
 			doSidebarProjects();
 		});
-		doSidebarProjects = function(){
-			console.log('in do sidebar projects');
-			$.get('sidebar_projects.php', function(res){
-				var sidebarProjectsHTML = '';
-				JSON.parse(res).forEach(function(e, i){
-					sidebarProjectsHTML += '<li class="'+(window._projectName == e? 'active':'')+'"><a href="/projects/'+e+'/admin/index.php?sidebar=1">'+e+'</a></li>';
-				});
-				$('.sidebar_projects').html(sidebarProjectsHTML);
-			});
-		}
 	</script>
 </body>
 </html>
