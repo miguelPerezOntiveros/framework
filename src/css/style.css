@@ -79,7 +79,7 @@ h2 {
 .form_element {
 	padding: 10px;
 }
-textarea {
+textarea, select[multiple] {
 	width: 100%;
 	height: 150px;
 }

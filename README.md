@@ -8,7 +8,7 @@
 - make sure no sql injection is possible, use pdo's
 - make sure we get feedback if db couldn´t be created.
 - make sure we get feedback on any sql errors.
-- add 'show' prop to individual columns
+- add 'show' prop to individual columns, I can test that out with portlet tables
 - address the todo's on index.php
 - Figure out a way to create content that is not published, sucerely (possibly the where parameter on the read service)
 - Change over to mysqli
@@ -30,8 +30,10 @@
 - should restrict from making pages under admin or using double dots
 - maker_mike Import with drag and drop
 - maker_mike Export should download a yaml file
-- should find a friendlier and more secure way for adding in the query on portlets 
 - I need a better logo
+- should find a friendlier and more secure way for adding in the query on portlets 
+	- build service to get selected tables' columns for the query_columns multiple select field
+- center form, issue on larger tables
 
 - git ls-files | xargs wc -l
 

@@ -17,8 +17,10 @@ handleEdit = function(e){
 	})
 	console.log(values);
 	$('.form_element').find('textarea, select, input[type!="submit"]').each(function(i, e){
-		if($(e).is('select'))
-			$(e).val(values[i].split('-')[0])
+		if($(e).is('select[multiple]'))
+			$(e).val(JSON.parse(values[i]));
+		else if ($(e).is('select'))
+			$(e).val(values[i].split('-')[0]);
 		else if ($(e).attr('type') == 'file')
 			; // don't fill in value for files
 		else
@@ -59,7 +61,16 @@ doForm = function(columns){
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
 		else{
 			form += '<b>'+e[0]+':</b></br>'
-			if(e[1] == 'int' || e[1] == 'double' || e[1] == 'float')
+			if(name == 'portlet' && e[0] == 'query_tables'){
+				form += ' <select name="'+e[0]+'[]" multiple>';
+				$.each($('.navbar-nav li span').slice(0, -1), function(i, e){
+					form += '<option value="'+$(e).data('table')+'">'+$(e).text()+'</option>';
+				});
+				form += '</select><br>';
+			} else if(name == 'portlet' && e[0] == 'query_columns'){
+				form += ' <select name="'+e[0]+'[]" multiple></select><br>'; // columns should go here
+			}
+			else if(e[1] == 'int' || e[1] == 'double' || e[1] == 'float')
 				form += '<input type="text" name ="'+e[0]+'"/><br>';
 			else if(!isNaN(e[1]))	
 				form += '<textarea name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
@@ -74,7 +85,7 @@ doForm = function(columns){
 				$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
 					response = JSON.parse(response);
 					$.each(response.data, function(i, el){
-						$('select[name="'+e[0]+'"]').append('<option value="'+el[0]+'">'+el[1]+'</option>');
+						$('select[name='+e[0]+']').append('<option value="'+el[0]+'">'+el[1]+'</option>');
 					});
 				});
 			}
@@ -154,6 +165,11 @@ $(document).ready(function() {
 	var endpoint = {"create": "/src/crud_create.php", "update": "/src/crud_update.php", "delete":"/src/crud_delete.php"};
 	$('.form_element').submit(function(e){
 		e.preventDefault();
+		// if(window.name == 'portlet'){
+		// 	$('select[name=query_tables]').val(
+		// 		JSON.stringify($('select[name=query_tables]').val())
+		// 	);
+		// }	
 		var formData = new FormData($('.form_element')[0]);
 		$.ajax({
 			type: "POST",

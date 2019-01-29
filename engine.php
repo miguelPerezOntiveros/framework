@@ -58,7 +58,19 @@
 					'permissions_create' => '/System Administrator/',
 					'type' => '255'
 				),
-				'query' => array(
+				'query_columns' => array(
+					'permissions_read' => '/System Administrator/',
+					'permissions_update' => '/System Administrator/',
+					'permissions_create' => '/System Administrator/',
+					'type' => '255'
+				),
+				'query_tables' => array(
+					'permissions_read' => '/System Administrator/',
+					'permissions_update' => '/System Administrator/',
+					'permissions_create' => '/System Administrator/',
+					'type' => '255'
+				),
+				'query_conditions' => array(
 					'permissions_read' => '/System Administrator/',
 					'permissions_update' => '/System Administrator/',
 					'permissions_create' => '/System Administrator/',

@@ -45,7 +45,13 @@
 			}
 			// upload possible files end
 			if($column['type'] != '*' ){
-				$row[$column_key] = $_POST[$column_key];
+				$row[$column_key] = (isset($_POST[$column_key])? 
+					(is_array($_POST[$column_key])?
+						json_encode($_POST[$column_key]):
+						$_POST[$column_key])
+					: 
+					'Not present.'
+				);
 			}
 		}
 	}

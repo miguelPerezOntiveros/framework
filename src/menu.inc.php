@@ -25,7 +25,7 @@
 								$tableNameToShow = $config[$table]['displayName'] ?: ucwords(str_replace("_"," ", $table ));
 								echo '
 								<li class="nav-item">
-									<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\');" class=\'tab nav-link\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>
+									<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\');" class=\'tab nav-link\' data-table=\''.$table.'\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>
 								</li>';
 							}
 						?>
