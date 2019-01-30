@@ -18,7 +18,7 @@ handleEdit = function(e){
 	console.log(values);
 	$('.form_element').find('textarea, select, input[type!="submit"]').each(function(i, e){
 		if($(e).is('select[multiple]'))
-			$(e).val(JSON.parse(values[i]));
+			$(e).val(values[i].split('-').slice(1));
 		else if ($(e).is('select'))
 			$(e).val(values[i].split('-')[0]);
 		else if ($(e).attr('type') == 'file')
@@ -62,14 +62,12 @@ doForm = function(columns){
 		else{
 			form += '<b>'+e[0]+':</b></br>'
 			if(name == 'portlet' && e[0] == 'query_tables'){
-				form += ' <select name="'+e[0]+'[]" multiple>';
+				form += ' <select name="'+e[0]+'[]" multiple required>';
 				$.each($('.navbar-nav li span').slice(0, -1), function(i, e){
 					form += '<option value="'+$(e).data('table')+'">'+$(e).text()+'</option>';
 				});
 				form += '</select><br>';
-			} else if(name == 'portlet' && e[0] == 'query_columns'){
-				form += ' <select name="'+e[0]+'[]" multiple></select><br>'; // columns should go here
-			}
+			} 
 			else if(e[1] == 'int' || e[1] == 'double' || e[1] == 'float')
 				form += '<input type="text" name ="'+e[0]+'"/><br>';
 			else if(!isNaN(e[1]))	
@@ -137,6 +135,8 @@ doTable = function(name, displayName, thenDoForm){
 			$('tr').append('<th>'+e[0]+'</th>');
 			if(e[1] == '*')
 				columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
+			else if(e[1] == 'multi')
+				columns.push({ "render": function (data, type, full, meta) {return '-'+JSON.parse(data).join('<br>-'); } });
 			else
 				if(e['display'] == 'html')
 					columns.push({});
