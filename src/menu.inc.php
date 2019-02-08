@@ -17,9 +17,12 @@
 							$currentTable = isset($_GET['table'])? $_GET['table']: array_keys($config)[2];
 
 							foreach ($config as $table => $value) {
-								if($table[0] == '_' || $table == 'user' || $table == 'user_type' || $table == 'page' || $table == 'portlet')
+								if($table[0] == '_' || $table == 'user' || $table == 'user_type' || $table == 'page' || $table == 'portlet' || $table == 'theme')
 									continue;
-								if($value['_permissions']['read'] != '-' && (!isset($_SESSION['userName']) || !preg_match('/'.$config[$currentTable]['_permissions']['read'].'/', $_SESSION['type'])))
+								//error_log('permission read: /'.$value['_permissions']['read'].'/');
+								//error_log('username: '.$_SESSION['type']);
+								if($value['_permissions']['read'] != '-' && (!isset($_SESSION['userName']) ||
+								 !preg_match('/'.$value['_permissions']['read'].'/', $_SESSION['type'])))
 									continue;
 
 								$tableNameToShow = $config[$table]['displayName'] ?: ucwords(str_replace("_"," ", $table ));

@@ -26,7 +26,7 @@ require 'session.inc.php'; ?>
 								<form id="cu_form" class="form_element"></form>
 							</div>
 
-							<div class="col-12">
+							<div class="col-12 table_parent">
 								<br><br>
 								<table class="table_element display" width="100%" cellspacing="0"></table>
 							</div>

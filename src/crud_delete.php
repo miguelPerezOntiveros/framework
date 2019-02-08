@@ -11,7 +11,7 @@
 		require 'session.inc.php';
 
 		// Checking table permissions
-		if(!preg_match($config[$_GET['table']]['_permissions']['delete'], $_SESSION['type']))
+		if(!preg_match('/'.$config[$_GET['table']]['_permissions']['delete'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
 	}
 	

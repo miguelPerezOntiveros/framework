@@ -11,7 +11,7 @@
 		require 'session.inc.php';
 
 		// Checking table permissions
-		if(!preg_match($config[$_GET['table']]['_permissions']['update'], $_SESSION['type']))
+		if(!preg_match('/'.$config[$_GET['table']]['_permissions']['update'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
 	}
 	
@@ -23,7 +23,7 @@
 			continue;
 		if($column['type'] == '*' && $_FILES[$column_key]['size'] > 0)
 			$fileColumns[] = $column_key;
-		if(preg_match( $column['permissions_update'], $_SESSION['type'])) {
+		if(preg_match('/'.$column['permissions_update'].'/', $_SESSION['type'])) {
 			// upload possible files start
 			if($column['type'] == '*' && $_FILES[$column_key]['size'] > 0 ) {
 				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))

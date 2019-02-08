@@ -32,6 +32,20 @@
 - use unlimited column types for html
 - shouldnt be able to create a page that alrady exists
 - I should allow for back and forward browser button functionality at index.php (you can't currently reach the same tab you were on)
+- create copy on edit
+- support input type text as well as textareas (for shorter inputs)
+- rounded inputs everywhere
+- only preview or don't show even don't show html field on datatable.
+- support themes
+	- already created -.theme.c.php, the other 3 files are pending
+	- on creation, I should accept a zip file, and unzip it at the required url
+- containerize this
+	- choose between
+		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.
+		- Get the source code to the host and use COPY . /whatever in the Dockerfile.
+		- Get the source code to the host and use docker run -v $(pwd):/whatever/
+- wrong error message on uploading heavy images
+
 
 - git ls-files | xargs wc -l
 

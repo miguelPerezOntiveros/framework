@@ -38,6 +38,9 @@
 						<li class="tab">
 							<a href="#" onclick="loadSection(\'portlet\', \'Portlet\');">Portlet</a>
 						</li>
+						<li class="tab">
+							<a href="#" onclick="loadSection(\'theme\', \'Theme\');">Theme</a>
+						</li>
 						<li class="tab" id="menu_user_type">
 							<a href="#" onclick="loadSection(\'user_type\', \'User Type\');">User Type</a>
 						</li>

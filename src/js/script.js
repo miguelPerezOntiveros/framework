@@ -33,12 +33,14 @@ handleDelete = function(e){
 	$('.form_element input[name=id]').val(id);
 	$('.form_element').trigger('submit');
 }
-toggleForm = function (){
-	$('.form_element')[0].reset();
-	$('.catcherFilesLabel').text('Drop file here');
-	$('.form_element').toggle('slow');
-	if ($('.form').toggleClass('bs-callout-left'))
-	$('.form_plus').toggleClass('rotated');
+toggleForm = function (onlyClose){
+	if(!onlyClose || $('.form').hasClass('bs-callout-left')){
+		$('.form_element')[0].reset();
+		$('.catcherFilesLabel').text('Drop file here');
+		$('.form_element').toggle('slow');
+		if ($('.form').toggleClass('bs-callout-left'))
+		$('.form_plus').toggleClass('rotated');
+	}
 }
 
 loadSection = function(name, displayName){
@@ -119,8 +121,7 @@ doTable = function(name, displayName, thenDoForm){
 			doTablePreHook();
 
 		if(data.error){
-			$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i></span>&nbsp;'+data.error+'</div>');
-			$("#feedbackModal").modal("show");
+			doModal('error', data.error, 5000);
 			return;
 		}
 
@@ -144,7 +145,7 @@ doTable = function(name, displayName, thenDoForm){
 					columns.push({ "render": $.fn.dataTable.render.text() });
 		});
 		columns.push({
-			defaultContent: '<center class="row_buttons"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></center>'
+			defaultContent: '<div class="row_buttons"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></div>'
 		});
 		$('tr').append('<th></th>');
 
@@ -153,6 +154,7 @@ doTable = function(name, displayName, thenDoForm){
 			"data": data.data,
 			"columns": columns
 		});
+		$('TFOOT').remove();
 
 		if (typeof doTablePostHook === "function")
 			doTablePostHook();
@@ -165,11 +167,11 @@ $(document).ready(function() {
 	var endpoint = {"create": "/src/crud_create.php", "update": "/src/crud_update.php", "delete":"/src/crud_delete.php"};
 	$('.form_element').submit(function(e){
 		e.preventDefault();
-		// if(window.name == 'portlet'){
-		// 	$('select[name=query_tables]').val(
-		// 		JSON.stringify($('select[name=query_tables]').val())
-		// 	);
-		// }	
+
+		if (typeof submitHook === "function")
+			if(submitHook())
+				return;
+
 		var formData = new FormData($('.form_element')[0]);
 		$.ajax({
 			type: "POST",
@@ -177,34 +179,23 @@ $(document).ready(function() {
 			data: formData,
 			success: function(data) {
 				response = JSON.parse(data);
-				$("#feedbackModal").modal("show");
 
 				if(response.error)
 					if(response.error == 'login')
 						window.location = 'login.php';
-					else{
-						$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i>&nbsp;'+response.error+'</div>');
-						console.log('ERROR: ' + response.error);
-						setTimeout(function(){
-							$("#feedbackModal").modal("hide");
-						}, 3000);
-					}
-					else{
-						$('.modal_body').html('<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i>&nbsp;'+response.success+'</div>');								
-						setTimeout(function(){
-							$("#feedbackModal").modal("hide");
-						}, 1000);
-					}
+					else
+						doModal('error', response.error, 3000);
+				else
+					doModal('success', response.success, 800);
 
-					doTable(undefined, undefined, false);
-					if(window.crud_mode != 'delete')
-						toggleForm();
-				},
-				enctype: "multipart/form-data",
-				contentType: "multipart/mixed; boundary=frontier",
-				contentType: false,
-				processData: false
-			});
+				doTable(undefined, undefined, false);
+				toggleForm(true);
+			},
+			enctype: "multipart/form-data",
+			contentType: "multipart/mixed; boundary=frontier",
+			contentType: false,
+			processData: false
+		});
 	});
 	$('li>.tab:first').click();
 	$('.sidebar_trigger').on('click', function () {

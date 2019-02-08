@@ -9,11 +9,5 @@ ln -s ../../../src/login.php .
 ln -s ../../../src/viewer.php .
 ln -s ../../../src/sidebar_projects.php .
 
-cd ext
-ln -s ../../../../src/page.c.php .
-ln -s ../../../../src/page.r.php .
-ln -s ../../../../src/page.u.php .
-ln -s ../../../../src/page.d.php .
-
-cd ../uploads
+cd uploads
 mkdir `echo $5 | sed 's/,/ /g'`

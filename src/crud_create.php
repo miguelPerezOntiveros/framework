@@ -11,7 +11,7 @@
 		require 'session.inc.php';
 
 		// Checking table permissions
-		if(!preg_match($config[$_GET['table']]['_permissions']['create'], $_SESSION['type']))
+		if(!preg_match('/'.$config[$_GET['table']]['_permissions']['create'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "login"]));
 	}
 	
@@ -20,7 +20,7 @@
 	foreach ($config[$_GET['table']] as $column_key => $column) {
 		if($column_key[0] == '_')
 			continue;
-		if($column['permissions_create'] == '-' ||  preg_match( $column['permissions_create'], $_SESSION['type'])){
+		if($column['permissions_create'] == '-' ||  preg_match('/'.$column['permissions_create'].'/', $_SESSION['type'])){
 			$value = (isset($_POST[$column_key])? 
 				(is_array($_POST[$column_key])?
 					json_encode($_POST[$column_key]):

@@ -40,3 +40,16 @@ doSidebarProjects = function(){
 		})
 	});
 }
+
+doModal = function(intention, message, millis){
+	if(intention == 'error')
+		$('.modal_body').html('<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i>&nbsp;'+message+'</div>');
+	if(intention == 'success')
+		$('.modal_body').html('<div class="alert alert-success" role="alert"><i class="fas fa-check-circle"></i>&nbsp;'+message+'</div>');
+	
+	$("#feedbackModal").modal("show");
+	console.log(intention + ': ' + message);
+	setTimeout(function(){
+		$("#feedbackModal").modal("hide");
+	}, millis);
+}
