@@ -76,7 +76,8 @@
 			exit(json_encode((object) ["error" => "No files to delete anymore"]));
 		else{
 			foreach ($fileColumns as $file_key){
-				$fileToUnlink = '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row[$file_key];
+				$fileToUnlink = '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row_old[$file_key];
+				error_log('File to unlink: '.$fileToUnlink);
 				if(file_exists($fileToUnlink))
 					unlink($fileToUnlink);
 				else

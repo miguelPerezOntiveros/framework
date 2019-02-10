@@ -21,7 +21,7 @@ require 'session.inc.php'; ?>
 							<img src="/src/logo.png" alt="">
 							<br><br><br><br>
 							<br><br><br>
-							<h4>In version 1.5 of Maker Mike, you can manage all your projects from one same place, as well as create pages and portlets for them.</<h4></h4>
+							<h4>In version 1.5 of Maker Mike, you can manage all your projects from one same place, as well as create pages, portlets and themes for them.</<h4></h4>
 							<br><br><br><br><br><br>
 							<br><br><br><br><br><br>	
 							</div>							

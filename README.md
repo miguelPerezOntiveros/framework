@@ -17,7 +17,7 @@
 - improve documentation
 	- Document all php 'require' paths
 	- Document extention files and hooks for front and backend
-	- Displaying HTML on page (see page.r.php)
+	- Displaying HTML on page (display = 'html';) (see page.r.php and theme.r.php)
 	- Creating portlets and pages
 	- specify valid file extensions
 - Log out should intuitivly log you out of what you want it to
@@ -38,17 +38,16 @@
 - support input type text as well as textareas (for shorter inputs)
 - rounded inputs everywhere
 - only preview or don't show even don't show html field on datatable.
-- support themes
-	- prevent .. segments on creation
-	- implement deletion
-	- implement updates
-	- implement reads? possibly a list of all files contained in the theme
+- Uploading the same image for 2 rows, and deleting one, deletes the image for both
+- Check theme creation/deletion interference with pages, and viceversa.
+- Can I update a file with one of the same name?
+- creating a theme within a theme will be problematic
 - containerize this
 	- choose between
 		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.
 		- Get the source code to the host and use COPY . /whatever in the Dockerfile.
 		- Get the source code to the host and use docker run -v $(pwd):/whatever/
-- wrong error message on uploading heavy images
+- wrong error message on uploading large images
 
 
 - git ls-files | xargs wc -l

@@ -134,15 +134,14 @@ doTable = function(name, displayName, thenDoForm){
 		var columns = [];
 		$.each(data.columns, function(i, e){
 			$('tr').append('<th>'+e[0]+'</th>');
-			if(e[1] == '*')
+			if(e['display'] == 'html')
+				columns.push({});
+			else if(e[1] == '*')
 				columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
 			else if(e[1] == 'multi')
 				columns.push({ "render": function (data, type, full, meta) {return '-'+JSON.parse(data).join('<br>-'); } });
 			else
-				if(e['display'] == 'html')
-					columns.push({});
-				else
-					columns.push({ "render": $.fn.dataTable.render.text() });
+				columns.push({ "render": $.fn.dataTable.render.text() });
 		});
 		columns.push({
 			defaultContent: '<div class="row_buttons"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></div>'
