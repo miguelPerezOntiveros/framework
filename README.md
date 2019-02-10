@@ -19,6 +19,7 @@
 	- Document extention files and hooks for front and backend
 	- Displaying HTML on page (see page.r.php)
 	- Creating portlets and pages
+	- specify valid file extensions
 - Log out should intuitivly log you out of what you want it to
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
 - How do I manage CMS-wide users?
@@ -33,12 +34,15 @@
 - shouldnt be able to create a page that alrady exists
 - I should allow for back and forward browser button functionality at index.php (you can't currently reach the same tab you were on)
 - create copy on edit
+- deletion of project could just move them to a separate folder?
 - support input type text as well as textareas (for shorter inputs)
 - rounded inputs everywhere
 - only preview or don't show even don't show html field on datatable.
 - support themes
-	- already created -.theme.c.php, the other 3 files are pending
-	- on creation, I should accept a zip file, and unzip it at the required url
+	- prevent .. segments on creation
+	- implement deletion
+	- implement updates
+	- implement reads? possibly a list of all files contained in the theme
 - containerize this
 	- choose between
 		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.

@@ -32,13 +32,13 @@
 		                <li style="border-top: 1px solid #000032; color: #3bb6d4;">
 							<p>'.$config['_show'].'</p>
 		                </li>
-						<li class="tab">
+						<li class="tab" id="menu_page">
 							<a href="#" onclick="loadSection(\'page\', \'Page\');">Page</a>
 						</li>
-						<li class="tab">
+						<li class="tab" id="menu_portlet">
 							<a href="#" onclick="loadSection(\'portlet\', \'Portlet\');">Portlet</a>
 						</li>
-						<li class="tab">
+						<li class="tab" id="menu_theme">
 							<a href="#" onclick="loadSection(\'theme\', \'Theme\');">Theme</a>
 						</li>
 						<li class="tab" id="menu_user_type">

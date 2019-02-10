@@ -1,7 +1,8 @@
 <?php
 	//require_once 'page.commons.php';
 
-	// $baseProjectUrl = '../projects/'.$config['_projectName'];
+	$baseProjectUrl = '../projects/'.$config['_projectName'].'/';
+	$uploads = $baseProjectUrl.'admin/uploads/theme/';
 	// $url = $baseProjectUrl.'/'.$row['url'];
 	// $dir = dirname($url);
 
@@ -15,5 +16,5 @@
 	// 	exec('mkdir -p '.$dir.' && cp endpoint.php '.$url.' && ln -s '.$_SERVER["DOCUMENT_ROOT"].'/src/page.php '.$dir);
 	// }
 
-	error_log( exec('echo deploy_theme'));
+	exec('unzip '.$uploads.$row['file'].' -d '.$baseProjectUrl.$row['url']);
 ?>

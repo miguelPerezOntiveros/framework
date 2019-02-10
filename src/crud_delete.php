@@ -41,9 +41,13 @@
 		if(!$row = $result->fetch_assoc())
 			exit(json_encode((object) ["error" => "No files to delete anymore"]));
 		else{
-			foreach ($fileColumns as $file_key)
-				if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row[$file_key]))
-					exit(json_encode((object) ["error" => "Error unlinking file"]));
+			foreach ($fileColumns as $file_key){
+				$fileToUnlink = '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row[$file_key];
+				if(file_exists($fileToUnlink))
+					unlink($fileToUnlink);
+				else
+					error_log('Had no file to unlink: '.$fileToUnlink);
+			}
 			
 			//Possible extension of the service
 			$postfix = 'd';

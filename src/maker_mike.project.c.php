@@ -111,11 +111,18 @@
 					'permissions_create' => 'System Administrator',
 					'type' => '255'
 				),
+				'url' => array(
+					'permissions_read' => 'System Administrator',
+					'permissions_update' => 'System Administrator',
+					'permissions_create' => 'System Administrator',
+					'type' => '255'
+				),
 				'file' => array(
 					'permissions_read' => 'System Administrator',
 					'permissions_update' => 'System Administrator',
 					'permissions_create' => 'System Administrator',
-					'type' => '*'
+					'type' => '*',
+					'ext' => array('zip')
 				),
 				'_permissions' => array(
 					'create' => 'System Administrator',

@@ -36,8 +36,11 @@
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
 				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
-				if(array_search(strtolower($ext), array('jpg', 'jpeg', 'gif', 'png', 'pdf')) === False )
+				$validExts = $column['ext'] ?: array('jpg', 'jpeg', 'gif', 'png');
+				if(array_search($ext, $validExts) === False ){
+					error_log('Valid exts: '.implode(', ', $validExts));
 					exit(json_encode((object) ["error" => "File type '".$ext."' not supported"]));
+				}
 				
 				if ($_FILES[$column_key]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));

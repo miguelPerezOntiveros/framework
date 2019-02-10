@@ -33,8 +33,11 @@
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
 				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
-				if(array_search($ext, array('jpg', 'jpeg', 'gif', 'png', 'pdf')) === False )
+				$validExts = $column['ext'] ?: array('jpg', 'jpeg', 'gif', 'png');
+				if(array_search($ext, $validExts) === False ){
+					error_log('Valid exts: '.implode(', ', $validExts));
 					exit(json_encode((object) ["error" => "File type '".$ext."' not supported"]));
+				}
 				
 				if ($_FILES[$column_key]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
@@ -72,10 +75,14 @@
 		if(!$row_old = $result->fetch_assoc())
 			exit(json_encode((object) ["error" => "No files to delete anymore"]));
 		else{
-			foreach ($fileColumns as $file_key)
-				if(!unlink('../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row_old[$file_key]))
-					exit(json_encode((object) ["error" => "Error unlinking file"]));
-			
+			foreach ($fileColumns as $file_key){
+				$fileToUnlink = '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row[$file_key];
+				if(file_exists($fileToUnlink))
+					unlink($fileToUnlink);
+				else
+					error_log('Had no file to unlink: '.$fileToUnlink);
+			}
+
 			//Possible extension of the service
 			$postfix = 'u';
 			require 'ext.inc.php';

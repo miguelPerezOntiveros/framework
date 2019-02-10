@@ -101,6 +101,8 @@ h2 {
 textarea, select[multiple] {
 	width: 100%;
 	height: 150px;
+	border: 1px solid #ced4da;
+	border-radius: .2em;
 }
 
 footer{
