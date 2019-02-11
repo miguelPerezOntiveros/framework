@@ -5,7 +5,7 @@ $.getScript( "/vendor/yamljs/yaml.js", function( data, textStatus, jqxhr ){
 });
 
 function submitHook(e){
-	if(window.name == 'project'){
+	if(window.name == 'project' && window.crud_mode != 'delete'){
 		if($('textarea[name=yaml]').length == 0)
 			$('.form_element').append('<textarea name="yaml" form="cu_form" style="display:none;" required></textarea><br>');
 		$('textarea[name=yaml]').val($('textarea[name=config]').val());

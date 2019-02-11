@@ -94,12 +94,7 @@
 
 	//Executing Query
 	$sql_keys = [];
-	foreach ($row 
-
-
-
-
-	 $key => $value) {
+	foreach ($row as $key => $value) {
 		$sql_keys[] = $key.' = \''.$value.'\'';
 	}
 	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$sql_keys).' WHERE id=\''.$_POST['id'].'\';';	

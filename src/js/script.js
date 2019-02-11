@@ -64,8 +64,8 @@ doForm = function(columns){
 		if(i==0) // The id row will be hidden to the user
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
 		else{
-			form += '<b>'+e[0]+':</b></br>'
-			if(name == 'portlet' && e[0] == 'Query Tables'){
+			form += '<b>'+e[2]+':</b></br>'
+			if(name == 'portlet' && e[0] == 'query_tables'){
 				form += ' <select name="'+e[0]+'[]" multiple required>';
 				$.each($('.navbar-nav li span').slice(0, -1), function(i, e){
 					form += '<option value="'+$(e).data('table')+'">'+$(e).text()+'</option>';
@@ -135,7 +135,7 @@ doTable = function(name, displayName, thenDoForm){
 
 		var columns = [];
 		$.each(data.columns, function(i, e){
-			$('tr').append('<th>'+e[0]+'</th>');
+			$('tr').append('<th>'+(e[2] || 'ID')+'</th>');
 			if(e['display'] == 'html')
 				columns.push({});
 			else if(e[1] == '*')
