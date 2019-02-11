@@ -5,8 +5,8 @@
 	$url = $baseProjectUrl.'/'.$row['url'];
 	$dir = dirname($url);
 
-	error_log('normalize($url): '.normalize($url));
-	error_log('normalize($baseProjectUrl): '.normalize($baseProjectUrl));
+	// error_log('normalize($url): '.normalize($url));
+	// error_log('normalize($baseProjectUrl): '.normalize($baseProjectUrl));
 	
 	if(strpos(normalize($url), normalize($baseProjectUrl)) === 0 &&
 		strpos(normalize($url), normalize($baseProjectUrl).'/admin') !== 0

@@ -61,7 +61,7 @@
 	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
 	if($result = $conn->query($sql)){
 		while ($column = $result->fetch_field())
-			$columns[] = (object)[$column->name, $config[$_GET['table']][$column->name]['type']]; 
+			$columns[] = (object)[$config[$_GET['table']][$column->name]['_show'] ?: 'ID', $config[$_GET['table']][$column->name]['type']]; 
 		while($row = $result->fetch_array(MYSQLI_NUM))
 			$data[] = $row;
 	}

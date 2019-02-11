@@ -42,8 +42,10 @@
 				if ($_FILES[$column_key]["size"] > 1*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
 
-				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$target_file))
-					exit(json_encode((object) ["error" => "Error during transfer"]));
+				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$target_file)){
+					error_log('Error during transfer: '. json_encode( $_FILES[$column_key]));
+					exit(json_encode((object) ["error" => "Error during transfer, check the log"]));
+				}
 				$row[$column_key] = $target_file;
 			}
 			// upload possible files end
@@ -92,7 +94,12 @@
 
 	//Executing Query
 	$sql_keys = [];
-	foreach ($row as $key => $value) {
+	foreach ($row 
+
+
+
+
+	 $key => $value) {
 		$sql_keys[] = $key.' = \''.$value.'\'';
 	}
 	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$sql_keys).' WHERE id=\''.$_POST['id'].'\';';	

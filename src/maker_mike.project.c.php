@@ -188,6 +188,8 @@
 					continue;
 				if($column['type'] == '*' && !in_array($table_key, $imageTables))
 					$imageTables[] = $table_key;
+				if(!isset($column['_show']))
+					$column['_show'] = ucwords(str_replace("_"," ", $column_key));
 				if(!isset($column['permissions_create']))
 					$column['permissions_create'] = '.*';
 				if(!isset($column['permissions_read']))
@@ -196,10 +198,6 @@
 					$column['permissions_update'] = '.*';
 				if(!isset($column['type']))
 					$column['type'] = '255';
-				"t= ".$column['type']." | ".
-				"c= ".$column['permissions_create']." | ".
-				"r= ".$column['permissions_read']." | ".
-				"u= ".$column['permissions_update']."<br>";
 			}
 			if(!isset($table['_permissions']['create']))
 				$table['_permissions']['create'] = '.*';

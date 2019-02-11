@@ -8,4 +8,6 @@
 	}
 
 	echo '<pre>'.json_encode($config, JSON_PRETTY_PRINT).'<pre>';
+
+	phpinfo();
 ?>

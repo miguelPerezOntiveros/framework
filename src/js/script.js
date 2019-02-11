@@ -7,7 +7,7 @@ handleCreate = function(){
 }
 handleEdit = function(e){
 	window.crud_mode = 'update';
-	toggleForm();
+	toggleForm("open");
 	$('input[type=file]').each(function(i, e){
 		e.required = false;
 	});
@@ -33,8 +33,10 @@ handleDelete = function(e){
 	$('.form_element input[name=id]').val(id);
 	$('.form_element').trigger('submit');
 }
-toggleForm = function (onlyClose){
-	if(!onlyClose || $('.form').hasClass('bs-callout-left')){
+toggleForm = function (only){
+	if(!only || 
+		only == "close" && $('.form').hasClass('bs-callout-left') ||
+		only == "open" && !$('.form').hasClass('bs-callout-left')){
 		$('.form_element')[0].reset();
 		$('.catcherFilesLabel').text('Drop file here');
 		$('.form_element').toggle('slow');
@@ -63,7 +65,7 @@ doForm = function(columns){
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
 		else{
 			form += '<b>'+e[0]+':</b></br>'
-			if(name == 'portlet' && e[0] == 'query_tables'){
+			if(name == 'portlet' && e[0] == 'Query Tables'){
 				form += ' <select name="'+e[0]+'[]" multiple required>';
 				$.each($('.navbar-nav li span').slice(0, -1), function(i, e){
 					form += '<option value="'+$(e).data('table')+'">'+$(e).text()+'</option>';
@@ -188,7 +190,7 @@ $(document).ready(function() {
 					doModal('success', response.success, 800);
 
 				doTable(undefined, undefined, false);
-				toggleForm(true);
+				toggleForm("close");
 			},
 			enctype: "multipart/form-data",
 			contentType: "multipart/mixed; boundary=frontier",
