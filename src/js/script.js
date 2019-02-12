@@ -59,18 +59,27 @@ doMenu = function(name, displayName){
 }
 
 doForm = function(columns){
-	var form = '';
+	$('.form_element').html('');
 	$.each(columns, function(i, e) {
+		var form = '';
 		if(i==0) // The id row will be hidden to the user
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
 		else{
 			form += '<b>'+e[2]+':</b></br>'
-			if(name == 'portlet' && e[0] == 'query_tables'){
-				form += ' <select name="'+e[0]+'[]" multiple required>';
-				$.each($('.navbar-nav li span').slice(0, -1), function(i, e){
-					form += '<option value="'+$(e).data('table')+'">'+$(e).text()+'</option>';
-				});
-				form += '</select><br>';
+			if(e[3] == 'multi'){
+				$('.form_element').append(form+'<select name="'+e[0]+'[]" multiple required></select><br>');
+				form = '';
+				if(name == 'portlet' && e[0] == 'query_tables')
+					$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
+						$('select[name="'+e[0]+'[]"]').append('<option value="'+$(el).data('table')+'">'+$(el).text()+'</option>');
+					});
+				else
+					$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
+						response = JSON.parse(response);
+						$.each(response.data, function(i, el){
+							$('select[name="'+e[0]+'[]"]').append('<option value="'+el[0]+'">'+el[1]+'</option>');
+						});
+					});
 			} 
 			else if(e[1] == 'int' || e[1] == 'double' || e[1] == 'float')
 				form += '<input type="text" name ="'+e[0]+'"/><br>';
@@ -92,10 +101,10 @@ doForm = function(columns){
 				});
 			}
 		}
+		$('.form_element').append(form);
 	});
 
-	form += '<input type="submit" class="btn btn-primary" style="float:right" value="OK">';
-	$('.form_element').html(form);
+	$('.form_element').append('<input type="submit" class="btn btn-primary" style="float:right" value="OK">');
 	$('.form_element .catcher').each(function(i, el){
 		el.addEventListener('drop', function(ev){
 			ev.stopPropagation();
@@ -133,36 +142,67 @@ doTable = function(name, displayName, thenDoForm){
 
 		$('.table_element').html('<thead><tr></tr></thead><tfoot><tr></tr></tfoot>');
 
-		var columns = [];
+		window.otherTables = [];
+		window.otherTablesGotten = 0;
 		$.each(data.columns, function(i, e){
-			$('tr').append('<th>'+(e[2] || 'ID')+'</th>');
-			if(e['display'] == 'html')
-				columns.push({});
-			else if(e[1] == '*')
-				columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
-			else if(e[1] == 'multi')
-				columns.push({ "render": function (data, type, full, meta) {return '-'+JSON.parse(data).join('<br>-'); } });
-			else
-				columns.push({ "render": $.fn.dataTable.render.text() });
+			if(e[3] == 'multi' && !(name == 'portlet' && e[0] == 'query_tables'))
+				otherTables[e[1]] = [];
 		});
-		columns.push({
-			defaultContent: '<div class="row_buttons"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></div>'
+		if(Object.keys(otherTables).length == 0)
+			doTable2(data, thenDoForm);
+		$.each(Object.keys(otherTables), function(i, otherTables_e){
+			$.get('/src/crud_read.php?project='+window._projectName+'&table=' + otherTables_e + '&show=true', function(response){
+				response = JSON.parse(response);
+				$.each(response.data, function(i, el){
+					otherTables[otherTables_e][el[0]] = el[1];
+				});
+				otherTablesGotten++;
+				if(otherTablesGotten == Object.keys(otherTables).length)
+					doTable2(data, thenDoForm);
+			});
 		});
-		$('tr').append('<th></th>');
-
-		// DataTable
-		$('.table_element').DataTable({
-			"data": data.data,
-			"columns": columns
-		});
-		$('TFOOT').remove();
-
-		if (typeof doTablePostHook === "function")
-			doTablePostHook();
-
-		if(thenDoForm)
-			doForm(data.columns);
 	});
+}
+doTable2 = function(data, thenDoForm){
+	var columns = [];
+	$.each(data.columns, function(i, e){
+		$('tr').append('<th>'+(e[2] || 'ID')+'</th>');
+		if(e['display'] == 'html')
+			columns.push({});
+		else if(e[1] == '*')
+			columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
+		else if(e[3] == 'multi' && name == 'portlet' && e[0] == 'query_tables')
+			columns.push({ "render": function (data, type, full, meta) {return '-'+JSON.parse(data).join('<br>-'); } });
+		else if(e[3] == 'multi'){
+			columns.push({ "render": function (data, type, full, meta) {
+				data = JSON.parse(data);
+				$.each(data, function(i, el){
+					data[i] = otherTables[e[1]][el];
+				});
+				debugger;
+				return '-'+data.join('<br>-'); 
+			}});
+		}
+		else
+			columns.push({ "render": $.fn.dataTable.render.text() });
+	});
+	columns.push({
+		defaultContent: '<div class="row_buttons"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></div>'
+	});
+	$('tr').append('<th></th>');
+
+	// DataTable
+	$('.table_element').DataTable({
+		"data": data.data,
+		"columns": columns
+	});
+	$('TFOOT').remove();
+
+	if (typeof doTablePostHook === "function")
+		doTablePostHook();
+
+	if(thenDoForm)
+		doForm(data.columns);
 }
 $(document).ready(function() {
 	var endpoint = {"create": "/src/crud_create.php", "update": "/src/crud_update.php", "delete":"/src/crud_delete.php"};

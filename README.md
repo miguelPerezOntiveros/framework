@@ -25,7 +25,8 @@
 		- Permissions
 			- defaults
 			- dash vs 'dot star'
-		- _show fileds
+		- _show fields
+		- select: multi
 - Log out should intuitivly log you out of what you want it to
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
 - How do I manage CMS-wide users?
@@ -51,13 +52,14 @@
 - should file size limit be a per project setting? (do I need per project settings?)
 - Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
 - support input type text as well as textareas (for shorter inputs)
-- support multi selects on the config
 - create test suite
+- tag inserter on page and portlet html fields
+- selecting a table with underscores on the query_tables fields, results in viewer gettign the underscores
 
 - git ls-files | xargs wc -l
 
 #### Recreating the maker_mike project
-- you will loose all project table entries on the maker tab, so they will be in a limbo as the dabases will continue to exist
+- note you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist
 - run your yaml on the maker tab
 - run these extra commands needed to enable the home page:
 	- cd projects/maker_mike/admin/

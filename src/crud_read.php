@@ -30,7 +30,7 @@
 			if(	(!isset($_GET['only']) || in_array($column_key, explode(",", $_GET['only']))) &&
 				($column['permissions_read'] == '-' || preg_match('/'.$column['permissions_read'].'/', $_SESSION['type']))
 				)	
-				if(isset($config[$column['type']])){ // column is a ref
+				if(isset($config[$column['type']]) && $column['select'] != 'multi'){ //column is a non-multi ref
 					$otherTable = $column['type'];
 					$otherTableAlias = $column_key.'Table';
 					$otherColumn = $config[$otherTable]['_show'];
@@ -60,8 +60,9 @@
 	$sql = 'SELECT '.implode(', ', $allowedColumns).' FROM '.implode(', ', $tablesToJoin).' WHERE '.implode(' and ', $joinRules).';';	
 	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
 	if($result = $conn->query($sql)){
-		while ($column = $result->fetch_field())
-			$columns[] = (object)[$column->name, $config[$_GET['table']][$column->name]['type'], $config[$_GET['table']][$column->name]['_show']]; 
+		while ($column = $result->fetch_field()){
+			$columns[] = (object)[$column->name, $config[$_GET['table']][$column->name]['type'], $config[$_GET['table']][$column->name]['_show'], $config[$_GET['table']][$column->name]['select']]; 
+		}
 		while($row = $result->fetch_array(MYSQLI_NUM))
 			$data[] = $row;
 	}

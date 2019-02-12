@@ -62,7 +62,7 @@
 					'permissions_read' => 'System Administrator',
 					'permissions_update' => 'System Administrator',
 					'permissions_create' => 'System Administrator',
-					'type' => 'multi'
+					'select' => 'multi'
 				),
 				'query_conditions' => array(
 					'permissions_read' => 'System Administrator',
@@ -225,7 +225,7 @@
 				$type = $column['type'];
 				if($type == '*') // file type
 					$type = 'varchar(255)';
-				if($type == 'multi')
+				if($column['select'] == 'multi')
 					$type = 'varchar(511)';
 				else if(isset($newConfig[$type])) // type matches the name of a table
 					$type = 'int, foreign key('.$column_key.') references '.$type.'(id)';

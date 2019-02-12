@@ -7,6 +7,12 @@ project:
     type: '*'
   video: 
   tags: 
+comment:
+  name:
+  comment:
+  project:
+    type: project
+    select: multi
 certification: 
   title: 
   description: 
