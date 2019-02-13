@@ -65,13 +65,13 @@ doForm = function(columns){
 		if(i==0) // The id row will be hidden to the user
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
 		else{
-			form += '<b>'+e[2]+':</b></br>'
+			form += '<b>'+e[2]+':</b>'
 			if(e[3] == 'multi'){
-				$('.form_element').append(form+'<select name="'+e[0]+'[]" multiple required></select><br>');
+				$('.form_element').append(form+'</br><select name="'+e[0]+'[]" multiple required></select><br>');
 				form = '';
 				if(name == 'portlet' && e[0] == 'query_tables')
 					$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
-						$('select[name="'+e[0]+'[]"]').append('<option value="'+$(el).data('table')+'">'+$(el).text()+'</option>');
+						$('select[name="'+e[0]+'[]"]').append('<option value="'+$(el).text()+'">'+$(el).text()+'</option>');
 					});
 				else
 					$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
@@ -82,17 +82,24 @@ doForm = function(columns){
 					});
 			} 
 			else if(e[1] == 'int' || e[1] == 'double' || e[1] == 'float')
-				form += '<input type="text" name ="'+e[0]+'"/><br>';
-			else if(!isNaN(e[1]))	
-				form += '<textarea name="'+e[0]+'" form="cu_form" required></textarea><br>'; 
+				form += '</br><input type="text" name ="'+e[0]+'"/><br>';
+			else if(!isNaN(e[1])){
+				if(name == 'page' && e[0] == 'html'){
+					form += '<span style="float:right;" href="#" class="btn btn-link cu_form-insert_portlet">Insert Portlet</span>';
+				}
+				if(name == 'portlet' && e[0] == 'template'){
+					form += '<span style="float:right;" href="#" class="btn btn-link cu_form-insert_variable">Insert Variable</span>';
+				}
+				form += '</br><textarea name="'+e[0]+'" form="cu_form" required></textarea><br>';
+			}
 			else if(e[1] == '*')
-				form += '<input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
+				form += '</br><input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
 			else if(e[1] == 'date')
-				form += '<input name="'+e[0]+'" type="date" required><br>';
+				form += '</br><input name="'+e[0]+'" type="date" required><br>';
 			else if(e[1] == 'boolean')
-				form += ' <select name="'+e[0]+'"><option value="0">0-No</option><option value="1">1-Yes</option></select><br>';
+				form += '</br><select name="'+e[0]+'"><option value="0">0-No</option><option value="1">1-Yes</option></select><br>';
 			else{
-				form += '<select name="'+e[0]+'"></select><br>';
+				form += '</br><select name="'+e[0]+'"></select><br>';
 				$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
 					response = JSON.parse(response);
 					$.each(response.data, function(i, el){
@@ -244,6 +251,20 @@ $(document).ready(function() {
 		$(this).toggleClass('active');
 		if(!$('.sidebarWrapper_sidebar').hasClass('active'))
 			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
+	});
+	$('#cu_form').on('click', '.cu_form-insert_portlet', function(){
+		$('textarea[name="html"]').val(
+			$('textarea[name="html"]').val().substring(0, $('textarea[name="html"]')[0].selectionStart)+
+			'<mm-p></mm-p>' +
+			$('textarea[name="html"]').val().substring($('textarea[name="html"]')[0].selectionStart)
+		);
+	});
+	$('#cu_form').on('click', '.cu_form-insert_variable', function(){
+		$('textarea[name="template"]').val(
+			$('textarea[name="template"]').val().substring(0, $('textarea[name="template"]')[0].selectionStart)+
+			'<mm-v></mm-v>' +
+			$('textarea[name="template"]').val().substring($('textarea[name="template"]')[0].selectionStart)
+		);
 	});
 	doSidebarProjects();
 });

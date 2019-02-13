@@ -53,8 +53,6 @@
 - Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
 - support input type text as well as textareas (for shorter inputs)
 - create test suite
-- tag inserter on page and portlet html fields
-- selecting a table with underscores on the query_tables fields, results in viewer gettign the underscores
 
 - git ls-files | xargs wc -l
 
