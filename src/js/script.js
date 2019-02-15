@@ -71,7 +71,7 @@ doForm = function(columns){
 				form = '';
 				if(name == 'portlet' && e[0] == 'query_tables')
 					$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
-						$('select[name="'+e[0]+'[]"]').append('<option value="'+$(el).text()+'">'+$(el).text()+'</option>');
+						$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).text()+'">'+$(el).text()+'</option>');
 					});
 				else
 					$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
@@ -85,12 +85,30 @@ doForm = function(columns){
 				form += '</br><input type="text" name ="'+e[0]+'"/><br>';
 			else if(!isNaN(e[1])){
 				if(name == 'page' && e[0] == 'html'){
-					form += '<span style="float:right;" href="#" class="btn btn-link cu_form-insert_portlet">Insert Portlet</span>';
+					form += '<span style="float:right" class="dropdown show"><a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Insert Portlet</a><div class="dropdown-menu cu_form-portlet_options" aria-labelledby="dropdownMenuLink"></div></span>';
+					$('.form_element').append(form);
+					form = '';
+					$.get('/src/crud_read.php?project='+window._projectName+'&table=portlet' + '&show=true', function(response){
+						response = JSON.parse(response);
+						$.each(response.data, function(i, el){
+							$('.cu_form-portlet_options').append('<a class="dropdown-item cu_form-insert_portlet" href="#">'+el[1]+'</a>');
+						});
+					});
 				}
 				if(name == 'portlet' && e[0] == 'template'){
-					form += '<span style="float:right;" href="#" class="btn btn-link cu_form-insert_variable">Insert Variable</span>';
+					form += '<span style="float:right" class="dropdown show"><a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Insert Variable</a><div class="dropdown-menu cu_form-variable_options" aria-labelledby="dropdownMenuLink"></div></span>';
+					$('.form_element').append(form);
+					form = '';
+					$.each($('select[name="query_tables[]"] option'), function(i, option){
+						$.get('/src/crud_read.php?project='+window._projectName+'&table=' + $(option).data('table_name') + '&columns=', function(response){
+							response = JSON.parse(response);
+							$.each(response.columns, function(i, el){
+								$('.cu_form-variable_options').append('<a class="dropdown-item cu_form-insert_variable" href="#">'+$(option).data('table_name')+'.'+el[0]+'</a>');
+							});
+						});
+					});
 				}
-				form += '</br><textarea name="'+e[0]+'" form="cu_form" required></textarea><br>';
+				form += '</br><textarea name="'+e[0]+'" form="cu_form"'+ (e[1]<260?'rows="1" class="single_lined"':'')+'required></textarea><br>';
 			}
 			else if(e[1] == '*')
 				form += '</br><input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
@@ -184,9 +202,8 @@ doTable2 = function(data, thenDoForm){
 			columns.push({ "render": function (data, type, full, meta) {
 				data = JSON.parse(data);
 				$.each(data, function(i, el){
-					data[i] = otherTables[e[1]][el];
+					data[i] = otherTables[e[1]][el] || '[Broken ref to id ' + el + ']';
 				});
-				debugger;
 				return '-'+data.join('<br>-'); 
 			}});
 		}
@@ -252,17 +269,17 @@ $(document).ready(function() {
 		if(!$('.sidebarWrapper_sidebar').hasClass('active'))
 			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
 	});
-	$('#cu_form').on('click', '.cu_form-insert_portlet', function(){
+	$('#cu_form').on('click', '.cu_form-insert_portlet', function(e){
 		$('textarea[name="html"]').val(
 			$('textarea[name="html"]').val().substring(0, $('textarea[name="html"]')[0].selectionStart)+
-			'<mm-p></mm-p>' +
+			'<mm-p>' + $(e.target).text() + '</mm-p>' +
 			$('textarea[name="html"]').val().substring($('textarea[name="html"]')[0].selectionStart)
 		);
 	});
-	$('#cu_form').on('click', '.cu_form-insert_variable', function(){
+	$('#cu_form').on('click', '.cu_form-insert_variable', function(e){
 		$('textarea[name="template"]').val(
 			$('textarea[name="template"]').val().substring(0, $('textarea[name="template"]')[0].selectionStart)+
-			'<mm-v></mm-v>' +
+			'<mm-v>' + $(e.target).text() + '</mm-v>' +
 			$('textarea[name="template"]').val().substring($('textarea[name="template"]')[0].selectionStart)
 		);
 	});

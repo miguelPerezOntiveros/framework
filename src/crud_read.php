@@ -27,8 +27,10 @@
 		foreach ($config[$_GET['table']] as $column_key => $column) {
 			if($column_key[0] == '_')
 				continue;
-			if(	(!isset($_GET['only']) || in_array($column_key, explode(",", $_GET['only']))) &&
-				($column['permissions_read'] == '-' || preg_match('/'.$column['permissions_read'].'/', $_SESSION['type']))
+			if(
+					(!isset($_GET['only']) || in_array($column_key, explode(",", $_GET['only'])))
+					&&
+					($column['permissions_read'] == '-' || preg_match('/'.$column['permissions_read'].'/', $_SESSION['type']))
 				)	
 				if(isset($config[$column['type']]) && $column['select'] != 'multi'){ //column is a non-multi ref
 					$otherTable = $column['type'];
@@ -49,6 +51,9 @@
 
 	if(isset($_GET['where']))
 		$joinRules[] = $_GET['table'].'.'.$_GET['where'].' = "'.$_GET['equals'].'"';
+
+	if(isset($_GET['columns']))
+		$joinRules[] = '0';
 
 	if(count($allowedColumns) <= 1)
 		exit(json_encode((object) ["error" => "No such table."]));

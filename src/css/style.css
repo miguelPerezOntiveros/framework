@@ -104,6 +104,9 @@ textarea, select[multiple] {
 	border: 1px solid #ced4da;
 	border-radius: .2em;
 }
+textarea.single_lined{
+	height: auto;
+}
 
 footer{
 	padding: 15px;

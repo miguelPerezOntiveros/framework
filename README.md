@@ -49,10 +49,11 @@
 		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.
 		- Get the source code to the host and use COPY . /whatever in the Dockerfile.
 		- Get the source code to the host and use docker run -v $(pwd):/whatever/
-- should file size limit be a per project setting? (do I need per project settings?)
+- should file size limit be a per project setting? (do I need per project settings?) same thing with input height threadholds
 - Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
-- support input type text as well as textareas (for shorter inputs)
 - create test suite
+- Should I include the listing of project tables in a multiselect as a setting in the conf file? yes
+- make quick tag inserts more capable with dropdowns
 
 - git ls-files | xargs wc -l
 
