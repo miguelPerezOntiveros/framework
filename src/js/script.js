@@ -26,6 +26,8 @@ handleEdit = function(e){
 		else
 			$(e).val(values[i]);
 	})
+	if(name == 'portlet')
+		$('select[name="query_tables[]"]').trigger('change');
 }
 handleDelete = function(e){
 	window.crud_mode = 'delete';
@@ -66,20 +68,22 @@ doForm = function(columns){
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
 		else{
 			form += '<b>'+e[2]+':</b>'
-			if(e[3] == 'multi'){
+			if(e[3] == 'tables'){
 				$('.form_element').append(form+'</br><select name="'+e[0]+'[]" multiple required></select><br>');
 				form = '';
-				if(name == 'portlet' && e[0] == 'query_tables')
-					$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
-						$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).text()+'">'+$(el).text()+'</option>');
+				$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
+					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).text()+'">'+$(el).text()+'</option>');
+				});
+			}
+			else if(e[3] == 'multi'){
+				$('.form_element').append(form+'</br><select name="'+e[0]+'[]" multiple required></select><br>');
+				form = '';
+				$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
+					response = JSON.parse(response);
+					$.each(response.data, function(i, el){
+						$('select[name="'+e[0]+'[]"]').append('<option value="'+el[0]+'">'+el[1]+'</option>');
 					});
-				else
-					$.get('/src/crud_read.php?project='+window._projectName+'&table=' + e[1] + '&show=true', function(response){
-						response = JSON.parse(response);
-						$.each(response.data, function(i, el){
-							$('select[name="'+e[0]+'[]"]').append('<option value="'+el[0]+'">'+el[1]+'</option>');
-						});
-					});
+				});
 			} 
 			else if(e[1] == 'int' || e[1] == 'double' || e[1] == 'float')
 				form += '</br><input type="text" name ="'+e[0]+'"/><br>';
@@ -98,12 +102,13 @@ doForm = function(columns){
 				if(name == 'portlet' && e[0] == 'template'){
 					form += '<span style="float:right" class="dropdown show"><a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Insert Variable</a><div class="dropdown-menu cu_form-variable_options" aria-labelledby="dropdownMenuLink"></div></span>';
 					$('.form_element').append(form);
+					$('.cu_form-variable_options').append('<a class="dropdown-item" href="#">No table selected</a>');
 					form = '';
+					window.form_portlet_variable_options = [];
 					$.each($('select[name="query_tables[]"] option'), function(i, option){
 						$.get('/src/crud_read.php?project='+window._projectName+'&table=' + $(option).data('table_name') + '&columns=', function(response){
-							response = JSON.parse(response);
-							$.each(response.columns, function(i, el){
-								$('.cu_form-variable_options').append('<a class="dropdown-item cu_form-insert_variable" href="#">'+$(option).data('table_name')+'.'+el[0]+'</a>');
+							$.each(JSON.parse(response).columns, function(i, column){
+								window.form_portlet_variable_options.push([$(option).data('table_name') + '.' + column[0], $(option).text()]);
 							});
 						});
 					});
@@ -170,7 +175,7 @@ doTable = function(name, displayName, thenDoForm){
 		window.otherTables = [];
 		window.otherTablesGotten = 0;
 		$.each(data.columns, function(i, e){
-			if(e[3] == 'multi' && !(name == 'portlet' && e[0] == 'query_tables'))
+			if(e[3] == 'multi')
 				otherTables[e[1]] = [];
 		});
 		if(Object.keys(otherTables).length == 0)
@@ -196,7 +201,7 @@ doTable2 = function(data, thenDoForm){
 			columns.push({});
 		else if(e[1] == '*')
 			columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
-		else if(e[3] == 'multi' && name == 'portlet' && e[0] == 'query_tables')
+		else if(e[3] == 'tables')
 			columns.push({ "render": function (data, type, full, meta) {return '-'+JSON.parse(data).join('<br>-'); } });
 		else if(e[3] == 'multi'){
 			columns.push({ "render": function (data, type, full, meta) {
@@ -275,6 +280,7 @@ $(document).ready(function() {
 			'<mm-p>' + $(e.target).text() + '</mm-p>' +
 			$('textarea[name="html"]').val().substring($('textarea[name="html"]')[0].selectionStart)
 		);
+		$('textarea[name="html"]').focus();
 	});
 	$('#cu_form').on('click', '.cu_form-insert_variable', function(e){
 		$('textarea[name="template"]').val(
@@ -282,6 +288,18 @@ $(document).ready(function() {
 			'<mm-v>' + $(e.target).text() + '</mm-v>' +
 			$('textarea[name="template"]').val().substring($('textarea[name="template"]')[0].selectionStart)
 		);
+		$('textarea[name="template"]').focus();
 	});
+	$('#cu_form').on('change', 'select[name="query_tables[]"]', function(){
+		$('.cu_form-variable_options').html('');
+		$.each($('select[name="query_tables[]"]').val(), function(i, selected_table_human_name){
+			$.each(form_portlet_variable_options, function(i, entry_from_all_options){
+				if(entry_from_all_options[1].startsWith(selected_table_human_name))
+					$('.cu_form-variable_options').append('<a class="dropdown-item cu_form-insert_variable" href="#">'+entry_from_all_options[0]+'</a>');
+			});
+		});
+		if(!$('select[name="query_tables[]"]').val().length)
+			$('.cu_form-variable_options').append('<a class="dropdown-item" href="#">No table selected</a>');
+	})
 	doSidebarProjects();
 });

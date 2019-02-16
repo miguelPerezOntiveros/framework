@@ -27,6 +27,7 @@
 			- dash vs 'dot star'
 		- _show fields
 		- select: multi
+		- select: tables (requires no type attribute)
 - Log out should intuitivly log you out of what you want it to
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
 - How do I manage CMS-wide users?
@@ -43,17 +44,16 @@
 - create copy on edit
 - only preview or don't show even don't show html field on datatable.
 - Uploading the same image for 2 rows, and deleting one, deletes the image for both
-- Check theme creation/deletion interference with pages, and viceversa.
 - containerize this
 	- choose between
 		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.
 		- Get the source code to the host and use COPY . /whatever in the Dockerfile.
 		- Get the source code to the host and use docker run -v $(pwd):/whatever/
 - should file size limit be a per project setting? (do I need per project settings?) same thing with input height threadholds
-- Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
 - create test suite
-- Should I include the listing of project tables in a multiselect as a setting in the conf file? yes
-- make quick tag inserts more capable with dropdowns
+- Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
+- Make sure only theme files are deleted when I delete a theme that contains a maker-mike page
+	- don't just rm -rf * on the theme folder, but do individual ones  
 
 - git ls-files | xargs wc -l
 
