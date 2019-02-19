@@ -16,7 +16,7 @@
 					<ul class=<?php echo '"collapse list-unstyled sidebar_projects'.($_GET['sidebar']==1?' show"':'"') ?> id="projectsSubmenu">
 						<?php
 							require_once 'db_connection.inc.php';
-							$sql = "select 'projectView' where '".$config['_projectName']."' IN (select SCHEMA_NAME from information_schema.SCHEMATA where SCHEMA_NAME NOT IN('mysql', 'information_schema', 'performance_schema', 'sys', 'maker_mike'))";
+							$sql = "select 'projectView' where '".$config['_projectName']."' IN (select SCHEMA_NAME from information_schema.SCHEMATA where SCHEMA_NAME NOT IN('mysql', 'information_schema', 'performance_schema', 'sys'))";
 							if($result = $conn->query($sql))
 								if($row = $result->fetch_array(MYSQLI_NUM))
 									$projectView = true;

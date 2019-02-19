@@ -249,6 +249,22 @@
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.sql', $sql);	
 
 		// Run post script
-		exec($_SERVER["DOCUMENT_ROOT"].'/build_post.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port);
+		$result_of_post_build = array();
+		exec($_SERVER["DOCUMENT_ROOT"].'/build_post.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
+		error_log('post: '.json_encode($result_of_post_build));
+		error_log('first line: '.$result_of_post_build[1]);
+		error_log('ERROR: '.(strpos($result_of_post_build[1], "ERROR") !== false));
+		if(strpos($result_of_post_build[1], "ERROR") !== false){
+			//Executing Query
+			$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (\''.implode('\', \'', array_values($row)).'\');';	
+			error_log('SQL - '.$config['_projectName'].' - ' .$sql);
+			if($result = $conn->query($sql))
+				echo json_encode((object) ["error" => 'Invalid configuration.']);
+			else
+				echo json_encode((object) ["error" => $conn->error]);
+
+			$conn->close();
+			exit();
+		}
 	}
 ?>

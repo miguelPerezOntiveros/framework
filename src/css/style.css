@@ -36,7 +36,7 @@ nav {
 	background: #f0f0f0;
 	border-bottom: #1173BD solid 0.1em;
 }
-.nav-item span {
+.nav-item>span {
 	cursor: pointer;
 }
 .nav-link.active{
@@ -180,8 +180,11 @@ footer{
 	text-decoration: none;
 	transition: all 0.3s;
 }
-.sidebarWrapper_sidebar a:hover {
+.sidebarWrapper_sidebar a:not(.disabled):hover {
 	background: #000032;
+}
+.sidebarWrapper_sidebar a.disabled {
+	cursor: auto;
 }
 
 .sidebarWrapper_sidebar ul li.active > a {

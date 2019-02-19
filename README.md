@@ -28,9 +28,7 @@
 		- _show fields
 		- select: multi
 		- select: tables (requires no type attribute)
-- Log out should intuitivly log you out of what you want it to
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
-- How do I manage CMS-wide users?
 - SYNDICATION
 - verify session on pages from page table? would need to be able to mark pages as private as well
 - Import/Export
@@ -54,6 +52,20 @@
 - Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
 - Make sure only theme files are deleted when I delete a theme that contains a maker-mike page
 	- don't just rm -rf * on the theme folder, but do individual ones  
+- I probably need a JS client library or at least to document calls to cruds
+
+- why did this crash?
+
+	{"_projectName":"memo","_show":"memo.com","vacations":{"title":null,"reason":null,"image":{"type":"*"},"tags":null},"comment":{"name":null,"text":null,"vacation":{"type":"vacation"}},"certification":{"title":null,"description":null,"image":{"type":"*"}},"experience":{"title":null,"description":null},"award":{"title":null,"description":null},"link":{"title":null,"description":null},"blogEntry":{"title":null,"description":null,"image":{"type":"*"},"video":null,"tags":null,"content":null},"to_do":{"title":null,"description":null}}
+
+
+DONE
+- filter portlet variables more efficiently
+- project names are active even if logged out
+- fixed session management across projects
+
+
+- tail -f /var/log/apache2/php_errors.log
 
 - git ls-files | xargs wc -l
 

@@ -4,7 +4,11 @@
 
 	function checkPassword($conn){
 		$sql = 'select user, pass, name from user, user_type where type = user_type.id and user = \''.$_POST['userName'].'\'';
-		$result = $conn->query($sql);
+		if(!$result = $conn->query($sql)){
+			error_log('Corrupt DB.');
+			echo 'Corrupt DB';
+			exit();
+		};
 
 		if ($result->num_rows > 0 && $row = $result->fetch_array(MYSQLI_NUM))
 			return $row;
@@ -96,6 +100,8 @@
 	<?php require 'body_bottom.inc.php'; ?>
 	<script src="/src/js/common.js"></script>
 	<script type="text/javascript">
+		window._projectName = <?= "'".$config['_projectName']."'" ?>;
+
 		$(document).ready(function() {
 			$('.form-control').keypress(function(event) {
 				if (event.keyCode == 13 || event.which == 13) {

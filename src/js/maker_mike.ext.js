@@ -33,6 +33,18 @@ $( ".form_plus_button" ).on('click', function(){
 		$('textarea[name=yaml]').addClass('d-none');
 	}
 });
+$('table').on('click', '.copy_json_as_yaml', function(e){
+	debugger;
+	const el = document.createElement('textarea');
+	el.value = YAML.stringify( JSON.parse($(e.target).parent().parent().text()) );
+	el.setAttribute('readonly', '');
+	el.style.position = 'absolute';
+	el.style.left = '-9999px';
+	document.body.appendChild(el);
+	el.select();
+	document.execCommand('copy');
+	document.body.removeChild(el);
+});
 function doTablePostHook(){
 	if(window.name == 'project'){
 		console.log('in maker_mike project table post hook');

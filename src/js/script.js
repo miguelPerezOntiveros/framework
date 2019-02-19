@@ -4,6 +4,8 @@ handleCreate = function(){
 	$('input[type=file]').each(function(i, e){
 		e.required = true;
 	});
+	if(name == 'portlet')
+		$('select[name="query_tables[]"]').trigger('change');
 }
 handleEdit = function(e){
 	window.crud_mode = 'update';
@@ -107,8 +109,9 @@ doForm = function(columns){
 					window.form_portlet_variable_options = [];
 					$.each($('select[name="query_tables[]"] option'), function(i, option){
 						$.get('/src/crud_read.php?project='+window._projectName+'&table=' + $(option).data('table_name') + '&columns=', function(response){
+							window.form_portlet_variable_options[$(option).text()] = [];
 							$.each(JSON.parse(response).columns, function(i, column){
-								window.form_portlet_variable_options.push([$(option).data('table_name') + '.' + column[0], $(option).text()]);
+								window.form_portlet_variable_options[$(option).text()].push($(option).data('table_name') + '.' + column[0]);
 							});
 						});
 					});
@@ -293,9 +296,8 @@ $(document).ready(function() {
 	$('#cu_form').on('change', 'select[name="query_tables[]"]', function(){
 		$('.cu_form-variable_options').html('');
 		$.each($('select[name="query_tables[]"]').val(), function(i, selected_table_human_name){
-			$.each(form_portlet_variable_options, function(i, entry_from_all_options){
-				if(entry_from_all_options[1].startsWith(selected_table_human_name))
-					$('.cu_form-variable_options').append('<a class="dropdown-item cu_form-insert_variable" href="#">'+entry_from_all_options[0]+'</a>');
+			$.each(window.form_portlet_variable_options[selected_table_human_name], function(i, entry_from_selected_table){
+				$('.cu_form-variable_options').append('<a class="dropdown-item cu_form-insert_variable" href="#">'+entry_from_selected_table+'</a>');
 			});
 		});
 		if(!$('select[name="query_tables[]"]').val().length)

@@ -1,5 +1,3 @@
-<?php 	require_once 'config.inc.php';
-require 'session.inc.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <?php require 'head.inc.php'; ?>
@@ -9,7 +7,10 @@ require 'session.inc.php'; ?>
 		<div class="sidebarWrapper_page">
 			<div class="footerDown_container">
 				<div class="footerDown_body">
-					<?php require 'menu.inc.php'; ?>
+					<nav class="navbar navbar-expand-lg navbar-dark topbar_topbar">
+						<div style="height: 40px;">
+						</div>
+					</nav>
 					<div class="container">
 						<div class="row">
 							<h2><br>Welcome to <b>Maker Mike 1.5</b>!</h2>
