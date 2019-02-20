@@ -124,6 +124,12 @@
 					'type' => '*',
 					'ext' => array('zip')
 				),
+				'contents' => array(
+					'permissions_read' => 'System Administrator',
+					'permissions_update' => 'System Administrator',
+					'permissions_create' => 'System Administrator',
+					'type' => '1023'
+				),
 				'_permissions' => array(
 					'create' => 'System Administrator',
 					'read' => 'System Administrator',

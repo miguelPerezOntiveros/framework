@@ -85,12 +85,12 @@
 				else
 					error_log('Had no file to unlink: '.$fileToUnlink);
 			}
-
-			//Possible extension of the service
-			$postfix = 'u';
-			require 'ext.inc.php';
 		}
 	}
+	
+	//Possible extension of the service
+	$postfix = 'u';
+	require 'ext.inc.php';
 
 	//Executing Query
 	$sql_keys = [];

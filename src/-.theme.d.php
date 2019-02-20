@@ -10,8 +10,13 @@
 	if(strpos(normalize($url), normalize($baseProjectUrl)) === 0 &&
 		strpos(normalize($url), normalize($baseProjectUrl).'/admin') !== 0
 	){
-		$command = 'rm -rf '.$url;
-		error_log('Deleting theme: '.$command);
+		foreach (json_decode($row['contents']) as $key => $value) {
+			$command = 'rm "'.$url.$value.'"';
+			error_log('Command: '.$command);
+			exec($command);
+		}
+		$command = 'find "'.$baseProjectUrl.'" -path "../projects/'.$config['_projectName'].'/admin/*" -prune -o -type d -empty -delete';
+		error_log('Command: '.$command);
 		exec($command);
 	}
 ?>

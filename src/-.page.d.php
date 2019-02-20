@@ -12,6 +12,6 @@
 		strpos(normalize($url), normalize($baseProjectUrl).'/admin') !== 0
 	){
 		error_log('deleting page');
-		exec('rm '.$url.' '.$dir.'/page.php && find ../projects/'.$config['_projectName'].' -path "../projects/'.$config['_projectName'].'/admin/*" -prune -o -type d -empty -delete');
+		exec('rm '.$url.' '.$dir.'/page.php && find "../projects/'.$config['_projectName'].'" -path "../projects/'.$config['_projectName'].'/admin/*" -prune -o -type d -empty -delete');
 	}
 ?>

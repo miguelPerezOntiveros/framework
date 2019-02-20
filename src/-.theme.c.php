@@ -20,7 +20,7 @@
 				error_log('existing url: '.normalize($baseProjectUrl.'/'.$row_checking_url_collisions['url']));
 				error_log('contender url: '.normalize($url));
 				error_log('==');
-				if(strpos(normalize($url), normalize($baseProjectUrl.'/'.$row_checking_url_collisions['url'])) === 0)
+				if(strpos(normalize($url).'/', normalize($baseProjectUrl.'/'.$row_checking_url_collisions['url']).'/') === 0)
 					$url_available = false;
 			}
 
@@ -28,6 +28,19 @@
 			$command = 'unzip "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'" -d '.$url;
 			error_log('Deploying theme: '.$command);
 			exec($command);
+
+			$execOutput = array();
+			error_log('pwd: '.exec('pwd'));
+			$command = 'cd '.$baseProjectUrl.' && find '.$row['url'].' -type f';
+			error_log('find: '.$command);
+			exec($command, $execOutput);
+			$row['contents'] = '';
+			$files_in_theme = [];
+			foreach($execOutput as $line) {
+				error_log('line: '.$line);
+				$files_in_theme[] = substr($line, 3);
+			}
+			$row['contents'] = json_encode($files_in_theme);
 		}
 	}
 ?>
