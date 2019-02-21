@@ -11,7 +11,7 @@
 		strpos(normalize($url), normalize($baseProjectUrl).'/admin') !== 0
 	){
 		foreach (json_decode($row['contents']) as $key => $value) {
-			$command = 'rm "'.$url.$value.'"';
+			$command = 'rm "'.$url.'/'.end(explode(' ', $value)).'"';
 			error_log('Command: '.$command);
 			exec($command);
 		}

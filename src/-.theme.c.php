@@ -30,13 +30,12 @@
 			exec($command);
 
 			$execOutput = array();
-			error_log('pwd: '.exec('pwd'));
-			$command = 'cd '.$baseProjectUrl.' && find '.$row['url'].' -type f';
+			$command = 'unzip -l "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'"';
 			error_log('find: '.$command);
 			exec($command, $execOutput);
 			$row['contents'] = '';
 			$files_in_theme = [];
-			foreach($execOutput as $line) {
+			foreach(array_slice($execOutput, 3, -2) as $line) {
 				error_log('line: '.$line);
 				$files_in_theme[] = substr($line, 3);
 			}

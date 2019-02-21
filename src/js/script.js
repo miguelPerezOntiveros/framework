@@ -93,14 +93,15 @@ doForm = function(columns){
 				if(name == 'page' && e[0] == 'html'){
 					form += '<span style="float:right" class="dropdown show"><a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Insert Portlet</a><div class="dropdown-menu cu_form-portlet_options" aria-labelledby="dropdownMenuLink"></div></span>';
 					$('.form_element').append(form);
-					$('.cu_form-portlet_options').append('<a class="dropdown-item" href="#">No portlet available</a>');
 					form = '';
 					$.get('/src/crud_read.php?project='+window._projectName+'&table=portlet' + '&show=true', function(response){
 						response = JSON.parse(response);
+						if(!response.data.length)
+							$('.cu_form-portlet_options').append('<a class="dropdown-item" href="#">No portlet available</a>');
 						$.each(response.data, function(i, el){
 							$('.cu_form-portlet_options').append('<a class="dropdown-item cu_form-insert_portlet" href="#">'+el[1]+'</a>');
 						});
-					});
+					});					
 				}
 				if(name == 'portlet' && e[0] == 'template'){
 					form += '<span style="float:right" class="dropdown show"><a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Insert Variable</a><div class="dropdown-menu cu_form-variable_options" aria-labelledby="dropdownMenuLink"></div></span>';

@@ -1,5 +1,6 @@
 # framework 1.5
 ### TODO
+- Note: handy command: git ls-files | xargs wc -l
 - extending the projects from within, issuing create table statements?
 - should access to reference imply access to referenced column?
 - encript passwords in db
@@ -38,14 +39,18 @@
 	- deletion of project could just export them to a dedicated folder
 - I need a better logo
 - use unlimited column types (will affect db creation) for html
-- shouldnt be able to create a page that already exists
 - I should allow for back and forward browser button functionality at index.php (you can't currently reach the same tab you were on)
 - create copy on edit
 - only preview or don't show even don't show html field on datatable.
-- Uploading the same image for 2 rows, and deleting one, deletes the image for both
-
 - should file size limit be a per project setting? (do I need per project settings?) same thing with input height threadholds
 - create test suite
+- 'page' urls should be force to end in '.php'
+
+For this month:
+- Uploading the same image for 2 rows, and deleting one, deletes the image for both
+- shouldnt be able to create a page that already exists?
+
+For this week:
 - Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
 - containerize this
 	- choose between
@@ -54,15 +59,17 @@
 		- Get the source code to the host and use docker run -v $(pwd):/whatever/
 	- get the logs (2 sources)
 		- tail -f /var/log/apache2/php_errors.log
-- I probably need a JS client library?
-- Themes are adopting already existing files as theirs, but they shouldnt as extra files won't be included in the zip file. Use a temp file instead.
-- mkdir directory before unziping theme
-
-IN PROGRESS
-- only theme files are deleted when I delete a theme that contains a maker-mike page
-
-- git ls-files | xargs wc -l
-
+- jQuery extension
+	- check if authed?
+	- Create
+	- Read
+		- only
+		- show
+		- where
+		- columns
+		- 
+	- Update
+	- Delete
 #### Recreating the maker_mike project
 - note you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist
 - run your yaml on the maker tab
