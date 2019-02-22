@@ -19,7 +19,6 @@
 			while($row_checking_url_collisions = $result->fetch_assoc()){
 				error_log('existing url: '.normalize($baseProjectUrl.'/'.$row_checking_url_collisions['url']));
 				error_log('contender url: '.normalize($url));
-				error_log('==');
 				if(strpos(normalize($url).'/', normalize($baseProjectUrl.'/'.$row_checking_url_collisions['url']).'/') === 0)
 					$url_available = false;
 			}

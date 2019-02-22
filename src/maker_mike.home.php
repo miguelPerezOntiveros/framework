@@ -2,6 +2,9 @@
 <html lang="en">
 <?php require 'head.inc.php'; ?>
 <body>
+	<style>
+		b { color: #46E; }
+	</style>
 	<div class="sidebarWrapper_wrapper">
 		<?php require 'sidebar.inc.php'; ?>
 		<div class="sidebarWrapper_page">
@@ -22,7 +25,8 @@
 							<img src="/src/logo.png" alt="">
 							<br><br><br><br>
 							<br><br><br>
-							<h4>In version 1.5 of Maker Mike, you can manage all your projects from one same place, as well as create pages, portlets and themes for them.</<h4></h4>
+							<h4>In version 1.5 of Maker Mike, you can manage all your projects from one <b>same place</b> and create <b>pages</b>, <b>portlets</b> and <b>themes</b> for them.<br>
+							You can also take advantage of the <b>JS client library</b> to interact with the CMS.</h4>
 							<br><br><br><br><br><br>
 							<br><br><br><br><br><br>	
 							</div>							
