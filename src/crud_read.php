@@ -71,6 +71,8 @@
 		while($row = $result->fetch_array(MYSQLI_NUM))
 			$data[] = $row;
 	}
+	//Executin Query 
+
 
 	//Possible extension of the service
 	$postfix = 'r';

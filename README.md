@@ -33,6 +33,7 @@
 	- Document calls to cruds
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
 - SYNDICATION
+- check if page and theme url availability need adjustments due to case sensitivity
 - verify session on pages from page table? would need to be able to mark pages as private as well
 - Import/Export
 	- maker_mike Import with drag and drop
@@ -47,9 +48,73 @@
 - create test suite
 - incorporate OAuth 2.0 for Google accounts
 - hide project specific disabled sidebar links 
+- front end project config builder?
 - use websockets?
 - IMPORTANT:
-- Change over to mysqli? make sure no sql injection is possible, use pdo's? https://kevinsmith.io/protect-your-php-application-from-sql-injection
+- PDO
+	- Since column and table identifiers are part of the query structure, you cannot parametrize them.
+	miguel@miguels-MacBook-Pro ~/g/framework> grep -rn . -e '$conn->query'
+	./login.php:7:		if(!$result = $conn->query($sql)){
+	./projects/miguelp/admin/login.php:7:		if(!$result = $conn->query($sql)){
+	./projects/miguelp/admin/sidebar_projects.php:15:	if($result = $conn->query($sql))
+	./projects/miguelp/page.php:9:	if($result = $conn->query($sql)){
+	./projects/miguelp/page.php:26:		if($result = $conn->query($sql)){
+	./projects/miguelp/page.php:31:				if($result = $conn->query($sql)){
+	./projects/miguelp/page.php:40:				if($result2 = $conn->query($sql)){
+	./projects/maker_mike/admin/login.php:7:		if(!$result = $conn->query($sql)){
+	./projects/maker_mike/admin/sidebar_projects.php:15:	if($result = $conn->query($sql))
+	./src/maker_mike.project.c.php:13:		if($ext_result = $conn->query($ext_sql))
+	./src/maker_mike.project.c.php:267:			if($result = $conn->query($sql))
+	./src/-.theme.c.php:16:		if(!$result = $conn->query($sql))
+	./src/login.php:7:		if(!$result = $conn->query($sql)){
+	./src/crud_delete.php:37:	if(!$result = $conn->query($sql))
+	./src/crud_delete.php:61:	if($result = $conn->query($sql))
+	./src/-.page.c.php:20:		if(!$result = $conn->query($sql))
+	./src/crud_create.php:72:	if($result = $conn->query($sql))
+	./src/crud_update.php:73:	if(!$result = $conn->query($sql))
+	./src/crud_update.php:102:	if($result = $conn->query($sql))
+	./src/page.php:9:	if($result = $conn->query($sql)){
+	./src/page.php:26:		if($result = $conn->query($sql)){
+	./src/page.php:31:				if($result = $conn->query($sql)){
+	./src/page.php:40:				if($result2 = $conn->query($sql)){
+	./src/sidebar_projects.php:15:	if($result = $conn->query($sql))
+	./src/sidebar.inc.php:20:							if($result = $conn->query($sql))
+	./src/crud_read.php:67:	if($result = $conn->query($sql)){
+		/*
+	- tables
+	$table = "`".str_replace("`","``",$table)."`";
+	- columns on select
+	$orders  = ["name","price","qty"]; //field names
+	$key     = array_search($_GET['sort'],$orders); // see if we have such a name
+	$orderby = $orders[$key]; //if not, first one will be set automatically. smart enuf :)
+	$query   = "SELECT * FROM `table` ORDER BY $orderby"; //value is safe
+	- columns on insert and update
+	$data = ['name' => 'foo', 'submit' => 'submit']; // data for insert
+	$allowed = ["name", "surname", "email"]; // allowed fields
+	$values = [];
+	$set = "";
+	foreach ($allowed as $field) {
+	    if (isset($data[$field])) {
+	        $set.="`".str_replace("`", "``", $field)."`". "=:$field, ";
+	        $values[$field] = $data[$field];
+	    }
+	}
+	$set = substr($set, 0, -2); 
+	- select
+	$statement = $pdo->prepare('SELECT * FROM Users WHERE id=?');
+	$statement->execute([$_GET['userId']]);
+	$user = $statement->fetch(PDO::FETCH_ASSOC);
+	- PDO::FETCH_LAZY allows all three (numeric associative and object) methods without memory overhead.
+	- one can use positional or named placeholders
+	$stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND status=?');
+	$stmt->execute([$email, $status]);
+	$user = $stmt->fetch();
+	// or
+	$stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email AND status=:status');
+	$stmt->execute(['email' => $email, 'status' => $status]);
+	$user = $stmt->fetch();
+	- bindVaue()?
+	- I don't think I need transactions, but that's possible as well
 - containerize this
 	- choose between
 		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.
@@ -58,12 +123,10 @@
 	- get the logs (2 sources)
 		- tail -f /var/log/apache2/php_errors.log
 		- the normal ./start
-- jQuery extension
-	- for all CRUDs
-		- query parameters \$_GET\['.*?'\]
-			- table
-			- project
+- jQuery extension client library
+	- client demonstration tool
 	- some kind of discovery?
+	- constructor (set base endpoint and query parameters in common (table and project))
 	- maybe think of a more object oriented approach?
 	- endpoints		
 		- Authentication
@@ -88,6 +151,7 @@
 		- Delete (post)
 			- body parameters
 				-  id
+
 #### Recreating the maker_mike project
 - note you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist
 - run your yaml on the maker tab
