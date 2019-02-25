@@ -6,7 +6,7 @@
 	else
 		require '../projects/'.$_GET['project'].'/admin/config.inc.php';
 
-	// Validating table permissions
+	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['read'] != '-'){
 		require 'session.inc.php';
 
@@ -15,7 +15,7 @@
 			exit(json_encode((object) ["error" => "No such table."]));
 	}
 
-	// Checking column permissions
+	//Validating column permissions
 	$tablesToJoin = [$_GET['table']];
 	$allowedColumns = [$_GET['table'].'.id'];
 	$joinRules = ['1'];

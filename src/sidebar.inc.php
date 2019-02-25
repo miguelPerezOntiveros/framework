@@ -13,21 +13,13 @@
 				</li>
 				<li>
 					<a href="#projectsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Projects</a>
-					<ul class=<?php echo '"collapse list-unstyled sidebar_projects'.($_GET['sidebar']==1?' show"':'"') ?> id="projectsSubmenu">
-						<?php
-							require_once 'db_connection.inc.php';
-							$sql = "select 'projectView' where '".$config['_projectName']."' IN (select SCHEMA_NAME from information_schema.SCHEMATA where SCHEMA_NAME NOT IN('mysql', 'information_schema', 'performance_schema', 'sys'))";
-							if($result = $conn->query($sql))
-								if($row = $result->fetch_array(MYSQLI_NUM))
-									$projectView = true;
-						?>
-					</ul>
+					<ul class=<?php echo '"collapse list-unstyled sidebar_projects'.($_GET['sidebar']==1?' show"':'"') ?> id="projectsSubmenu"></ul>
 				</li>
                 <li>
                     <a href="https://github.com/miguelPerezOntiveros/framework">About</a>
                 </li>
 				<?php 
-	                if(isset($projectView))
+	                if(isset($config['_projectName']))
 	                	echo '
 		                <li style="border-top: 1px solid #000032; color: #3bb6d4;">
 							<p>'.$config['_show'].'</p>

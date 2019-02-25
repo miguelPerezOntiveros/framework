@@ -30,6 +30,7 @@
 		- _show fields
 		- select: multi
 		- select: tables (requires no type attribute)
+		- booleans
 	- Document calls to cruds
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
 - SYNDICATION
@@ -54,7 +55,6 @@
 - PDO
 	- Since column and table identifiers are part of the query structure, you cannot parametrize them.
 	miguel@miguels-MacBook-Pro ~/g/framework> grep -rn . -e '$conn->query'
-	./login.php:7:		if(!$result = $conn->query($sql)){
 	./projects/miguelp/admin/login.php:7:		if(!$result = $conn->query($sql)){
 	./projects/miguelp/admin/sidebar_projects.php:15:	if($result = $conn->query($sql))
 	./projects/miguelp/page.php:9:	if($result = $conn->query($sql)){
@@ -66,22 +66,15 @@
 	./src/maker_mike.project.c.php:13:		if($ext_result = $conn->query($ext_sql))
 	./src/maker_mike.project.c.php:267:			if($result = $conn->query($sql))
 	./src/-.theme.c.php:16:		if(!$result = $conn->query($sql))
-	./src/login.php:7:		if(!$result = $conn->query($sql)){
 	./src/crud_delete.php:37:	if(!$result = $conn->query($sql))
 	./src/crud_delete.php:61:	if($result = $conn->query($sql))
 	./src/-.page.c.php:20:		if(!$result = $conn->query($sql))
 	./src/crud_create.php:72:	if($result = $conn->query($sql))
 	./src/crud_update.php:73:	if(!$result = $conn->query($sql))
 	./src/crud_update.php:102:	if($result = $conn->query($sql))
-	./src/page.php:9:	if($result = $conn->query($sql)){
-	./src/page.php:26:		if($result = $conn->query($sql)){
-	./src/page.php:31:				if($result = $conn->query($sql)){
-	./src/page.php:40:				if($result2 = $conn->query($sql)){
-	./src/sidebar_projects.php:15:	if($result = $conn->query($sql))
-	./src/sidebar.inc.php:20:							if($result = $conn->query($sql))
-	./src/crud_read.php:67:	if($result = $conn->query($sql)){
-		/*
+	//
 	- tables
+	if(array_search(str_replace("`","``",$table), []) == 1);
 	$table = "`".str_replace("`","``",$table)."`";
 	- columns on select
 	$orders  = ["name","price","qty"]; //field names
@@ -101,18 +94,16 @@
 	}
 	$set = substr($set, 0, -2); 
 	- select
-	$statement = $pdo->prepare('SELECT * FROM Users WHERE id=?');
-	$statement->execute([$_GET['userId']]);
-	$user = $statement->fetch(PDO::FETCH_ASSOC);
-	- PDO::FETCH_LAZY allows all three (numeric associative and object) methods without memory overhead.
-	- one can use positional or named placeholders
-	$stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND status=?');
-	$stmt->execute([$email, $status]);
-	$user = $stmt->fetch();
-	// or
-	$stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email AND status=:status');
-	$stmt->execute(['email' => $email, 'status' => $status]);
-	$user = $stmt->fetch();
+		- fetch(PDO::FETCH_LAZY) allows all three (numeric associative and object) methods without memory overhead.
+		- one can use positional or named placeholders
+		$stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND status=?');
+		$stmt->execute([$email, $status]);
+		$user = $stmt->fetch();
+		// or
+		$stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email AND status=:status');
+		$stmt->execute(['email' => $email, 'status' => $status]);
+		$user = $stmt->fetch();
+		Shorthand: foreach ($pdo->query($sql) as $row){}
 	- bindVaue()?
 	- I don't think I need transactions, but that's possible as well
 - containerize this

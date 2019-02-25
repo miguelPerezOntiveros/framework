@@ -2,18 +2,13 @@
 	require_once 'config.inc.php';
 	require 'db_connection.inc.php';
 
-	function checkPassword($conn){
+	function checkPassword($pdo){
 		$sql = 'select user, pass, name from user, user_type where type = user_type.id and user = \''.$_POST['userName'].'\'';
-		if(!$result = $conn->query($sql)){
-			error_log('Corrupt DB.');
-			echo 'Corrupt DB';
-			exit();
-		};
-
-		if ($result->num_rows > 0 && $row = $result->fetch_array(MYSQLI_NUM))
-			return $row;
-			
-		$conn->close();
+		error_log('INFO - sql:' .$sql);
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute();
+		if($row = $stmt->fetch(PDO::FETCH_NUM))
+			return $row;		
 		return array();
 	}
 
@@ -25,7 +20,7 @@
 
 	$incorrectPassword = false; 
 	if(isset($_POST['userName']) && isset($_POST['password']) ){
-		$userInfo = checkPassword($conn);
+		$userInfo = checkPassword($pdo);
 		error_log($_POST['userName'].' is trying to log in');
 		if(count($userInfo) == 0 || $userInfo[1] != $_POST['password']) 
 			$incorrectPassword = true;
