@@ -1,18 +1,13 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	isset($_GET['table']) || exit(json_encode((object) ["error" => "No such table."]));
-	
-	if($_GET['project'] == 'mike_maker')
-		require '../config.inc.php';
-	else
-		require '../projects/'.$_GET['project'].'/admin/config.inc.php';
+	require 'load_config.php';
 
+	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['create'] != '-'){
 		require 'session.inc.php';
 
-		// Checking table permissions
-		if(!preg_match('/'.$config[$_GET['table']]['_permissions']['create'].'/', $_SESSION['type']))
-			exit(json_encode((object) ["error" => "login"]));
+		if(!isset($config[$_GET['table']]) || !preg_match('/'.$config[$_GET['table']]['_permissions']['create'].'/', $_SESSION['type']))
+			exit(json_encode((object) ["error" => "No such table."]));
 	}
 	
 	// Checking column permissions
@@ -67,12 +62,16 @@
 	require 'ext.inc.php';
 
 	//Executing Query
-	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (\''.implode('\', \'', array_values($row)).'\');';	
-	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
-	if($result = $conn->query($sql))
-		echo json_encode((object) ["success" => "Entry added successfully"]);
-	else
-		echo json_encode((object) ["error" => $conn->error]);
+	$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (?';
+	for($i = 1; $i<count($row); $i++)
+		$sql .= ', ?';
+	$sql .= ');';	
+	error_log('INFO - sql:' .$sql);
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute(array_values($row));
 
-	$conn->close();
+	if($stmt->rowCount())
+		echo json_encode((object) ["success" => 'Entries added successfully: '.$stmt->rowCount()]);
+	else
+		echo json_encode((object) ["error" => 'No entries updates']);
 ?>

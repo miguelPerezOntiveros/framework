@@ -1,16 +1,11 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	
-	if($_GET['project'] == 'mike_maker')
-		require '../config.inc.php';
-	else
-		require '../projects/'.$_GET['project'].'/admin/config.inc.php';
+	require 'load_config.php';
 
 	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['read'] != '-'){
 		require 'session.inc.php';
 
-		error_log('read permissions table "'.$_GET['table'].'": '.$config[$_GET['table']]['_permissions']['read'].'| session: '.$_SESSION['type']);
 		if(!isset($config[$_GET['table']]) || !preg_match('/'.$config[$_GET['table']]['_permissions']['read'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
 	}
@@ -80,7 +75,5 @@
 	$postfix = 'r';
 	require 'ext.inc.php';
 
-	// TODO: return sql errors as json
 	echo json_encode((object) ['data' => $data, 'columns' => $columns]);
-	$conn->close();
 ?>

@@ -9,13 +9,15 @@
 
 		// Check if it already exists
 		$ext_sql = "select SCHEMA_NAME from information_schema.SCHEMATA where SCHEMA_NAME NOT IN('maker_mike');";
-		error_log($ext_sql);
-		if($ext_result = $conn->query($ext_sql))
-			while($ext_row = $ext_result->fetch_array(MYSQLI_NUM))
-				if($newConfig['_projectName'] == $ext_row[0]){
-					error_log('Project "'.$ext_row[0].'" already exists or has an invalid name.');
-					exit(json_encode((object) ["error" => 'Project "'.$ext_row[0].'" already exists or has an invalid name.']));
-				}
+		error_log('INFO - sql:' .$ext_sql);
+		$stmt = $pdo->prepare($ext_sql);
+		$stmt->execute();
+
+		while($ext_row = $stmt->fetch(PDO::FETCH_NUM))
+			if($newConfig['_projectName'] == $ext_row[0]){
+				error_log('Project "'.$ext_row[0].'" already exists or has an invalid name.');
+				exit(json_encode((object) ["error" => 'Project "'.$ext_row[0].'" already exists or has an invalid name.']));
+			}
 
 		// Config
 		if(!isset($newConfig['_show'])){
@@ -262,14 +264,15 @@
 		error_log('ERROR: '.(strpos($result_of_post_build[1], "ERROR") !== false));
 		if(strpos($result_of_post_build[1], "ERROR") !== false){
 			//Executing Query
-			$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (\''.implode('\', \'', array_values($row)).'\');';	
-			error_log('SQL - '.$config['_projectName'].' - ' .$sql);
-			if($result = $conn->query($sql))
-				echo json_encode((object) ["error" => 'Invalid configuration.']);
-			else
-				echo json_encode((object) ["error" => $conn->error]);
+			$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (?';
+			for($i = 1; $i<count($row); $i++)
+				$sql .= ', ?';
+			$sql .= ');';	
+			error_log('INFO - sql:' .$sql);
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array_values($row));
+			echo json_encode((object) ["error" => 'Invalid configuration.']);
 
-			$conn->close();
 			exit();
 		}
 	}

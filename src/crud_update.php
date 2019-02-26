@@ -1,17 +1,12 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	isset($_GET['table']) && isset($_POST['id']) || exit(json_encode((object) ["error" => "No such table"]));
-	
-	if($_GET['project'] == 'mike_maker')
-		require '../config.inc.php';
-	else
-		require '../projects/'.$_GET['project'].'/admin/config.inc.php';
+	require 'load_config.php';
 
+	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['update'] != '-'){
 		require 'session.inc.php';
 
-		// Checking table permissions
-		if(!preg_match('/'.$config[$_GET['table']]['_permissions']['update'].'/', $_SESSION['type']))
+		if(!isset($config[$_GET['table']]) || !preg_match('/'.$config[$_GET['table']]['_permissions']['update'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
 	}
 	
@@ -62,31 +57,22 @@
 	}
 
 	if(!count($row))
-		exit(json_encode((object) ["error" => "No such table"]));
-
-	// TODO: check how to handle all the possible sql errors
+		exit(json_encode((object) ["error" => "No such table."]));
 
 	require 'db_connection.inc.php';
-	
-	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = '.$_POST['id'].';';
-	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
-	if(!$result = $conn->query($sql))
-		exit(json_encode((object) ["error" => "Error while retrieving entry"]));
-	else
-	{
-		if(!$row_old = $result->fetch_assoc())
-			exit(json_encode((object) ["error" => "No files to delete anymore"]));
-		else{
-			foreach ($fileColumns as $file_key){
-				$fileToUnlink = '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row_old[$file_key];
-				error_log('File to unlink: '.$fileToUnlink);
-				if(file_exists($fileToUnlink))
-					unlink($fileToUnlink);
-				else
-					error_log('Had no file to unlink: '.$fileToUnlink);
-			}
+	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = ?;';
+	error_log('INFO - sql:' .$sql);
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute([$_POST['id']]);
+	if($row_old = $stmt->fetch(PDO::FETCH_ASSOC))
+		foreach ($fileColumns as $file_key){
+			$fileToUnlink = '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$row_old[$file_key];
+			error_log('File to unlink: '.$fileToUnlink);
+			if(file_exists($fileToUnlink))
+				unlink($fileToUnlink);
+			else
+				error_log('Had no file to unlink: '.$fileToUnlink);
 		}
-	}
 	
 	//Possible extension of the service
 	$postfix = 'u';
@@ -94,15 +80,16 @@
 
 	//Executing Query
 	$sql_keys = [];
-	foreach ($row as $key => $value) {
-		$sql_keys[] = $key.' = \''.$value.'\'';
-	}
+	foreach ($row as $key => $value)
+		$sql_keys[] = $key.' = ?';
 	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$sql_keys).' WHERE id=\''.$_POST['id'].'\';';	
-	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
-	if($result = $conn->query($sql))
-		echo json_encode((object) ["success" => "Entry updated successfully"]);
-	else
-		exit(json_encode((object) ["error" => $conn->error]));
+	error_log('INFO - sql:' .$sql);
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute(array_values($row));
+	$stmt->fetch(PDO::FETCH_ASSOC);
 
-	$conn->close();
+	if($stmt->rowCount())
+		echo json_encode((object) ["success" => 'Entries udated successfully: '.$deleted = $stmt->rowCount()]);
+	else
+		echo json_encode((object) ["error" => 'No entries updated.']);
 ?>
