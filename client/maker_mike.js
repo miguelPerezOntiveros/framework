@@ -1,5 +1,38 @@
+(function ($, window, undefined) {
+    $.mm_config = {}
+    $.mm_set = function (params) {
+        Object.assign($.mm_config, params);
+    };
+    $.mm_get = function (params) {
+        if(params)
+            $.mm_set(params);
+        return new Promise(function(fullfill, reject){
+            // todo missing show, query, etc..
+            $.get('/src/crud_read.php?project='+$.mm_config['project']+'&table='+$.mm_config['table']+'', function(data){
+                fullfill(JSON.parse(data));
+            })
+        });
+    };
+    $.mm_set = function (params) {
+        if(params)
+            $.mm_set(params);
+        return new Promise(function(fullfill, reject){
+            $.get('/src/crud_read.php?project='+$.mm_config['project']+'&table='+$.mm_config['table']+'', function(data){
+                fullfill(JSON.parse(data));
+            })
+        });
+    };
+    $.mm_patch = function (params) {
+        if(params)
+            $.mm_set(params);
+        return new Promise(function(fullfill, reject){
+            $.get('/src/crud_read.php?project='+$.mm_config['project']+'&table='+$.mm_config['table']+'', function(data){
+                fullfill(JSON.parse(data));
+            })
+        });
+    };
+})(jQuery, window);
 
-$base_url = 'http://127.0.0.1:8085/src/';
-$.get($base_url+'/crud_read.php?project=maker_mike&table=project', function(response){
-	$('#res').html(response);
-})
+
+// Example of usage
+$.mm_get({'project': 'miguelp', 'table':'portlet'});

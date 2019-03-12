@@ -51,6 +51,7 @@
 - hide project specific disabled sidebar links 
 - front end project config builder?
 - use websockets?
+- confirm project deletions
 - IMPORTANT:
 - containerize this
 	- choose between
@@ -60,6 +61,7 @@
 	- get the logs (2 sources)
 		- tail -f /var/log/apache2/php_errors.log
 		- the normal ./start
+	- secure viewer.php, if it's not
 - jQuery extension client library
 	- client demonstration tool
 	- some kind of discovery?
