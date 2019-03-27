@@ -5,10 +5,11 @@ function onSignIn(googleUser){
   
   $.post('login.php', {id_token: googleUser.getAuthResponse().id_token}, function(response){
     console.log('response from login.php:', response);
-    if(!response.error){
-      // session has been set on the backend
+    response = JSON.parse(response);
+    if(response.error)
+      $('.alert-danger').attr('hidden', false)
+    else
       window.location = 'index.php';
-    }
   })
 }
 function init() {
