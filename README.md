@@ -52,6 +52,7 @@
 - front end project config builder?
 - use websockets?
 - confirm project deletions
+- why is sidebar_projects being called twice?
 - IMPORTANT:
 - containerize this
 	- choose between
