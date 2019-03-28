@@ -1,4 +1,6 @@
 <?php
+	error_reporting(E_ALL ^ E_NOTICE); 
+
 	require_once 'config.inc.php';
 	require 'db_connection.inc.php';
 
@@ -47,7 +49,7 @@
 			$_SESSION['userName'] = $tokeninfo['email'];
 			$_SESSION['type'] = $userInfo[2];
 
-			exit(json_encode((object) ['success' => true]));
+			exit(json_encode((object) ['success' => 'index.php?sidebar='.$_GET['sidebar']]));
 		} else
 			exit(json_encode((object) ['error' => $tokeninfo['email'].' not Authorized']));
 	}
@@ -67,7 +69,7 @@
 							<div class="container">
 								<div class="row" style="padding-top: 3em;">
 									<div class="col-12 bs-callout-left">
-										<h2><?= $config['_projectName'] ?></h2>
+										<h2><?= $config['_show'] ?></h2>
 									</div>
 									<br><br><br>
 								</div>

@@ -3,13 +3,13 @@ function onSignIn(googleUser){
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.disconnect();
   
-  $.post('login.php', {id_token: googleUser.getAuthResponse().id_token}, function(response){
+  $.post('login.php?sidebar=' + ($('.sidebarWrapper_sidebar').hasClass('active')?'':'1'), {id_token: googleUser.getAuthResponse().id_token}, function(response){
     console.log('response from login.php:', response);
     response = JSON.parse(response);
     if(response.error)
       $('.alert-danger').attr('hidden', false)
     else
-      window.location = 'index.php';
+      window.location = response.success;
   })
 }
 function init() {
