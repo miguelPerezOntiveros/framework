@@ -18,13 +18,15 @@ handleEdit = function(e){
 		values.push($(e).text());
 	})
 	console.log(values);
-	$('.form_element').find('textarea, select, input[type!="submit"]').each(function(i, e){
+	$('.form_element').find('textarea, pre, select, input[type!="submit"]').not('.ace_text-input').each(function(i, e){
 		if($(e).is('select[multiple]'))
 			$(e).val(values[i].split('-').slice(1));
-		else if ($(e).is('select'))
+		else if($(e).is('select'))
 			$(e).val(values[i].split('-')[0]);
-		else if ($(e).attr('type') == 'file')
+		else if($(e).attr('type') == 'file')
 			; // don't fill in value for files
+		else if($(e).is('pre'))
+			editors[$(e).attr('name')].setValue(values[i]);
 		else
 			$(e).val(values[i]);
 	})
@@ -37,11 +39,30 @@ handleDelete = function(e){
 	$('.form_element input[name=id]').val(id);
 	$('.form_element').trigger('submit');
 }
+resetEditors = function(){
+	for(prop in editors){
+		editors[prop].setValue('');
+	}
+	window.editors = new Array();
+	Array.from(document.getElementsByClassName('ace')).forEach(function(el){
+	    editor = ace.edit(el, {
+	    	wrap: true,
+	    	copyWithEmptySelection: true,
+	    	maxLines:30,
+	    	minLines: 3}
+	    );
+	    editor.setTheme("ace/theme/monokai");
+	    editor.session.setMode({path:"ace/mode/php"});
+	    // editor.setValue('<hola></hola>');
+	    window.editors[el.getAttribute('name')] = editor;
+	});
+}
 toggleForm = function (only){
 	if(!only || 
 		only == "close" && $('.form').hasClass('bs-callout-left') ||
 		only == "open" && !$('.form').hasClass('bs-callout-left')){
 		$('.form_element')[0].reset();
+		resetEditors();
 		$('.catcherFilesLabel').text('Drop file here');
 		$('.form_element').toggle('slow');
 		if ($('.form').toggleClass('bs-callout-left'))
@@ -64,7 +85,7 @@ doMenu = function(name, displayName){
 
 doForm = function(columns){
 	$('.form_element').html('');
-	$.each(columns, function(i, e) {
+	$.each(columns, function(i, e){
 		var form = '';
 		if(i==0) // The id row will be hidden to the user
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
@@ -118,7 +139,10 @@ doForm = function(columns){
 						});
 					});
 				}
-				form += '</br><textarea name="'+e[0]+'" form="cu_form"'+ (e[1]<260?'rows="1" class="single_lined"':'')+'required></textarea><br>';
+				if(e[1]<260)
+					form += '</br><textarea name="'+e[0]+'" form="cu_form" rows="1" class="single_lined" required></textarea><br>';				
+				else
+					form += '</br><pre name="'+e[0]+'" class="ace"></pre><br>';
 			}
 			else if(e[1] == '*')
 				form += '</br><input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
@@ -137,6 +161,7 @@ doForm = function(columns){
 			}
 		}
 		$('.form_element').append(form);
+		resetEditors();
 	});
 
 	$('.form_element').append('<input type="submit" class="btn btn-primary" style="float:right" value="OK">');
@@ -240,6 +265,7 @@ doTable2 = function(data, thenDoForm){
 }
 $(document).ready(function() {
 	var endpoint = {"create": "/src/crud_create.php", "update": "/src/crud_update.php", "delete":"/src/crud_delete.php"};
+	window.editors = new Array();
 	$('.form_element').submit(function(e){
 		e.preventDefault();
 
@@ -248,6 +274,9 @@ $(document).ready(function() {
 				return;
 
 		var formData = new FormData($('.form_element')[0]);
+		for(prop in editors)
+			formData.append(prop, editors[prop].getValue());
+
 		$.ajax({
 			type: "POST",
 			url: endpoint[window.crud_mode] + '?project='+window._projectName+'&table=' + window.name,
@@ -280,8 +309,8 @@ $(document).ready(function() {
 			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
 	});
 	$('#cu_form').on('click', '.cu_form-insert_portlet', function(e){
-		$('textarea[name="html"]').val(
-			$('textarea[name="html"]').val().substring(0, $('textarea[name="html"]')[0].selectionStart)+
+		editors['html'].setValue(
+			editors['html'].getValue().substring(0, $('textarea[name="html"]')[0].selectionStart) +
 			'<mm-p>' + $(e.target).text() + '</mm-p>' +
 			$('textarea[name="html"]').val().substring($('textarea[name="html"]')[0].selectionStart)
 		);

@@ -6,13 +6,12 @@ $.getScript( "/vendor/yamljs/yaml.js", function( data, textStatus, jqxhr ){
 
 function submitHook(e){
 	if(window.name == 'project' && window.crud_mode != 'delete'){
+		// config is the one displayed, it will be updated to carry json. yaml is a textarea in which the yaml will travel
 		if($('textarea[name=yaml]').length == 0)
 			$('.form_element').append('<textarea name="yaml" form="cu_form" style="display:none;" required></textarea><br>');
-		$('textarea[name=yaml]').val($('textarea[name=config]').val());
+		$('textarea[name=yaml]').val(editors['config'].getValue());
 		try {
-		  	$('textarea[name=config]').val(
-				JSON.stringify(YAML.parse($('textarea[name=config]').val()))
-			);
+			editors['config'].setValue(JSON.stringify(YAML.parse(editors['config'].getValue())))
 		}
 		catch(err) {
 			console.log('Invalid YAML');
@@ -28,13 +27,12 @@ $( ".form_plus_button" ).on('click', function(){
 		if($('textarea[name=yaml]').length != 0)
 			$('textarea[name=yaml]').remove();
 		$.get('/default.yml', function(data){
-			$("textarea[name='config']").text(data);
+			editors['config'].setValue(data);
 		});
 		$('textarea[name=yaml]').addClass('d-none');
 	}
 });
 $('table').on('click', '.copy_json_as_yaml', function(e){
-	debugger;
 	const el = document.createElement('textarea');
 	el.value = YAML.stringify( JSON.parse($(e.target).parent().parent().text()) );
 	el.setAttribute('readonly', '');

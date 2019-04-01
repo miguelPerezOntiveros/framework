@@ -23,7 +23,9 @@ experience:
   description: 
 award: 
   title: 
-  description: 
+  description:
+    type: 1024
+  note: 
 link: 
   title: 
   description: 

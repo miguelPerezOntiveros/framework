@@ -1,11 +1,11 @@
 <?php 
 	error_reporting(E_ALL ^ E_NOTICE); 
 
-	if(isset($_POST['config'])) {
+	if(isset($row['config'])) {
 		error_log('engine activated');
 		require_once 'db_connection.inc.php';
 
-		$newConfig =  json_decode($_POST['config'], true);
+		$newConfig =  json_decode($row['config'], true);
 
 		// Check if it already exists
 		$ext_sql = "select SCHEMA_NAME from information_schema.SCHEMATA where SCHEMA_NAME NOT IN('maker_mike');";
@@ -149,6 +149,12 @@
 					'permissions_create' => 'System Administrator',
 					'type' => '255'
 				),
+				'landing_page' => array(
+					'permissions_read' => 'System Administrator',
+					'permissions_update' => 'System Administrator',
+					'permissions_create' => 'System Administrator',
+					'type' => '255'
+				),
 				'_permissions' => array(
 					'create' => 'System Administrator',
 					'read' => 'System Administrator',
@@ -243,8 +249,8 @@
 			}
 			$sql .= 'primary key(id));'.PHP_EOL;
 		}
-		$sql .= "INSERT INTO user_type(name) VALUES ('System Administrator');".PHP_EOL;
-		$sql .= "INSERT INTO user_type(name) VALUES ('User');".PHP_EOL;
+		$sql .= "INSERT INTO user_type(name, landing_page) VALUES ('System Administrator', 'index.php');".PHP_EOL;
+		$sql .= "INSERT INTO user_type(name, landing_page) VALUES ('User', 'index.php');".PHP_EOL;
 		$sql .= "INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);".PHP_EOL;
 		$sql .= "INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);".PHP_EOL;
 
@@ -253,14 +259,14 @@
 
 		// Write files
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($newConfig).'\', true);?>');
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.yml', $_POST['yaml']);
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.yml', $row['yaml']);
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.sql', $sql);	
 
 		// Run post script
 		$result_of_post_build = array();
 		exec($_SERVER["DOCUMENT_ROOT"].'/build_post.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
-		error_log('post: '.json_encode($result_of_post_build));
-		error_log('first line: '.$result_of_post_build[1]);
+		error_log('result of post build: '.json_encode($result_of_post_build));
+		error_log('first line of result: '.$result_of_post_build[1]);
 		error_log('ERROR: '.(strpos($result_of_post_build[1], "ERROR") !== false));
 		if(strpos($result_of_post_build[1], "ERROR") !== false){
 			//Executing Query

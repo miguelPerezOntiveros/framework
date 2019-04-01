@@ -1,4 +1,4 @@
-# framework 1.5
+# framework 1.5 - Maker Mike 1.0.1
 ### TODO
 - Note: handy command: git ls-files | xargs wc -l
 - extending the projects from within, issuing create table statements?
@@ -33,7 +33,7 @@
 		- booleans
 	- Document calls to cruds
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
-- SYNDICATION
+- SYNDICATION ?
 - check if page and theme url availability need adjustments due to case sensitivity
 - verify session on pages from page table? would need to be able to mark pages as private as well
 - Import/Export
@@ -53,7 +53,11 @@
 - use websockets?
 - confirm project deletions
 - why is sidebar_projects being called twice?
+- refreshing a page should take sidebar state into account, even if it doesn't match the query param
+- dont use the light blue color on the plus/times button
 - IMPORTANT:
+- 'Insert' dropdowns on ace editor
+- Check if after login redirection, the landing page checks permissions properly
 - containerize this
 	- choose between
 		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.
@@ -65,7 +69,7 @@
 	- secure viewer.php, if it's not
 - jQuery extension client library
 	- client demonstration tool
-	- some kind of discovery?
+	- some kind of discovery? maybe fill in a 'tables' array with objects that have appropriate functions
 	- constructor (set base endpoint and query parameters in common (table and project))
 	- maybe think of a more object oriented approach?
 	- endpoints		
@@ -94,7 +98,19 @@
 
 #### Recreating the maker_mike project
 - note you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist
-- run your yaml on the maker tab
+- run your maker_mike yaml on the maker tab, currently:
+´
+_projectName: maker_mike
+_show: Maker Mike
+project: 
+  name: 
+  config: 
+    type: 2048 
+  description:
+settings:
+  name:
+  value: 
+´
 - run these extra commands needed to enable the home page:
 	- cd projects/maker_mike/admin/
 	- sudo ln -s /Users/miguel/git/framework/src/maker_mike.home.php .
