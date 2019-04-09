@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS portlet(id int NOT NULL AUTO_INCREMENT, name varchar(
 CREATE TABLE IF NOT EXISTS theme(id int NOT NULL AUTO_INCREMENT, name varchar(255), url varchar(255), file varchar(255), contents varchar(1023), primary key(id));
 CREATE TABLE IF NOT EXISTS user_type(id int NOT NULL AUTO_INCREMENT, name varchar(255), landing_page varchar(255), primary key(id));
 CREATE TABLE IF NOT EXISTS user(id int NOT NULL AUTO_INCREMENT, user varchar(255), pass varchar(255), type int, foreign key(type) references user_type(id), primary key(id));
-INSERT INTO user_type(name) VALUES ('System Administrator');
-INSERT INTO user_type(name) VALUES ('User');
+INSERT INTO user_type(name, landing_page) VALUES ('System Administrator', 'index.php');
+INSERT INTO user_type(name, landing_page) VALUES ('User', 'index.php');
 INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);
 INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);
