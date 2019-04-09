@@ -47,13 +47,11 @@ resetEditors = function(){
 	Array.from(document.getElementsByClassName('ace')).forEach(function(el){
 	    editor = ace.edit(el, {
 	    	wrap: true,
-	    	copyWithEmptySelection: true,
 	    	maxLines:30,
 	    	minLines: 3}
 	    );
 	    editor.setTheme("ace/theme/monokai");
 	    editor.session.setMode({path:"ace/mode/php"});
-	    // editor.setValue('<hola></hola>');
 	    window.editors[el.getAttribute('name')] = editor;
 	});
 }
@@ -309,20 +307,12 @@ $(document).ready(function() {
 			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
 	});
 	$('#cu_form').on('click', '.cu_form-insert_portlet', function(e){
-		editors['html'].setValue(
-			editors['html'].getValue().substring(0, $('textarea[name="html"]')[0].selectionStart) +
-			'<mm-p>' + $(e.target).text() + '</mm-p>' +
-			$('textarea[name="html"]').val().substring($('textarea[name="html"]')[0].selectionStart)
-		);
-		$('textarea[name="html"]').focus();
+		editor = editors['html'];
+		editor.session.insert(editor.getCursorPosition(), '<mm-p>' + $(e.target).text() + '</mm-p>');
 	});
 	$('#cu_form').on('click', '.cu_form-insert_variable', function(e){
-		$('textarea[name="template"]').val(
-			$('textarea[name="template"]').val().substring(0, $('textarea[name="template"]')[0].selectionStart)+
-			'<mm-v>' + $(e.target).text() + '</mm-v>' +
-			$('textarea[name="template"]').val().substring($('textarea[name="template"]')[0].selectionStart)
-		);
-		$('textarea[name="template"]').focus();
+		editor = editors['template'];
+		editor.session.insert(editor.getCursorPosition(), '<mm-v>' + $(e.target).text() + '</mm-v>');
 	});
 	$('#cu_form').on('change', 'select[name="query_tables[]"]', function(){
 		$('.cu_form-variable_options').html('');

@@ -6,6 +6,7 @@ db_pass="admin"
 db_host="127.0.0.1"
 db_port=3306
 web_port=80
+dev_mode=false
 
 atLeast2Args () {
 	if [ $1 -lt 2 ]; then
@@ -43,6 +44,10 @@ do
 			web_port=$2
 			shift
 			;;
+		--dev-mode)
+			dev_mode=true
+			shift
+			;;
 		*)
 			echo "Usage: ./start.sh [--db-user|-u db_user][--db-pass|-P db_pass][--db-host|-h db_host][--db-port|-p db_port][-web|--web-port web_port]"
 			exit
@@ -64,5 +69,7 @@ done
 
 # Run the PHP server and open a web browser tab to it
 printf "<?php\n\t\$db_user = '"$db_user"';\n\t\$db_pass = '"$db_pass"';\n\t\$db_host = '"$db_host"';\n\t\$db_port = '"$db_port"';\n?>" > start_settings.inc.php
-open http://localhost:$web_port
-sudo php -S 0.0.0.0:$web_port
+if [ "$dev_mode" = true ]; then
+	open http://localhost:$web_port
+	sudo php -S 0.0.0.0:$web_port
+fi

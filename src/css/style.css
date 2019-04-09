@@ -292,5 +292,7 @@ a[data-toggle="collapse"] {
 }
 
 .ace{
-	width: 100%;
+	width: 55em;
+	height: 100%;
+	border: 1px solid black;
 }
