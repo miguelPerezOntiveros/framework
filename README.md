@@ -56,7 +56,6 @@
 - refreshing a page should take sidebar state into account, even if it doesn't match the query param
 - dont use the light blue color on the plus/times button
 - IMPORTANT:
-- 'Insert' dropdowns on ace editor
 - Check if after login redirection, the landing page checks permissions properly
 - containerize this
 	- choose between
@@ -71,7 +70,6 @@
 	- client demonstration tool
 	- some kind of discovery? maybe fill in a 'tables' array with objects that have appropriate functions
 	- constructor (set base endpoint and query parameters in common (table and project))
-	- maybe think of a more object oriented approach?
 	- endpoints		
 		- Authentication
 			- get
@@ -116,6 +114,11 @@ settings:
 	- sudo ln -s /Users/miguel/git/framework/src/maker_mike.home.php .
 	- sudo mv maker_mike.home.php home.php
 - delete the entry from the project table on the maker tab, the actual database will not be deleted
+
+### Running with docker
+cd docker
+docker build .
+docker run --env-file env.list -p 80:80 --rm IMAGE_NUM
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

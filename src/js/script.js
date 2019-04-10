@@ -52,6 +52,10 @@ resetEditors = function(){
 	    );
 	    editor.setTheme("ace/theme/monokai");
 	    editor.session.setMode({path:"ace/mode/php"});
+	    setTimeout(function(){
+	    	editor.resize();
+	    	editor.gotoLine(0,1);
+	    }, 600);
 	    window.editors[el.getAttribute('name')] = editor;
 	});
 }
@@ -60,9 +64,9 @@ toggleForm = function (only){
 		only == "close" && $('.form').hasClass('bs-callout-left') ||
 		only == "open" && !$('.form').hasClass('bs-callout-left')){
 		$('.form_element')[0].reset();
-		resetEditors();
 		$('.catcherFilesLabel').text('Drop file here');
 		$('.form_element').toggle('slow');
+		resetEditors();
 		if ($('.form').toggleClass('bs-callout-left'))
 		$('.form_plus').toggleClass('rotated');
 	}

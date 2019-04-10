@@ -16,6 +16,7 @@ echo "FLUSH PRIVILEGES;" >> /tmp/sql
 cat /tmp/sql | mysql -u root --password="$DB_ROOT_PASS"
 
 cd /usr/share/nginx/html
+chmod -R 777 .
 cat projects/maker_mike/maker_mike.sql | mysql -u $DB_USER --password=$DB_PASS
 
 printf "<?php\n\t\$db_user = '"$DB_USER"';\n\t\$db_pass = '"$DB_PASS"';\n\t\$db_host = '"127.0.0.1"';\n\t\$db_port = '"3306"';\n?>" > start_settings.inc.php
