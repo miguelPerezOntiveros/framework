@@ -55,17 +55,16 @@
 - why is sidebar_projects being called twice?
 - refreshing a page should take sidebar state into account, even if it doesn't match the query param
 - dont use the light blue color on the plus/times button
+- ctrl+s to save on ace editor
+- tab to unfocus on ace editor
+- get the logs (2 sources)
+	- tail -f /var/log/apache2/php_errors.log
+	- the normal ./start
+- migrate the web app to use the JS client library
+- take jQuery out of the web app?
 - IMPORTANT:
+- Export/Import feature
 - Check if after login redirection, the landing page checks permissions properly
-- containerize this
-	- choose between
-		- Using RUN git clone ... in a Dockerfile and build the image each time the source code changes.
-		- Get the source code to the host and use COPY . /whatever in the Dockerfile.
-		- Get the source code to the host and use docker run -v $(pwd):/whatever/
-	- get the logs (2 sources)
-		- tail -f /var/log/apache2/php_errors.log
-		- the normal ./start
-	- secure viewer.php, if it's not
 - jQuery extension client library
 	- client demonstration tool
 	- some kind of discovery? maybe fill in a 'tables' array with objects that have appropriate functions
@@ -116,9 +115,9 @@ settings:
 - delete the entry from the project table on the maker tab, the actual database will not be deleted
 
 ### Running with docker
-cd docker
-docker build .
-docker run --env-file env.list -p 80:80 --rm IMAGE_NUM
+	cd docker
+	docker build .
+	docker run --env-file env.list -p 80:80 --rm IMAGE_NUM
 
 ### Running php dev server 
 	./start.sh - will start mysql and php dev server

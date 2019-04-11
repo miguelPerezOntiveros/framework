@@ -4,11 +4,11 @@
         if(project){
             $.mm[project] = {};
             return new Promise(function(fullfill, reject){
-                $.get('/src/crud_read.php?project='+$.mm_config['project']+'&permissions=1', function(data){
+                $.get('/projects/'+project+'/admin/discovery.php', function(data){
                     data = JSON.parse(data);
                     for(table in data){
-                        $.mm[project][table] = [];
-                        for(permission in table){
+                        $.mm[project][table] = {};
+                        for(permission in data[table]){
                             if(permission == 'create')
                                 $.mm[project][table].create = $.mm.create(project, table);
                             if(permission == 'read')
@@ -41,17 +41,13 @@
 
 // Usage example
 $.mm.init('miguelp').then(function(){
-    $.mm.miguelp.awards.read().then(function(response){
+    $.mm.miguelp.award.read().then(function(response){
         console.log(response);
     })
 })
 
 /*
     - client demonstration tool
-    - some kind of discovery? maybe fill in a 'tables' array with objects that have appropriate functions
-        - I would need a service that returns all tables and the crud actions I can take on them
-        - $.mm_get({'table':'portlet'}) vs $.mm.miguelp.portlet.get()
-    - constructor (set base endpoint and query parameters in common (table and project))
     - endpoints     
         - Authentication
             - get

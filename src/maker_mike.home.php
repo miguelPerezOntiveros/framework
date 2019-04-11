@@ -23,10 +23,14 @@
 							<div class="col-12" style="text-align: center;">
 							<br><br><br><br>
 							<img src="/src/logo.png" alt="">
+							</div>							
+							<div class="col-12">
 							<br><br><br><br>
 							<br><br><br>
-							<h4>In version 1.5 of Maker Mike, you can manage all your projects from one <b>same place</b> and create <b>pages</b>, <b>portlets</b> and <b>themes</b> for them.<br>
-							You can also take advantage of the <b>JS client library</b> to interact with the CMS.</h4>
+							<h4>In version 1.5 of Maker Mike, you can <br>
+								- manage all your projects from one <b>same place</b><br>
+								- create <b>pages</b>, <b>portlets</b> and <b>themes</b> for them.<br>
+								- use an intuitive <b>JS client library</b> to interact with the CMS.<br>
 							<br><br><br><br><br><br>
 							<br><br><br><br><br><br>	
 							</div>							
