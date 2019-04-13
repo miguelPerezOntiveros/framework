@@ -82,6 +82,7 @@ fi
 sed -i 's/\(;*\)\(.*\)nobody/\2nginx/' /etc/php7/php-fpm.d/www.conf
 sed -i 's@listen = 127.0.0.1:9000@listen = /var/run/php7-fpm.sock@g' /etc/php7/php-fpm.d/www.conf
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini
+sed -i 's/80/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
 
 cd /usr/share/nginx
 rm -rf html
@@ -95,6 +96,7 @@ cat projects/maker_mike/maker_mike.sql | mysql -h $db_host -u $db_user --passwor
 
 echo 'setting up maker_mike project'
 ln -s /usr/share/nginx/html/src/maker_mike.home.php /usr/share/nginx/html/projects/maker_mike/admin/home.php
+
 
 nginx
 php-fpm7
