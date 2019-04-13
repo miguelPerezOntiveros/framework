@@ -100,6 +100,8 @@ nginx
 php-fpm7
 
 echo 'listening'
+echo 'port: '$PORT
+cat /etc/nginx/conf.d/default.conf
 
 while true
 do
