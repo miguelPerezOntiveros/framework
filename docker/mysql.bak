@@ -1,0 +1,26 @@
+#!/bin/sh
+
+mysql_install_db --user=mysql --datadir=/var/lib/mysql
+rc-status
+touch /run/openrc/softlevel
+
+sed -i "s|max_allowed_packet\s*=\s*1M|max_allowed_packet = 200M|g" /etc/mysql/my.cnf
+sed -i "s|max_allowed_packet\s*=\s*16M|max_allowed_packet = 200M|g" /etc/mysql/my.cnf
+
+rc-service mariadb start
+mysqladmin -u root password "$DB_ROOT_PASS"
+
+echo "DELETE FROM mysql.user WHERE User='$DB_USER';" > /tmp/sql
+echo "GRANT ALL ON *.* TO $DB_USER@'127.0.0.1' IDENTIFIED BY '$DB_PASS' WITH GRANT OPTION;" >> /tmp/sql
+echo "GRANT ALL ON *.* TO $DB_USER@'localhost' IDENTIFIED BY '$DB_PASS' WITH GRANT OPTION;" >> /tmp/sql
+echo "GRANT ALL ON *.* TO $DB_USER@'::1' IDENTIFIED BY '$DB_PASS' WITH GRANT OPTION;" >> /tmp/sql
+echo "DELETE FROM mysql.user WHERE User='';" >> /tmp/sql
+echo "DROP DATABASE IF EXISTS test;" >> /tmp/sql
+echo "FLUSH PRIVILEGES;" >> /tmp/sql
+cat /tmp/sql | mysql -u root --password="$DB_ROOT_PASS"
+
+
+== env.list
+DB_ROOT_PASS=mariadb_root_password
+DB_USER=mariadb_user
+DB_PASS=mariadb_user_password

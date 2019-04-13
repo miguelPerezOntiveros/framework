@@ -55,21 +55,22 @@ do
 	shift
 done
 
-# Check if the PHP port is free
-while echo exit | nc localhost $web_port > /dev/null;  do
-	echo 'Waiting for port '$web_port' to become available.'
-	sleep 1;
-done
 # Check if something is listening on the DB port
 while ! echo exit | nc localhost $db_port > /dev/null;  do
-	echo 'DB not available on port '$db_port'. Will restart'
-	sudo /usr/local/mysql/support-files/mysql.server restart &
+	echo 'DB not available on port '$db_port
+	# sudo /usr/local/mysql/support-files/mysql.server restart &
 	sleep 5;
 done
 
 # Run the PHP server and open a web browser tab to it
 printf "<?php\n\t\$db_user = '"$db_user"';\n\t\$db_pass = '"$db_pass"';\n\t\$db_host = '"$db_host"';\n\t\$db_port = '"$db_port"';\n?>" > start_settings.inc.php
 if [ "$dev_mode" = true ]; then
+	# Check if the PHP port is free
+	while echo exit | nc localhost $web_port > /dev/null;  do
+		echo 'Waiting for port '$web_port' to become available.'
+		sleep 1;
+	done
+
 	open http://localhost:$web_port
 	sudo php -S 0.0.0.0:$web_port
 fi

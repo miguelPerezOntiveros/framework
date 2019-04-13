@@ -1,5 +1,6 @@
 # framework 1.5 - Maker Mike 1.0.1
 ### TODO
+- can't close the sidebar from the home page
 - Note: handy command: git ls-files | xargs wc -l
 - extending the projects from within, issuing create table statements?
 - should access to reference imply access to referenced column?
@@ -32,6 +33,11 @@
 		- select: tables (requires no type attribute)
 		- booleans
 	- Document calls to cruds
+	- Cloud SQL
+		- deployment script or steps
+		- create Cloud SQL instance
+		- authorize your network (if necessary)
+		- use DB credentials on the docker run command $sudo docker run --rm -p 80:80 IMAGE_NUMBER /home/entry.sh -h 35.232.214.58 -P DB_PWD
 - I shouldn't have visibility on projects I'm not user of ¿? does that make sense?
 - SYNDICATION ?
 - check if page and theme url availability need adjustments due to case sensitivity
@@ -63,12 +69,15 @@
 - migrate the web app to use the JS client library
 - take jQuery out of the web app?
 - IMPORTANT:
+- Design and implement a universal PDO transactions mechanism with which to create multiple crud operation transactions.
+	- http://www.mysqltutorial.org/php-mysql-transaction/
 - Export/Import feature
 - Check if after login redirection, the landing page checks permissions properly
+- move php to Cloud Run
+	- make sure docker run arguments can be passed in
+	- make Cloud SQL connection internal (dont use public IP)
 - jQuery extension client library
 	- client demonstration tool
-	- some kind of discovery? maybe fill in a 'tables' array with objects that have appropriate functions
-	- constructor (set base endpoint and query parameters in common (table and project))
 	- endpoints		
 		- Authentication
 			- get
