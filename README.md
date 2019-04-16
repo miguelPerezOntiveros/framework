@@ -57,50 +57,38 @@
 - hide project specific disabled sidebar links 
 - front end project config builder?
 - use websockets?
+- time column on projects?
 - confirm project deletions
-- why is sidebar_projects being called twice?
 - refreshing a page should take sidebar state into account, even if it doesn't match the query param
 - dont use the light blue color on the plus/times button
 - ctrl+s to save on ace editor
 - tab to unfocus on ace editor
+- CD? https://cloud.google.com/run/docs/continuous-deployment
 - get the logs (2 sources)
 	- tail -f /var/log/apache2/php_errors.log
 	- the normal ./start
-- migrate the web app to use the JS client library
 - take jQuery out of the web app?
+- verify the ace editor resize timeout
+- Connect to Cloud SQL over private IP (doesn't look like it's possible yet)
+- jQuery extension client library
+	- client demonstration tool?
+	- migrate the web app to use the JS client library
+	- should the client handle authentication (get and set) as well?
+- config should be stored on the DB to keep Run stateless
 - IMPORTANT:
+- For a non existent project on Run (but existing on the DB)
+	- allow creation on Run keeping the DB
 - Design and implement a universal PDO transactions mechanism with which to create multiple crud operation transactions.
 	- http://www.mysqltutorial.org/php-mysql-transaction/
-- Export/Import feature
+- Export feature
+	- export YAML/JSON config
+	- export DML
+- Import feature
+	- import YAML/JSON config
+	- import DML
+	- project setup (simlinks on Run, based on YAML/JSON config)
 - Check if after login redirection, the landing page checks permissions properly
-- move php to Cloud Run
-	- make sure docker run arguments can be passed in
-	- make Cloud SQL connection internal (dont use public IP)
-- jQuery extension client library
-	- client demonstration tool
-	- endpoints		
-		- Authentication
-			- get
-			- set
-		- Create (post)
-			- body parameters
-				-  id
-				- columns[]
-		- Read (get)
-			- query parameters
-				- show
-				- only
-				- id
-				- where
-				- equals
-				- columns
-		- Update (post)
-			- body parameters
-				-  id
-				- columns[]
-		- Delete (post)
-			- body parameters
-				-  id
+- Fix the allowed URL on OAuth
 
 #### Recreating the maker_mike project
 - note you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist

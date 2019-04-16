@@ -10,13 +10,13 @@
                         $.mm[project][table] = {};
                         for(permission in data[table]){
                             if(permission == 'create')
-                                $.mm[project][table].create = $.mm.create(project, table);
+                                $.mm[project][table].create = $.mm.post_based_function(project, table, 'crud_create.php');
                             if(permission == 'read')
-                                $.mm[project][table].read = $.mm.read(project, table);
+                                $.mm[project][table].read = $.mm.get_based_function(project, table);
                             if(permission == 'update')
-                                $.mm[project][table].update = $.mm.update(project, table);
+                                $.mm[project][table].update = $.mm.post_based_function(project, table, 'crud_update.php');
                             if(permission == 'delete')
-                                $.mm[project][table].delete = $.mm.delete(project, table);
+                                $.mm[project][table].delete = $.mm.post_based_function(project, table, 'crud_delete.php');
                         }
                     }
                     fullfill();
@@ -24,8 +24,24 @@
             });
         }
     };
-    $.mm.create = function(project, table) {}
-    $.mm.read = function(project, table) {
+    $.mm.post_based_function = function(project, table, php_file){
+        return function(formData){
+            return new Promise(function(fullfill, reject){
+                $.ajax({
+                    type: "POST",
+                    url: '/src/'+php_file+'?project='+project+'&table='+table,
+                    data: formData,
+                    success: function(data) {
+                        fullfill(data);
+                    },
+                    enctype: "multipart/form-data",
+                    contentType: false,
+                    processData: false
+                });
+            })
+        }
+    };
+    $.mm.get_based_function = function(project, table) {
         return function(queryString){
             return new Promise(function(fullfill, reject){
                 $.get('/src/crud_read.php?project='+project+'&table='+table+'&'+queryString, function(data){
@@ -34,41 +50,4 @@
             });
         }
     };
-    $.mm.update = function(project, table) {}
-    $.mm.delete = function(project, table) {}
 })(jQuery, window);
-
-
-// Usage example
-$.mm.init('miguelp').then(function(){
-    $.mm.miguelp.award.read().then(function(response){
-        console.log(response);
-    })
-})
-
-/*
-    - client demonstration tool
-    - endpoints     
-        - Authentication
-            - get
-            - set
-        - Create (post)
-            - body parameters
-                -  id
-                - columns[]
-        - Read (get)
-            - query parameters
-                - show
-                - only
-                - id
-                - where
-                - equals
-                - columns
-        - Update (post)
-            - body parameters
-                -  id
-                - columns[]
-        - Delete (post)
-            - body parameters
-                -  id
-*/

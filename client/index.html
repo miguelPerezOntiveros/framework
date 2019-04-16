@@ -10,5 +10,45 @@
 	Client demo
 	<div id="res"></div>
 	<script src="/client/maker_mike.js"></script>
+	<script>
+				
+		// Usage examples
+		$.mm.init('miguelp').then(function(){
+		    var fd = new FormData();
+		    fd.append('title', 'title');
+		    fd.append('description', 'description');
+		    fd.append('note', 'note');
+		    $.mm.miguelp.award.create(fd).then(function(response){
+		        console.log(response);
+		    });
+		    var fd = new FormData();
+		    fd.append('id', 1);
+		    fd.append('title', 'TITULO');
+		    $.mm.miguelp.award.update(fd).then(function(response){
+		        console.log(response);
+		    });
+		    $.mm.miguelp.award.read().then(function(response){
+		        console.log(response);
+		        window.length = JSON.parse(response).data.length;
+		    }).then(function(){
+		        console.log('going to delete '+(window.length-2));
+		        var fd = new FormData();
+		        fd.append('id', window.length-2);
+		        $.mm.miguelp.award.delete(fd).then(function(response){
+		            console.log(response);
+		        });
+		    }).then(function(){
+		        $.mm.miguelp.award.read().then(function(response){
+		            console.log(response);
+		        });
+		    });
+		})
+
+		/*
+		    - Does this client need to consider Authentication?
+		        - get
+		        - set
+		*/
+	</script>
 </body>
 </html>

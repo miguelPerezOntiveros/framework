@@ -43,17 +43,19 @@ doSidebarProjects = function(){
 			$('a[href="#projectsSubmenu"]').addClass('disabled');
 		}
 	});
-	$.get('sidebar_projects.php?project='+window._projectName, function(current){
-		try{
-			current = JSON.parse(current);
-		} catch(e){
-			$('#menu_page a').addClass('disabled');
-			$('#menu_portlet a').addClass('disabled');
-			$('#menu_theme a').addClass('disabled');
-			$('#menu_user_type a').addClass('disabled');
-			$('#menu_user a').addClass('disabled');
-		}
-	});
+	if(window.location.href.includes('/login.php')){
+		$('#menu_page a').prop("onclick", null).off("click");
+		$('#menu_portlet a').prop("onclick", null).off("click");
+		$('#menu_theme a').prop("onclick", null).off("click");
+		$('#menu_user_type a').prop("onclick", null).off("click");
+		$('#menu_user a').prop("onclick", null).off("click");
+
+		$('#menu_page a').addClass('disabled');
+		$('#menu_portlet a').addClass('disabled');
+		$('#menu_theme a').addClass('disabled');
+		$('#menu_user_type a').addClass('disabled');
+		$('#menu_user a').addClass('disabled');
+	}
 }
 
 doModal = function(intention, message, millis){
