@@ -1,10 +1,11 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	require 'load_config.php';
+	require 'origin_check.php';
+	require_once 'load_config.php';
 
 	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['delete'] != '-'){
-		require 'session.inc.php';
+		require_once 'session.inc.php';
 
 		if(!isset($config[$_GET['table']]) || !preg_match('/'.$config[$_GET['table']]['_permissions']['delete'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
@@ -20,7 +21,7 @@
 	}
 	error_log('file cols: '.count($fileColumns));
 
-	require 'db_connection.inc.php';
+	require_once 'db_connection.inc.php';
 	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = ?;';
 	error_log('INFO - sql:' .$sql);
 	$stmt = $pdo->prepare($sql);

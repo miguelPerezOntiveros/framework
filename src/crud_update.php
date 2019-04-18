@@ -1,10 +1,11 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	require 'load_config.php';
+	require 'origin_check.php';
+	require_once 'load_config.php';
 
 	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['update'] != '-'){
-		require 'session.inc.php';
+		require_once 'session.inc.php';
 
 		if(!isset($config[$_GET['table']]) || !preg_match('/'.$config[$_GET['table']]['_permissions']['update'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
@@ -59,7 +60,7 @@
 	if(!count($row))
 		exit(json_encode((object) ["error" => "No such table."]));
 
-	require 'db_connection.inc.php';
+	require_once 'db_connection.inc.php';
 	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = ?;';
 	error_log('INFO - sql:' .$sql);
 	$stmt = $pdo->prepare($sql);
@@ -85,6 +86,7 @@
 	$sql = 'UPDATE '.$_GET['table'].' SET '.implode(', ',$sql_keys).' WHERE id=\''.$_POST['id'].'\';';	
 	error_log('INFO - sql:' .$sql);
 	$stmt = $pdo->prepare($sql);
+	error_log('bindings: '.implode(', ', array_values($row)));
 	$stmt->execute(array_values($row));
 	$stmt->fetch(PDO::FETCH_ASSOC);
 

@@ -1,13 +1,14 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	require 'load_config.php';
+	require 'origin_check.php';
+	require_once 'load_config.php';
 
 	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['read'] != '-'){
-		require 'session.inc.php';
+		require_once 'session.inc.php';
 
 		if(!isset($config[$_GET['table']]) || !preg_match('/'.$config[$_GET['table']]['_permissions']['read'].'/', $_SESSION['type']))
-			exit(json_encode((object) ["error" => "No such table."]));
+			exit(json_encode((object) ["error" => "No such table 1."]));
 	}
 
 	//Validating column permissions
@@ -42,7 +43,7 @@
 		}
 	}
 	if(count($allowedColumns) <= 1)
-		exit(json_encode((object) ["error" => "No such table."]));
+		exit(json_encode((object) ["error" => "No such table 2."]));
 
 	if(isset($_GET['id'])){
 		$joinRules[] = $_GET['table'].'.id = ?';
@@ -58,7 +59,7 @@
 		$joinRules[] = '0';
 	
 	//Executing PDO
-	require 'db_connection.inc.php';
+	require_once 'db_connection.inc.php';
 	$data = array();
 	$columns = array();
 	$sql = 'SELECT '.implode(', ', $allowedColumns).' FROM '.implode(', ', $tablesToJoin).' WHERE '.implode(' and ', $joinRules).';';	

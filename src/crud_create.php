@@ -1,10 +1,11 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	require 'load_config.php';
+	require 'origin_check.php';
+	require_once 'load_config.php';
 
 	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['create'] != '-'){
-		require 'session.inc.php';
+		require_once 'session.inc.php';
 
 		if(!isset($config[$_GET['table']]) || !preg_match('/'.$config[$_GET['table']]['_permissions']['create'].'/', $_SESSION['type']))
 			exit(json_encode((object) ["error" => "No such table."]));
@@ -55,7 +56,7 @@
 	if(!count($row))
 		exit(json_encode((object) ["error" => "No such table."]));
 
-	require 'db_connection.inc.php';
+	require_once 'db_connection.inc.php';
 
 	//Possible extension of the service
 	$postfix = 'c';
