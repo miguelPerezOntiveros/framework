@@ -8,11 +8,11 @@
 	// error_log('$ext3: '.$ext3);
 
 	if(file_exists($ext1)){
-		error_log($_SERVER['REQUEST_URI'].' requiring project specific project/admin/ext: '.$ext1);
+		error_log($_SERVER['REQUEST_URI'].' requiring project specific ext: '.$ext1);
 		require($ext1);
 	}
 	else if(file_exists($ext2)){
-		error_log($_SERVER['REQUEST_URI'].' requiring ext from src (unspecific project): '.$ext2);
+		error_log($_SERVER['REQUEST_URI'].' requiring ext from src (unspecified project): '.$ext2);
 		require($ext2);
 	}
 	else if(file_exists($ext3)){

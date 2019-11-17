@@ -67,14 +67,7 @@
 - move images and files to gcs to make Run stateless
 
 ### Documentation TODOs
-- document ./start parameters
-- Document all php 'require' paths
-- Extentions
-	- Front
-		- Available hooks
-		- Displaying HTML on page (display = 'html';) (see page.r.php and theme.r.php)
-	- Back
-		- Available hooks
+- Running on docker vs running on bare metal vs deploying to GCP
 - Creating portlets and pages
 - Themes
 	- can create a theme within another
@@ -87,13 +80,38 @@
 	- select: multi
 	- select: tables (requires no type attribute)
 	- booleans
-- Document calls to cruds
 - Cloud SQL
 	- deployment script or steps
 	- create Cloud SQL instance
 	- authorize your network (if necessary)
 	- use DB credentials on the docker run command $sudo docker run --rm -p 80:80 IMAGE_NUMBER /home/entry.sh -h 35.232.214.58 -P DB_PWD
-- backend transactions
+
+### CRUD service extension mechanism
+The logic is written on the "src/ext.inc.php" file, which is required by all CRUD services:
+- src/crud_create.php
+- src/crud_read.php
+- src/crud_update.php
+- src/crud_delete.php
+
+CRUD extentions are .php files named as either [TABLE_NAME].[POSTFIX].php if located in a specific project or [PROJECT_NAME|-].[POSTFIX].php if located in /src. The POSTFIX can be one of "c", "r, "u" and "d".
+"src/ext.inc.php" will search for CRUD service extentions in 3 places in this order:
+- project specific: /projects/[PROJECT_NAME]/admin/ext/[TABLE_NAME].[POSTFIX].php
+- from "/src" with an unspecified project. Ex: "/src/-.theme.c.php" or "/src/-.page.u.php"
+- from "/src" with a specific project. Ex: "/src/maker_mike.project.c.php"
+
+### Front end extention mechanisms
+- Available hooks
+- Displaying HTML on page (display = 'html';) (see page.r.php and theme.r.php)
+
+### CRUD services' request origin check
+CRUD services check if they have required by the backend itself by checking the $invoked_from_backend variable and then $GET_PARAMS and $POST_PARAMS if needed.
+This is usefull so backend services can call each other without the need of new http requests while still being able to share their parameters.
+
+### Discovery endpoint
+"src/discovery.php" is copied over to each project at creation time by "./build_pre.sh". It returns JSON output with all the configuration data that the front end client needs to build itself. Security checks are made on the backend by "src/discovery.php".
+
+### Transactions
+Often times you will need a set of operations run agains the DB to be atomic. The should be run from the backend. This is an example. 
 ```
 <?php 
 	$invoked_from_backend = true;
@@ -131,7 +149,7 @@
 ?>
 ```
 
-#### Recreating the maker_mike project
+#### Recreating the main "maker_mike" project
 - note you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist
 - run your maker_mike yaml on the maker tab, currently:
 ´
@@ -158,38 +176,34 @@ settings:
 	docker run --env-file env.list -p 80:80 --rm IMAGE_NUM
 
 ### Running php dev server 
-	./start.sh - will start mysql and php dev server
+	./start.sh - will start mysql and php dev server.
 	you should have mysql installed on your mac and '/usr/local/mysql/bin' in your PATH
+	check usage with -h
 
 ### JS yaml library used
 https://www.npmjs.com/package/yamljs
 
-### When you run 'sudo ./start'
-- the start script runs, check usage with -h
-
 #### start.sh
 - checks is web port is free
-- checks if db port is listening and restarts db bif not
+- checks if db port is listening and restarts db if not
 - creates start_settings.inc.php
 - starts the php server and opens the url for you
 
 ### When you click 'Submit'
-- index.php sends the form data to itself
-
-#### index.php
-- runs ./build_pre.sh projectName db_host db_user db_pass imageTables
-- writes projectName/admin/config.inc.php
-- writes projectName/projectName.yml
-- writes projectName/projectName.sql
-- runs ./build_post.sh projectName db_host db_user db_pass imageTables
-
-#### build_pre.sh
-- recreates the project folder
-- creates soft links to index, login and viewer, and to page table service extenders.
-- creates individual upload folders for tables with files, and one for all service extensions
-
-#### build_post.sh
-- creates database
+- index.php sends the form data to itself, which then:
+	- runs ./build_pre.sh projectName db_host db_user db_pass imageTables, which:
+		- recreates the project folder
+		- creates soft links to index, discovery, login and viewer.
+		- creates individual upload folders for tables with files, and one for all service extensions
+	- writes projectName/admin/config.inc.php
+	- writes projectName/projectName.yml
+	- writes projectName/projectName.sql
+	- runs ./build_post.sh projectName db_host db_user db_pass imageTables, which
+		- creates the database
 
 ### Notes
 - To change mysql port: sudo vi /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+- One liner to find a string in all files recursively:
+$ grep -rn . -e 'STRING'
+- One liner to find a string in all php files:
+$ grep --include=\*.php -rn . -e 'STRING'
