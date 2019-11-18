@@ -1,11 +1,10 @@
 ## IMPORTANT TODOs
+- I can add projects with _projectName's that already exist
 - Fill in home page text
-- think of a mechanism to whitelist what php resources are exposed. Shouldn't have other file types exposed.
-entry.sh is doing a 
-	chmod -R 777 .
-I should probably look into that.
-- probably shouldn't be uploading "start_settings.inc.php"
-- I can stil see table names on projects I have no session in
+- update url on sidebar toogles
+- hide "Projects" sidebar entry until you have a session
+- I can still see table names on projects I have no session in
+- Should the maker_mike project support Page, ^prtlet and Theem tables? it does right now.
 - not able to write php pages at the moment from within the web console. Should I just use themes instead?
 - Export feature
 	- export YAML/JSON config
@@ -20,11 +19,9 @@ I should probably look into that.
 	- maker_mike Import with drag and drop?
 	- what about files?
 - Check if after login redirection, the landing page checks permissions properly
-- Fix the allowed URL on OAuth
 
 ## General TODOs
 - should let me know if DB stops becomming available. Don't just hang there.
-- can't close the sidebar from the home page
 - theme CI? filesystem watch service?
 - Note: handy command: git ls-files | xargs wc -l
 - extending the projects from within, issuing create table statements?
@@ -182,9 +179,9 @@ settings:
   value: 
 ´
 - run these extra commands needed to enable the home page:
-	- cd projects/maker_mike/admin/
+	- cd web/projects/maker_mike/admin/
 	- sudo ln -s /Users/miguel/git/framework/src/maker_mike.home.php .
-	- sudo mv maker_mike.home.php home.php (really need 2 a ln -s and an mv? TODO)
+	- sudo mv maker_mike.home.php home.php (really need 2? a ln -s and an mv? TODO)
 - delete the entry from the project table on the maker tab, the actual database will not be deleted (why? TODO)
 
 #### start.sh

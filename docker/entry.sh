@@ -76,14 +76,14 @@ if [ "$prod_mode" = "true" ]; then
 	rm -rf html
 	git clone https://github.com/miguelPerezOntiveros/framework.git html
 fi
-cd html
+cd html/web
 printf "<?php\n\t\$db_user = '"$db_user"';\n\t\$db_pass = '"$db_pass"';\n\t\$db_host = '"$db_host"';\n\t\$db_port = '"$db_port"';\n?>" > start_settings.inc.php
 
 echo 'setting up maker_mike DB'
 cat projects/maker_mike/maker_mike.sql | mysql -h $db_host -u $db_user --password=$db_pass
 
 echo 'setting up maker_mike project'
-ln -s /usr/share/nginx/html/src/maker_mike.home.php /usr/share/nginx/html/projects/maker_mike/admin/home.php
+ln -s /usr/share/nginx/html/web/src/maker_mike.home.php /usr/share/nginx/html/web/projects/maker_mike/admin/home.php
 
 nginx
 php-fpm7

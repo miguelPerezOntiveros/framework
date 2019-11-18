@@ -42,7 +42,7 @@ doSidebarProjects = function(){
 				$('.sidebar_projects [data-project='+e+']').toggle('slow');
 			})
 		} catch(e){
-			$('a[href="#projectsSubmenu"]').addClass('disabled');
+			$('a[href="#projectsSubmenu"]').remove();
 		}
 	});
 	if(window.location.href.includes('/login.php')){

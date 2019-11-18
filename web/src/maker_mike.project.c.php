@@ -257,7 +257,7 @@
 		$sql .= "INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);".PHP_EOL;
 
 		// Run pre script
-		echo exec($_SERVER["DOCUMENT_ROOT"].'/build_pre.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
+		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
 		// Write files
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($newConfig).'\', true);?>');
@@ -267,7 +267,7 @@
 		if(!$already_exists){
 			// Run post script
 			$result_of_post_build = array();
-			exec($_SERVER["DOCUMENT_ROOT"].'/build_post.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
+			exec($_SERVER["DOCUMENT_ROOT"].'/../build_post.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
 			error_log('result of post build: '.json_encode($result_of_post_build));
 			error_log('first line of result: '.$result_of_post_build[1]);
 			error_log('ERROR: '.(strpos($result_of_post_build[1], "ERROR") !== false));
