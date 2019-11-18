@@ -1,7 +1,7 @@
-# framework 1.5 - Maker Mike 1.0.1
-### IMPORTANT TODOs
-- home page should load on a request to the root
-- not able to write php pages at the momet from within the web console. Should I just use themes instead?
+## IMPORTANT TODOs
+- home page bold leters look like links
+- think of a mechanism to whitelist what php resources are exposed. Shouldn't have other file types exposed.
+- not able to write php pages at the moment from within the web console. Should I just use themes instead?
 - Export feature
 	- export YAML/JSON config
 	- export DML
@@ -17,7 +17,7 @@
 - Check if after login redirection, the landing page checks permissions properly
 - Fix the allowed URL on OAuth
 
-### General TODOs
+## General TODOs
 - can't close the sidebar from the home page
 - theme CI? filesystem watch service?
 - Note: handy command: git ls-files | xargs wc -l
@@ -66,8 +66,9 @@
 - config should be stored on the DB to keep Run stateless
 - move images and files to gcs to make Run stateless
 
-### Documentation TODOs
-- Running on docker vs running on bare metal vs deploying to GCP
+## Documentation TODOs
+- Deploying to GCP (explain whole GCP migration)
+- document OAuth
 - Creating portlets and pages
 - Themes
 	- can create a theme within another
@@ -84,7 +85,21 @@
 	- deployment script or steps
 	- create Cloud SQL instance
 	- authorize your network (if necessary)
-	- use DB credentials on the docker run command $sudo docker run --rm -p 80:80 IMAGE_NUMBER /home/entry.sh -h 35.232.214.58 -P DB_PWD
+	- use DB credentials on the docker run command
+	$sudo docker run --rm -p 80:80 IMAGE_HASH /home/entry.sh -h 35.232.214.58 -P DB_PWD
+
+## Maker Mike 1.0.2
+
+### Running maker mike locally
+To run on bare metal:
+	./start.sh # will start mysql and php dev server.
+- You should have mysql installed and available on your PATH ('/usr/local/mysql/bin' is typical on a mac)
+- Check ./start.sh usage with "-h"
+
+For docker:
+	cd docker
+	docker build .
+	sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h DB_HOST -P DB_PWD
 
 ### CRUD service extension mechanism
 The logic is written on the "src/ext.inc.php" file, which is required by all CRUD services:
@@ -98,10 +113,6 @@ CRUD extentions are .php files named as either [TABLE_NAME].[POSTFIX].php if loc
 - project specific: /projects/[PROJECT_NAME]/admin/ext/[TABLE_NAME].[POSTFIX].php
 - from "/src" with an unspecified project. Ex: "/src/-.theme.c.php" or "/src/-.page.u.php"
 - from "/src" with a specific project. Ex: "/src/maker_mike.project.c.php"
-
-### Front end extention mechanisms
-- Available hooks
-- Displaying HTML on page (display = 'html';) (see page.r.php and theme.r.php)
 
 ### CRUD services' request origin check
 CRUD services check if they have required by the backend itself by checking the $invoked_from_backend variable and then $GET_PARAMS and $POST_PARAMS if needed.
@@ -150,7 +161,7 @@ Often times you will need a set of operations run agains the DB to be atomic. Th
 ```
 
 #### Recreating the main "maker_mike" project
-- note you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist
+- you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist
 - run your maker_mike yaml on the maker tab, currently:
 ´
 _projectName: maker_mike
@@ -167,24 +178,11 @@ settings:
 - run these extra commands needed to enable the home page:
 	- cd projects/maker_mike/admin/
 	- sudo ln -s /Users/miguel/git/framework/src/maker_mike.home.php .
-	- sudo mv maker_mike.home.php home.php
-- delete the entry from the project table on the maker tab, the actual database will not be deleted
-
-### Running with docker
-	cd docker
-	docker build .
-	docker run --env-file env.list -p 80:80 --rm IMAGE_NUM
-
-### Running php dev server 
-	./start.sh - will start mysql and php dev server.
-	you should have mysql installed on your mac and '/usr/local/mysql/bin' in your PATH
-	check usage with -h
-
-### JS yaml library used
-https://www.npmjs.com/package/yamljs
+	- sudo mv maker_mike.home.php home.php (really need 2 a ln -s and an mv? TODO)
+- delete the entry from the project table on the maker tab, the actual database will not be deleted (why? TODO)
 
 #### start.sh
-- checks is web port is free
+- checks if web port is free
 - checks if db port is listening and restarts db if not
 - creates start_settings.inc.php
 - starts the php server and opens the url for you
@@ -201,9 +199,22 @@ https://www.npmjs.com/package/yamljs
 	- runs ./build_post.sh projectName db_host db_user db_pass imageTables, which
 		- creates the database
 
-### Notes
+## Front end
+
+### Front end extention mechanisms
+- Available hooks TODO
+- Displaying HTML on page (display = 'html';) (see page.r.php and theme.r.php) TODO
+
+### JS yaml library used
+https://www.npmjs.com/package/yamljs
+
+## Notes
 - To change mysql port: sudo vi /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 - One liner to find a string in all files recursively:
 $ grep -rn . -e 'STRING'
 - One liner to find a string in all php files:
 $ grep --include=\*.php -rn . -e 'STRING'
+- Clean docker out with:
+docker ps -aq | xargs docker rm -f
+docker images -q | xargs docker rmi -f
+docker volume list -q | xargs docker volume rm -f
