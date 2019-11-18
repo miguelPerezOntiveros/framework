@@ -1,6 +1,11 @@
 ## IMPORTANT TODOs
-- home page bold leters look like links
+- Fill in home page text
 - think of a mechanism to whitelist what php resources are exposed. Shouldn't have other file types exposed.
+entry.sh is doing a 
+	chmod -R 777 .
+I should probably look into that.
+- probably shouldn't be uploading "start_settings.inc.php"
+- I can stil see table names on projects I have no session in
 - not able to write php pages at the moment from within the web console. Should I just use themes instead?
 - Export feature
 	- export YAML/JSON config
@@ -18,6 +23,7 @@
 - Fix the allowed URL on OAuth
 
 ## General TODOs
+- should let me know if DB stops becomming available. Don't just hang there.
 - can't close the sidebar from the home page
 - theme CI? filesystem watch service?
 - Note: handy command: git ls-files | xargs wc -l
@@ -67,7 +73,7 @@
 - move images and files to gcs to make Run stateless
 
 ## Documentation TODOs
-- Deploying to GCP (explain whole GCP migration)
+- Deploying to GCP (explain whole GCP migration). Should be using the "--prod-mode" flag on entry.sh
 - document OAuth
 - Creating portlets and pages
 - Themes

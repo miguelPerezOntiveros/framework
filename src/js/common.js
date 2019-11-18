@@ -8,6 +8,8 @@ doSidebarProjects = function(){
 				old.push($(e).text())
 			});
 
+			$('a[href="#projectsSubmenu"]').text('Projects ('+current.length+')');
+
 			// Delete commons between old and current
 			// Old will end up with the ones to be deleted
 			// Current will end up with the ones to add

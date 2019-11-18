@@ -2,37 +2,43 @@
 <html lang="en">
 <?php require 'head.inc.php'; ?>
 <body>
-	<style>
-		b { color: #46E; }
-	</style>
 	<div class="sidebarWrapper_wrapper">
 		<?php require 'sidebar.inc.php'; ?>
 		<div class="sidebarWrapper_page">
 			<div class="footerDown_container">
 				<div class="footerDown_body">
-					<nav class="navbar navbar-expand-lg navbar-dark topbar_topbar">
-						<div style="height: 40px;">
-						</div>
-					</nav>
+					<?php require 'menu.inc.php'; ?>
 					<div class="container">
 						<div class="row">
-							<h2><br>Welcome to <b>Maker Mike 1.5</b>!</h2>
+							<h2><br>Welcome to <b>Maker Mike 1.0.2</b>!</h2>
 						</div>
-						<br><br><br>
+						<br>
+						<br>
 						<div class="row">
-							<div class="col-12" style="text-align: center;">
-							<br><br><br><br>
-							<img src="/src/logo.png" alt="">
-							</div>							
+							<div class="col-4 offset-1" style="text-align: center;">
+								<br>
+								<img src="/src/logo.png" width="100%" alt="">
+							</div>
+							<div class="col-6 offset-1">
+								<ul>
+									<li>Single pane management of <b>all your projects</b><br></li>
+									<li>Manage <b>pages</b>, <b>portlets</b> and <b>themes</b><br></li>
+									<li>Intuitive <b>JS client library</b><br></li>
+								</ul>
+							</div>
+						</div>
+						<br>
+						<br>
+						<div class="row">
 							<div class="col-12">
-							<br><br><br><br>
-							<br><br><br>
-							<h4>In version 1.5 of Maker Mike, you can <br>
-								- manage all your projects from one <b>same place</b><br>
-								- create <b>pages</b>, <b>portlets</b> and <b>themes</b> for them.<br>
-								- use an intuitive <b>JS client library</b> to interact with the CMS.<br>
-							<br><br><br><br><br><br>
-							<br><br><br><br><br><br>	
+								<h5>Creating a Project</h5>
+								<p>To create a project..</p>
+
+								<h5>Adding users</h5>
+								<p>Maker Mike supports...</p>
+
+								<h5>File support</h5>
+								<p>Maker Mike uses...</p>
 							</div>							
 						</div>
 					</div>	

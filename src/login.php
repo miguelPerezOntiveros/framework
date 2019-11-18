@@ -40,9 +40,8 @@
 			exit('I should have redirected');
 		}
 	} else if(isset($_POST['id_token'])){
-		error_log('I should check the token here');
 		$tokeninfo = file_get_contents("https://oauth2.googleapis.com/tokeninfo?id_token=".$_POST['id_token']);
-		error_log($tokeninfo);
+		error_log("Token info: ".$tokeninfo);
 		
 		$tokeninfo = json_decode($tokeninfo, true);
 		$userInfo = checkPassword($pdo, $tokeninfo['email']);

@@ -1,9 +1,10 @@
 
 		<nav class=<?php echo '"sidebarWrapper_sidebar '.($_GET['sidebar']==1?'':'active').'"' ?> >
-			<div class="sidebar-header">
-				<img src="/src/logo.png" height="100%" alt="" style="float:left; padding-right: 10px;">
-				<span><h3>Maker Mike</h3></span>
-			</div>
+			<a href="/projects/maker_mike/admin/home.php?sidebar=1">
+				<div class="sidebar-header">
+					<img src="/src/logo.png" height="100%" alt="" style="  display: block; margin-left: auto; margin-right: auto;">
+				</div>
+			</a>
 			<ul class="list-unstyled">
 				<li class=<?php echo (explode('?', $_SERVER['REQUEST_URI'], 2)[0] == '/projects/maker_mike/admin/home.php'?'active':'') ?>>
 					<a href="/projects/maker_mike/admin/home.php?sidebar=1">Home</a>

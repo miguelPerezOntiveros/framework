@@ -77,7 +77,6 @@ if [ "$prod_mode" = "true" ]; then
 	git clone https://github.com/miguelPerezOntiveros/framework.git html
 fi
 cd html
-chmod -R 777 .
 printf "<?php\n\t\$db_user = '"$db_user"';\n\t\$db_pass = '"$db_pass"';\n\t\$db_host = '"$db_host"';\n\t\$db_port = '"$db_port"';\n?>" > start_settings.inc.php
 
 echo 'setting up maker_mike DB'
