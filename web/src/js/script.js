@@ -307,8 +307,12 @@ $(document).ready(function() {
 	$('.sidebar_trigger').on('click', function () {
 		$('.sidebarWrapper_sidebar').toggleClass('active');
 		$(this).toggleClass('active');
-		if(!$('.sidebarWrapper_sidebar').hasClass('active'))
+		if(!$('.sidebarWrapper_sidebar').hasClass('active')){
 			$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
+			history.replaceState({}, "", "?sidebar=1");
+		}
+		else
+			history.replaceState({}, "", "?");
 	});
 	$('#cu_form').on('click', '.cu_form-insert_portlet', function(e){
 		editor = editors['html'];

@@ -18,6 +18,7 @@
 							<div class="col-4 offset-1" style="text-align: center;">
 								<br>
 								<img src="/src/logo.png" width="100%" alt="">
+								<a target="_blank" href="https://github.com/miguelPerezOntiveros/framework">View on Github</a>
 							</div>
 							<div class="col-6 offset-1">
 								<ul>
@@ -40,7 +41,7 @@
 								
 								<h5>Portlets, Pages and Theems</h5>
 								<p>Portlets can be used to create widget-like UIs, they query the CMS for data and produce HTML from it. Creating this HTML on the backend is necessary for web crawlers to be able to index your content without needing to run JavaScript.</p>
-								<p>Pages can contain arbitraty HTML and can include in your Portlets as well.</p>
+								<p>Pages will be stores as php's files and can contain arbitraty HTML and your Portlets.</p>
 								<p>Themes are folders you upload to a project.</p>
 							</div>							
 						</div>
@@ -59,8 +60,12 @@
 			$('.sidebar_trigger').on('click', function () {
 				$('.sidebarWrapper_sidebar').toggleClass('active');
 				$(this).toggleClass('active');
-				if(!$('.sidebarWrapper_sidebar').hasClass('active'))
+				if(!$('.sidebarWrapper_sidebar').hasClass('active')){
 					$('.sidebarWrapper_sidebar ul .collapse').removeClass('show')
+					history.replaceState({}, "", "?sidebar=1");
+				}
+				else
+					history.replaceState({}, "", "?");
 			});
 			doSidebarProjects();
 		});
