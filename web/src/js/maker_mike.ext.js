@@ -6,10 +6,12 @@ $.getScript( "/vendor/yamljs/yaml.js", function( data, textStatus, jqxhr ){
 
 function submitHook(e){
 	if(window.name == 'project' && window.crud_mode != 'delete'){
-		// config is the one displayed, it will be updated to carry json. yaml is a textarea in which the yaml will travel
+		// .form_element is the form that is being submited
 		if($('textarea[name=yaml]').length == 0)
 			$('.form_element').append('<textarea name="yaml" form="cu_form" style="display:none;" required></textarea><br>');
-		$('textarea[name=yaml]').val(editors['config'].getValue());
+		//$('textarea[name=yaml]').val(editors['config'].getValue());
+		
+		// editors['config'] will carry the user's config in JSON
 		try {
 			editors['config'].setValue(JSON.stringify(YAML.parse(editors['config'].getValue())))
 		}
@@ -18,6 +20,7 @@ function submitHook(e){
 			$('textarea[name=yaml]').remove();
 			doModal('error', 'Invalid YAML', 1000);
 
+			// if we return anything, the form submition will not continue
 			return 'Invalid YAML';
 		}
 	}

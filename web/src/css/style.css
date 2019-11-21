@@ -295,3 +295,11 @@ a[data-toggle="collapse"] {
 	width: 100%;
 	height: 100%;
 }
+
+.copy_json_as_yaml{
+	padding-left: 1em	
+}
+.copy_json_as_yaml i::after {
+	content: " Copy as YAML";
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"
+}

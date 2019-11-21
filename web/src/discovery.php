@@ -1,5 +1,7 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE);
+
+	// what is $project for? TOOD
 	preg_match('/\/projects\/(.*?)\/admin\/discovery\.php/', $_SERVER['REQUEST_URI'], $matches);
 
 	$project = $matches[1];

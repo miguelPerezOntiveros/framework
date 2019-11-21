@@ -5,7 +5,7 @@
 		error_log('engine activated');
 		require_once 'db_connection.inc.php';
 
-		$newConfig =  json_decode($row['config'], true);
+		$row['config'] =  json_decode($row['config'], true);
 
 		// Check if it already exists
 		$already_exists = false;
@@ -15,18 +15,18 @@
 		$stmt->execute();
 
 		while($ext_row = $stmt->fetch(PDO::FETCH_NUM))
-			if($newConfig['_projectName'] == $ext_row[0]){
+			if($row['config']['_projectName'] == $ext_row[0]){
 				error_log('Project "'.$ext_row[0].'" already exists.');
 				$already_exists = true;
-				exit(json_encode((object) ["error" => 'Project "'.$ext_row[0].'" already exists or has an invalid name.']));
+				exit(json_encode((object) ["error" => 'Project "'.$ext_row[0].'" already exists.']));
 			}
 
-		// Config
-		if(!isset($newConfig['_show'])){
-			$newConfig['_show'] = ucwords(str_replace("_"," ", $newConfig['_projectName'] ));
+		// adding in defaults for $row['config']
+		if(!isset($row['config']['_show'])){
+			$row['config']['_show'] = ucwords(str_replace("_"," ", $row['config']['_projectName'] ));
 		}
-		if(!isset($newConfig['page'])){
-			$newConfig['page'] = array(
+		if(!isset($row['config']['page'])){
+			$row['config']['page'] = array(
 				'name' => array(
 					'permissions_read' => 'System Administrator',
 					'permissions_update' => 'System Administrator',
@@ -54,8 +54,8 @@
 				'_show' => 'name'
 			);
 		}
-		if(!isset($newConfig['portlet'])){
-			$newConfig['portlet'] = array(
+		if(!isset($row['config']['portlet'])){
+			$row['config']['portlet'] = array(
 				'name' => array(
 					'permissions_read' => 'System Administrator',
 					'permissions_update' => 'System Administrator',
@@ -107,8 +107,8 @@
 				'_show' => 'name'
 			);
 		}
-		if(!isset($newConfig['theme'])){
-			$newConfig['theme'] = array(
+		if(!isset($row['config']['theme'])){
+			$row['config']['theme'] = array(
 				'name' => array(
 					'permissions_read' => 'System Administrator',
 					'permissions_update' => 'System Administrator',
@@ -143,8 +143,8 @@
 				'_show' => 'name'
 			);
 		}
-		if(!isset($newConfig['user_type'])){
-			$newConfig['user_type'] = array(
+		if(!isset($row['config']['user_type'])){
+			$row['config']['user_type'] = array(
 				'name' => array(
 					'permissions_read' => 'System Administrator',
 					'permissions_update' => 'System Administrator',
@@ -166,8 +166,8 @@
 				'_show' => 'name'
 			);
 		}
-		if(!isset($newConfig['user'])){
-			$newConfig['user'] = array(
+		if(!isset($row['config']['user'])){
+			$row['config']['user'] = array(
 				'user' => array(
 					'permissions_read' => 'System Administrator',
 					'permissions_update' => 'System Administrator',
@@ -196,7 +196,7 @@
 			);
 		}
 		$imageTables = array(); 				
-		foreach ($newConfig as $table_key => &$table) {
+		foreach ($row['config'] as $table_key => &$table) {
 			if($table_key[0] == '_')
 				continue;
 			foreach ($table as $column_key => &$column) {
@@ -228,10 +228,10 @@
 		}
 		
 		// SQL
-		$sql = 'DROP DATABASE IF EXISTS '.$newConfig['_projectName'].';'.PHP_EOL;
-		$sql .= 'CREATE DATABASE '.$newConfig['_projectName'].';'.PHP_EOL;
-		$sql .= 'USE '.$newConfig['_projectName'].';'.PHP_EOL;
-		foreach ($newConfig as $table_key => &$table) {
+		$sql = 'DROP DATABASE IF EXISTS '.$row['config']['_projectName'].';'.PHP_EOL;
+		$sql .= 'CREATE DATABASE '.$row['config']['_projectName'].';'.PHP_EOL;
+		$sql .= 'USE '.$row['config']['_projectName'].';'.PHP_EOL;
+		foreach ($row['config'] as $table_key => &$table) {
 			if($table_key[0] == '_')
 				continue;
 			$sql .= 'CREATE TABLE IF NOT EXISTS '.$table_key.'(id int NOT NULL AUTO_INCREMENT, ';
@@ -243,7 +243,7 @@
 					$type = 'varchar(255)';
 				if(isset($column['select']))
 					$type = 'varchar(511)';
-				else if(isset($newConfig[$type])) // type matches the name of a table
+				else if(isset($row['config'][$type])) // type matches the name of a table
 					$type = 'int, foreign key('.$column_key.') references '.$type.'(id)';
 				else if(is_numeric($type))
 					$type = 'varchar('.$type.')';
@@ -257,21 +257,24 @@
 		$sql .= "INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);".PHP_EOL;
 
 		// Run pre script
-		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
+		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
 		// Write files
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($newConfig).'\', true);?>');
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.yml', $row['yaml']);
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$newConfig['_projectName'].'/'.$newConfig['_projectName'].'.sql', $sql);	
+		//shouldn't have to write in a config.inc.php as the config is already in the MM DB.
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($row['config']).'\', true);?>');
+		//file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.yml', $row['yaml']);
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.sql', $sql);	
 
+		// There was a case in which the post script ran (DB was created) but the insert into project query failed. For the user, the proejct went into limbo mode and the project name got taken. TODO
 		// Run post script
 		$result_of_post_build = array();
-		exec($_SERVER["DOCUMENT_ROOT"].'/../build_post.sh '.$newConfig['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
+		exec($_SERVER["DOCUMENT_ROOT"].'/../build_post.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
 		error_log('result of post build: '.json_encode($result_of_post_build));
 		error_log('first line of result: '.$result_of_post_build[1]);
 		error_log('ERROR: '.(strpos($result_of_post_build[1], "ERROR") !== false));
 
 		if(isset($result_of_post_build) && strpos($result_of_post_build[1], "ERROR") !== false){
+			// what do I need this query for? TODO
 			//Executing Query
 			$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (?';
 			for($i = 1; $i<count($row); $i++)
@@ -284,5 +287,7 @@
 
 			exit();
 		}
+		// encode it again now that defaults have been added
+		$row['config'] =  json_encode($row['config']);
 	}
 ?>
