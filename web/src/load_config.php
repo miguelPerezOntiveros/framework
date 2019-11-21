@@ -1,7 +1,7 @@
 <?php	
 	if(!$_GET['project'])
 		$config_path = 'config.inc.php';
-	else if($_GET['project'] == 'mike_maker')
+	else if($_GET['project'] == 'mike_maker') // is maker_mike really a different case? TODO. Not even spelt correctly. Who requires this file anyways?
 		$config_path = '../config.inc.php';
 	else 
 		$config_path = $_SERVER["DOCUMENT_ROOT"].'/projects/'.$_GET['project'].'/admin/config.inc.php';

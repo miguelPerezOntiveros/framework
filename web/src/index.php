@@ -1,4 +1,5 @@
-<?php 	require_once 'config.inc.php';
+<?php
+require '../../../src/set_config.inc.php';
 require 'session.inc.php'; ?>
 <!DOCTYPE html>
 <html lang="en">

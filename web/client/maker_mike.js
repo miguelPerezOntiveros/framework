@@ -4,6 +4,7 @@
         if(project){
             $.mm[project] = {};
             return new Promise(function(fullfill, reject){
+                // I'm changint his to become a single discovery endpoint for all projects
                 $.get('/projects/'+project+'/admin/discovery.php', function(data){
                     data = JSON.parse(data);
                     for(table in data){

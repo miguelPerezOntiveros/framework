@@ -146,6 +146,8 @@ doForm = function(columns){
 				else
 					form += '</br><pre name="'+e[0]+'" class="ace"></pre><br>';
 			}
+			else if(e[1] == 'JSON')
+				form += '</br><pre name="'+e[0]+'" class="ace"></pre><br>';
 			else if(e[1] == '*')
 				form += '</br><input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
 			else if(e[1] == 'date')

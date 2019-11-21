@@ -1,11 +1,8 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE);
 
-	// what is $project for? TOOD
-	preg_match('/\/projects\/(.*?)\/admin\/discovery\.php/', $_SERVER['REQUEST_URI'], $matches);
-
-	$project = $matches[1];
-	require 'load_config.php';
+	$project = $_GET['project'];
+	require 'set_config.php';
 	require 'session.inc.php';
 
 	foreach($config as $table_name => $table){

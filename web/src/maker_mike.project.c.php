@@ -247,6 +247,8 @@
 					$type = 'int, foreign key('.$column_key.') references '.$type.'(id)';
 				else if(is_numeric($type))
 					$type = 'varchar('.$type.')';
+				else if ($type == 'JSON')
+					;
 				$sql .= $column_key.' '.$type.', ';
 			}
 			$sql .= 'primary key(id));'.PHP_EOL;
@@ -260,8 +262,8 @@
 		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
 		// Write files
-		//shouldn't have to write in a config.inc.php as the config is already in the MM DB.
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($row['config']).'\', true);?>');
+		/*//shouldn't have to write in a config.inc.php as the config is already in the MM DB.
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($row['config']).'\', true);?>');*/
 		//file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.yml', $row['yaml']);
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.sql', $sql);	
 
