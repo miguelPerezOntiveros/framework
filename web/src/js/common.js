@@ -1,6 +1,6 @@
 doSidebarProjects = function(){
 	console.log('in do sidebar projects from common');
-	$.get('sidebar_projects.php?project=maker_mike', function(current){
+	$.get('../../../src/sidebar_projects.php?project=maker_mike', function(current){
 		try{
 			current = JSON.parse(current);
 			var old = [];

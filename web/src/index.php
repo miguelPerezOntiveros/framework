@@ -1,5 +1,5 @@
 <?php
-require '../../../src/set_config.inc.php';
+require '../../../src/set_config_and_params.inc.php';
 require 'session.inc.php'; ?>
 <!DOCTYPE html>
 <html lang="en">

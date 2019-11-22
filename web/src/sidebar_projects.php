@@ -1,6 +1,6 @@
 <?php 
 	$project = $_GET['project'];
-	require 'set_config.inc.php';
+	require 'set_config_and_params.inc.php';
 	
 	$no_header = true; 
 	require 'session.inc.php';

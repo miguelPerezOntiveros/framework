@@ -261,10 +261,6 @@
 		// Run pre script
 		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
-		// Write files
-		/*//shouldn't have to write in a config.inc.php as the config is already in the MM DB.
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/admin/config.inc.php', '<?php $config=json_decode(\''.json_encode($row['config']).'\', true);?>');*/
-		//file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.yml', $row['yaml']);
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.sql', $sql);	
 
 		// There was a case in which the post script ran (DB was created) but the insert into project query failed. For the user, the proejct went into limbo mode and the project name got taken. TODO

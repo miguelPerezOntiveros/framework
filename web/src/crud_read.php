@@ -1,8 +1,6 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	require 'origin_check.php';
-	$project = $_GET['project'];
-	require_once 'set_config.inc.php';
+	require 'set_config_and_params.inc.php';
 	
 	//Validating table permissions
 	if($config[$_GET['table']]['_permissions']['read'] != '-'){
@@ -60,7 +58,6 @@
 		$joinRules[] = '0';
 	
 	//Executing PDO
-	require_once 'db_connection.inc.php';
 	$data = array();
 	$columns = array();
 	$sql = 'SELECT '.implode(', ', $allowedColumns).' FROM '.implode(', ', $tablesToJoin).' WHERE '.implode(' and ', $joinRules).';';	

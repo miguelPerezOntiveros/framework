@@ -1,7 +1,6 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-
-	require '../../../src/set_config.inc.php';
+	require '../../../src/set_config_and_params.inc.php';
 	require 'db_connection.inc.php';
 
 	function checkPassword($pdo, $username){
