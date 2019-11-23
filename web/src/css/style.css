@@ -26,10 +26,6 @@ nav {
 	border-top: 2px solid #3bb6d4;
 	color: #fff;
 }
-.row_buttons button{
-	float: right;
-	margin: 2px 5px;
-}
 
 .menu{
 	padding: 18px;
@@ -296,10 +292,15 @@ a[data-toggle="collapse"] {
 	height: 100%;
 }
 
-.copy_json_as_yaml{
-	padding-left: 1em	
+.row_buttons {
+	float: right;
 }
-.copy_json_as_yaml i::after {
-	content: " Copy as YAML";
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"
+.row_option{
+	color: #323264;
+	display: table-cell;
+	padding: 0 2px;
+}
+.row_option {
+	text-align: center;
+	font-size: .8em;
 }

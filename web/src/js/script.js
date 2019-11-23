@@ -14,7 +14,7 @@ handleEdit = function(e){
 		e.required = false;
 	});
 	var values = [];
-	$(e).parent().parent().parent().find('td').slice(0, -1).each(function(i, e) {
+	$(e).parent().parent().parent().parent().parent().find('td').slice(0, -1).each(function(i, e) {
 		values.push($(e).text());
 	})
 	console.log(values);
@@ -35,7 +35,7 @@ handleEdit = function(e){
 }
 handleDelete = function(e){
 	window.crud_mode = 'delete';
-	var id = $($(e).parent().parent().parent().find('td')[0]).text();
+	var id = $($(e).parent().parent().parent().parent().parent().find('td')[0]).text();
 	$('.form_element input[name=id]').val(id);
 	$('.form_element').trigger('submit');
 }
@@ -193,7 +193,7 @@ doTable = function(name, displayName, thenDoForm){
 		data = JSON.parse(data);
 
 		if (typeof doTablePreHook === "function")
-			doTablePreHook();
+			data = doTablePreHook(data);
 
 		if(data.error){
 			doModal('error', data.error, 5000);
@@ -250,7 +250,10 @@ doTable2 = function(data, thenDoForm){
 			columns.push({ "render": $.fn.dataTable.render.text() });
 	});
 	columns.push({
-		defaultContent: '<div class="row_buttons"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></div>'
+		defaultContent: '<div class="row_buttons">'+
+				'<div class="row_option"><div style="display: flex"><button onclick="handleDelete(this)" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button></div></div>'+
+				'<div class="row_option"><div style="display: flex"><button onclick="handleEdit(this)" class="btn btn-primary btn-xs"><i class="fas fa-pencil-alt"></i></button></div></div>'+
+			'</div>'
 	});
 	$('tr').append('<th></th>');
 

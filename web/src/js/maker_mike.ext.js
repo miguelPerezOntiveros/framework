@@ -7,9 +7,8 @@ $.getScript( "/vendor/yamljs/yaml.js", function( data, textStatus, jqxhr ){
 function submitHook(e){
 	if(window.name == 'project' && window.crud_mode != 'delete'){
 		// .form_element is the form that is being submited
-		if($('textarea[name=yaml]').length == 0)
-			$('.form_element').append('<textarea name="yaml" form="cu_form" style="display:none;" required></textarea><br>');
-		//$('textarea[name=yaml]').val(editors['config'].getValue());
+		//if($('textarea[name=yaml]').length == 0)
+		//	$('.form_element').append('<textarea name="yaml" form="cu_form" style="display:none;" required></textarea><br>');
 		
 		// editors['config'] will carry the user's config in JSON
 		try {
@@ -35,9 +34,12 @@ $( ".form_plus_button" ).on('click', function(){
 		$('textarea[name=yaml]').addClass('d-none');
 	}
 });
-$('table').on('click', '.copy_json_as_yaml', function(e){
+$('table').on('click', '.copy', function(e){
 	const el = document.createElement('textarea');
-	el.value = YAML.stringify( JSON.parse($(e.target).parent().parent().text()) );
+	var id = $(e.target).closest('div').parent().parent().parent().parent().find('td:first').html();
+	var format = $(e.target).closest('div').parent().text();
+	el.value = window.configs[id][format];
+
 	el.setAttribute('readonly', '');
 	el.style.position = 'absolute';
 	el.style.left = '-9999px';
@@ -45,13 +47,34 @@ $('table').on('click', '.copy_json_as_yaml', function(e){
 	el.select();
 	document.execCommand('copy');
 	document.body.removeChild(el);
+	console.log('copied. id: '+id+' format:'+format);
 });
 function doTablePostHook(){
 	if(window.name == 'project'){
 		console.log('in maker_mike project table post hook');
 		doSidebarProjects();
 		$('.row_buttons').each(function(i, e){
-			$(e).find('button:first').remove();
+			$(e).find('.row_option:last').remove();
+			$(e).find('button').css('float', 'left');
+			$(e).append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>JSON</p></div>');
+			$(e).append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>YAML</p></div>');
+			//$(e).css('float', 'right');
 		});
 	}
 }
+function doTablePreHook(data){
+	window.configs = [];
+	if(window.name == 'project'){
+		$.each(data.data, function(i, e){
+			window.configs[e[0]] = [];
+			window.configs[e[0]]['JSON'] = e[2];
+			config = JSON.parse(e[2]);
+			window.configs[e[0]]['YAML'] = YAML.stringify(config);
+
+			e[2] = config['_show'] + ' ('+config['_projectName']+')';
+		});
+		$('.copy i').attr('data-after','bar');
+	}
+	return data;
+}
+
