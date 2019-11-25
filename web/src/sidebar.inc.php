@@ -17,11 +17,12 @@
 					<ul class=<?php echo '"collapse list-unstyled sidebar_projects'.($_GET['sidebar']==1?' show"':'"') ?> id="projectsSubmenu"></ul>
 				</li>
 				<?php 
-	                if(isset($config['_projectName']) && $config['_projectName'] != 'maker_mike')
-	                	echo '
+	                echo '
 		                <li style="border-top: 1px solid #000032; color: #3bb6d4;">
 							<p>'.$config['_show'].' ('.$config['_projectName'].')</p>
-		                </li>
+		                </li>';
+	                if(isset($config['_projectName']) && $config['_projectName'] != 'maker_mike')	
+		                echo '
 						<li class="tab" id="menu_page">
 							<a href="#" onclick="loadSection(\'page\', \'Page\');">Page</a>
 						</li>
@@ -30,7 +31,8 @@
 						</li>
 						<li class="tab" id="menu_theme">
 							<a href="#" onclick="loadSection(\'theme\', \'Theme\');">Theme</a>
-						</li>
+						</li>';
+					echo '
 						<li class="tab" id="menu_user_type">
 							<a href="#" onclick="loadSection(\'user_type\', \'User Type\');">User Type</a>
 						</li>

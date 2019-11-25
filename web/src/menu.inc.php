@@ -5,8 +5,12 @@
 					<span></span>
 					<span></span>
 				</button>
-			    <span class="navbar_project"><?php echo $config['_show'].' ('.$config['_projectName'].')'?:'Home' ?></span>
-				<?php 
+			    <span class="navbar_project"><?php 
+			    		echo $config['_show']?
+			    			$config['_show'].' ('.$config['_projectName'].')':
+			    			'Home'; ?>
+			    </span>
+					<?php 
 					$currentTable = isset($_GET['table'])? $_GET['table']: array_keys($config)[2];
 					$atLeastOneEntryAdded = false;
 					$topNavLi = "";

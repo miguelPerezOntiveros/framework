@@ -25,7 +25,7 @@
 		if(!isset($row['config']['_show'])){
 			$row['config']['_show'] = ucwords(str_replace("_"," ", $row['config']['_projectName'] ));
 		}
-		if(!isset($row['config']['page'])){
+		if(!isset($row['config']['page']) && $row['config']['_projectName'] != 'maker_mike'){
 			$row['config']['page'] = array(
 				'name' => array(
 					'permissions_read' => 'System Administrator',
@@ -54,7 +54,7 @@
 				'_show' => 'name'
 			);
 		}
-		if(!isset($row['config']['portlet'])){
+		if(!isset($row['config']['portlet']) && $row['config']['_projectName'] != 'maker_mike'){
 			$row['config']['portlet'] = array(
 				'name' => array(
 					'permissions_read' => 'System Administrator',
@@ -107,7 +107,7 @@
 				'_show' => 'name'
 			);
 		}
-		if(!isset($row['config']['theme'])){
+		if(!isset($row['config']['theme']) && $row['config']['_projectName'] != 'maker_mike'){
 			$row['config']['theme'] = array(
 				'name' => array(
 					'permissions_read' => 'System Administrator',
