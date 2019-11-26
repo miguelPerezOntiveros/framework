@@ -1,7 +1,6 @@
 <?php 
 	require 'db_connection.inc.php';
 	$res = array();
-	$fields = array();
 	$page = '';
 	
 	$sql = 'SELECT * FROM page WHERE url = "'.$url.'";';
@@ -20,6 +19,7 @@
 	}
 
 	function processPortlet($portletName, $pdo) {
+		$fields = array();
 		$portlet = '';
 
 		$sql = 'SELECT * FROM portlet WHERE name = "'.$portletName.'";';

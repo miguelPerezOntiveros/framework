@@ -1,6 +1,6 @@
 <?php
-	error_log("This is db_connection.inc.php running once more, called from: ".$_SERVER['REQUEST_URI']);
 	require $_SERVER["DOCUMENT_ROOT"].'/start_settings.inc.php';
+	error_log("This is db_connection.inc.php connecting to ".$config['_projectName'].", called from: ".$_SERVER['REQUEST_URI']."\n");
 
 	try {
 		$pdo = new PDO(

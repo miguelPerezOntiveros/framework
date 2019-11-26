@@ -14,7 +14,7 @@
 		$data = array();
 		$columns = array();
 		$sql = 'SELECT config FROM project WHERE JSON_EXTRACT(config, "$._projectName") = ?;';	
-		error_log('SQL - '.$config['_projectName'].' - ' .$sql);
+		error_log('SQL - '.$config['_projectName'].' - ' .$sql."\n");
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute([$project]);
 		if(!$row = $stmt->fetch(PDO::FETCH_NUM))

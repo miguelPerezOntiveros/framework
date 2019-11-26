@@ -14,10 +14,10 @@
 		- 3. SQL import (DML)
 		- Had not thought about extentions and themes
 	- Drag and drop imports
+- automate minimal DB creation
 - stateless computing
 	- make sure project creation works on GCRun (simlinks, etc). Run should be stateless.
 	- Config should be stored on the DB to keep Run stateless?
-- how does the CRUD interface handle different file extensions on file type columns? 
 - should let me know if DB stops becomming available. Don't just hang there.
 	- make sure we get feedback if db couldn´t be created.
 	- make sure we get feedback on any sql errors.
@@ -26,15 +26,19 @@
 - I shouldn't have visibility on projects (sidebar and not sidebar) I'm not user of ¿? does that make sense?
 - check all php TODOs
 	$ grep --include=\*.php 'TODO' -rn .
+- should the maker_mike config just be loaded from a file instead?
 - From the sidebar, show:
 	- DBs that are not being managed (should be actionable)
 		- can't recreate them atm because they "already exist" so they just take up their name
 	- project table entries that don't have a DB (need to be recreated)
 - document dependency tree among php files
 	$ grep --include=\*.php -rn . -e 'STRING'
-- should I close top nav when clicking on a tab?
-- put backend src exts in a separate folder to clear the clutter
 - document why I'm calling sidebar_projects twice
+- should I close top nav when clicking on a tab?
+	- yes
+- how does the CRUD interface handle different file extensions on file type columns? 
+- more left space on table name
+- updating pages doesn't rewrite the page.php file (they won't come back if deleted)
 
 ## General TODOs
 - annimations on both menus should probably match
@@ -121,9 +125,34 @@ To run on bare metal:
 - Check ./start.sh usage with "-h"
 
 For docker:
+having done a 
+```
+docker pull mysql/mysql-server:5.7
+```
+do:
+```
+	docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:3306 mysql/mysql-server:5.7
+	docker inspect 085 | grep \"IPAd
 	cd docker
 	docker build .
-	sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h DB_HOST -P DB_PWD
+	sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
+```
+As all configs are now loaded from the DB, an initial DB state is needed:
+```
+DROP DATABASE IF EXISTS maker_mike;
+CREATE DATABASE maker_mike;
+USE maker_mike;
+CREATE TABLE IF NOT EXISTS project(id int NOT NULL AUTO_INCREMENT, name varchar(255), config JSON, description varchar(255), primary key(id));
+CREATE TABLE IF NOT EXISTS settings(id int NOT NULL AUTO_INCREMENT, name varchar(255), value varchar(255), primary key(id));
+CREATE TABLE IF NOT EXISTS user_type(id int NOT NULL AUTO_INCREMENT, name varchar(255), landing_page varchar(255), primary key(id));
+CREATE TABLE IF NOT EXISTS user(id int NOT NULL AUTO_INCREMENT, user varchar(255), pass varchar(255), type int, foreign key(type) references user_type(id), primary key(id));
+INSERT INTO user_type(name, landing_page) VALUES ('System Administrator', 'index.php');
+INSERT INTO user_type(name, landing_page) VALUES ('User', 'index.php');
+INSERT INTO user(user, pass, type ) VALUES ('admin',  'admin', 1);
+INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);
+
+INSERT INTO project(config) VALUES ('{"user": {"pass": {"type": "255", "_show": "Pass", "permissions_read": "System Administrator", "permissions_create": "System Administrator", "permissions_update": "System Administrator"}, "type": {"type": "user_type", "_show": "Type", "permissions_read": "System Administrator", "permissions_create": "System Administrator", "permissions_update": "System Administrator"}, "user": {"type": "255", "_show": "User", "permissions_read": "System Administrator", "permissions_create": "System Administrator", "permissions_update": "System Administrator"}, "_show": "user", "_permissions": {"read": "System Administrator", "create": "System Administrator", "delete": "System Administrator", "update": "System Administrator"}}, "_show": "Maker Mike", "project": {"name": {"type": "255", "_show": "Name", "permissions_read": "-", "permissions_create": ".*", "permissions_update": ".*"}, "_show": "name", "config": {"type": "JSON", "_show": "Config", "permissions_read": "-", "permissions_create": ".*", "permissions_update": ".*"}, "description": {"type": "255", "_show": "Description", "permissions_read": "-", "permissions_create": ".*", "permissions_update": ".*"}, "_permissions": {"read": ".*", "create": ".*", "delete": ".*", "update": ".*"}}, "settings": {"name": {"type": "255", "_show": "Name", "permissions_read": "-", "permissions_create": ".*", "permissions_update": ".*"}, "_show": "name", "value": {"type": "255", "_show": "Value", "permissions_read": "-", "permissions_create": ".*", "permissions_update": ".*"}, "_permissions": {"read": ".*", "create": ".*", "delete": ".*", "update": ".*"}}, "user_type": {"name": {"type": "255", "_show": "Name", "permissions_read": "System Administrator", "permissions_create": "System Administrator", "permissions_update": "System Administrator"}, "_show": "name", "_permissions": {"read": "System Administrator", "create": "System Administrator", "delete": "System Administrator", "update": "System Administrator"}, "landing_page": {"type": "255", "_show": "Landing Page", "permissions_read": "System Administrator", "permissions_create": "System Administrator", "permissions_update": "System Administrator"}}, "_projectName": "maker_mike"}');
+```
 
 ### CRUD service extension mechanism
 The logic is written on the "src/ext.inc.php" file, which is required by all CRUD services:

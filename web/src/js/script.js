@@ -97,7 +97,7 @@ doForm = function(columns){
 				$('.form_element').append(form+'</br><select name="'+e[0]+'[]" multiple required></select><br>');
 				form = '';
 				$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
-					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).text()+'">'+$(el).text()+'</option>');
+					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).data('table')+'">'+$(el).text()+'</option>');
 				});
 			}
 			else if(e[3] == 'multi'){
