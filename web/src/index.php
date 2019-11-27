@@ -15,7 +15,7 @@ require 'session.inc.php'; ?>
 						<div class="modal-dialog modal_body" role="document">
 						</div>
 					</div>
-					<div class="container">
+					<div class="container" style="padding-left: 9px;">
 						<div class="row">
 							<div class="col-12 title">
 								<h2 id="title"></h2>
@@ -27,7 +27,7 @@ require 'session.inc.php'; ?>
 								<form id="cu_form" class="form_element"></form>
 							</div>
 
-							<div class="col-12 table_parent">
+							<div class="col-12 table_parent" style="padding-left: 30px;">
 								<br><br>
 								<table class="table_element display" width="100%" cellspacing="0"></table>
 							</div>

@@ -29,7 +29,7 @@
 
 		if($url_available){
 			error_log('Creating page');
-			$command = 'mkdir -p '.$dir.' && cp endpoint.php '.$url.' && ln -s '.$_SERVER["DOCUMENT_ROOT"].'/src/page.php '.$dir;
+			$command = 'mkdir -p '.$dir.' && cp page.php '.$url;
 			error_log('Command: '.$command);
 			exec($command);
 		} else {

@@ -38,9 +38,10 @@
 					exit(json_encode((object) ["error" => "Supported extensions: ".implode(', ', $validExts)]));
 				}
 				
-				if ($_FILES[$column_key]["size"] > 1*1024*1024)
+				if ($_FILES[$column_key]["size"] > 10*1024*1024)
 					exit(json_encode((object) ["error" => "File too large"]));
 
+				error_log('About to move uploaded file: '. json_encode( $_FILES[$column_key]));
 				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$target_file)){
 					error_log('Error during transfer: '. json_encode( $_FILES[$column_key]));
 					exit(json_encode((object) ["error" => "Error during transfer, check the log"]));

@@ -12,11 +12,11 @@
 		require($ext1);
 	}
 	else if(file_exists($ext2)){
-		error_log($_SERVER['REQUEST_URI'].' requiring ext from src (unspecified project): '.$ext2);
+		error_log($_SERVER['REQUEST_URI'].' requiring ext from src/ext (unspecified project): '.$ext2);
 		require($ext2);
 	}
 	else if(file_exists($ext3)){
-		error_log($_SERVER['REQUEST_URI'].' requiring ext from src (specific project): '.$ext3);
+		error_log($_SERVER['REQUEST_URI'].' requiring ext from src/ext (specific project): '.$ext3);
 		require($ext3);
 	}
 ?>
