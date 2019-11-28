@@ -1,6 +1,6 @@
 
 			<nav class="navbar navbar-expand-lg navbar-dark topbar_topbar">
-				<button type="button" onclick="$('.topbar_logout_link').attr('href', 'login.php?sidebar='+($('.sidebarWrapper_sidebar').hasClass('active')?'1':''));" class=<?php echo '"sidebar_trigger '.($_GET['sidebar']==1?'':'active').'"' ?>>
+				<button type="button" class=<?php echo '"sidebar_trigger '.($_GET['sidebar']==1?'':'active').'"' ?>>
 					<span></span>
 					<span></span>
 					<span></span>
@@ -11,7 +11,6 @@
 			    			'Home'; ?>
 			    </span>
 					<?php 
-					$currentTable = isset($_GET['table'])? $_GET['table']: array_keys($config)[2];
 					$atLeastOneEntryAdded = false;
 					$topNavLi = "";
 					if(isset($config))
@@ -29,7 +28,7 @@
 							$tableNameToShow = $config[$table]['displayName'] ?: ucwords(str_replace("_"," ", $table ));
 							$topNavLi .= '
 							<li class="nav-item">
-								<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\');" class=\'tab nav-link\' data-table=\''.$table.'\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>
+								<span onclick="loadSection(\''.$table.'\', \''.$tableNameToShow.'\', true);" class=\'tab nav-link\' data-table=\''.$table.'\' id=\'menu_'.$table.'\'>'.$tableNameToShow.'</span>
 							</li>';
 						}
 				?>
@@ -47,7 +46,7 @@
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 									<span class="dropdown-header" style="text-align:right;">Welcome <?= $_SESSION['userName'] ?>!<br>(<?= $_SESSION['type']?>)</span>
-									<a class="dropdown-item topbar_logout_link" href=<?php echo '"login.php?sidebar='.$_GET['sidebar'].'"' ?> style="text-align:right;">Log out <i class="fas fa-sign-out-alt"></i></a>
+									<a class="dropdown-item topbar_logout_link" href="#" style="text-align:right;">Log out <i class="fas fa-sign-out-alt"></i></a>
 								</div>
 							</li>
 					</ul>

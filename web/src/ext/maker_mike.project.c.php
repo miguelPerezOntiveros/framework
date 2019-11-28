@@ -262,8 +262,6 @@
 		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.sql', $sql);	
-
-		// There was a case in which the post script ran (DB was created) but the insert into project query failed. For the user, the proejct went into limbo mode and the project name got taken. TODO
 		// Run post script
 		$result_of_post_build = array();
 		exec($_SERVER["DOCUMENT_ROOT"].'/../build_post.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
@@ -272,17 +270,15 @@
 		error_log('ERROR: '.(strpos($result_of_post_build[1], "ERROR") !== false));
 
 		if(isset($result_of_post_build) && strpos($result_of_post_build[1], "ERROR") !== false){
-			// what do I need this query for? TODO
 			//Executing Query
-			$sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (?';
-			for($i = 1; $i<count($row); $i++)
-				$sql .= ', ?';
-			$sql .= ');';	
-			error_log('INFO - sql:' .$sql);
-			$stmt = $pdo->prepare($sql);
-			$stmt->execute(array_values($row));
+			// $sql = 'INSERT INTO '.$_GET['table'].' ('.implode(', ',array_keys($row)).') VALUES (?';
+			// for($i = 1; $i<count($row); $i++)
+			// 	$sql .= ', ?';
+			// $sql .= ');';	
+			// error_log('INFO - sql:' .$sql);
+			// $stmt = $pdo->prepare($sql);
+			// $stmt->execute(array_values($row));
 			echo json_encode((object) ["error" => 'Invalid configuration.']);
-
 			exit();
 		}
 		// encode it again now that defaults have been added

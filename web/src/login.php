@@ -1,7 +1,7 @@
 <?php
 	error_reporting(E_ALL ^ E_NOTICE); 
-	require '../../../src/set_config_and_params.inc.php';
-	require 'db_connection.inc.php';
+	require $_SERVER["DOCUMENT_ROOT"].'/src/set_config_and_params.inc.php';
+	require $_SERVER["DOCUMENT_ROOT"].'/src/db_connection.inc.php';
 
 	function checkPassword($pdo, $username){
 		$sql = 'select user, pass, name, landing_page from user, user_type where type = user_type.id and user = \''.$username.'\'';
@@ -58,14 +58,14 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php require 'head.inc.php';?>
+<?php require $_SERVER["DOCUMENT_ROOT"].'/src/head.inc.php';?>
 <body>
 	<div class="sidebarWrapper_wrapper">
-		<?php require 'sidebar.inc.php'; ?>
+		<?php require $_SERVER["DOCUMENT_ROOT"].'/src/sidebar.inc.php'; ?>
 		<div class="sidebarWrapper_page">
 			<div class="footerDown_container">
 				<div class="footerDown_body">
-					<?php require 'menu.inc.php'; ?>
+					<?php require $_SERVER["DOCUMENT_ROOT"].'/src/menu.inc.php'; ?>
 					<div id = "container">
 						<div id ="body">							
 							<div class="container">
@@ -111,12 +111,12 @@
 					</div>
 				</div>
 				<div class="footerDown_footer">
-					<?php require 'foot.inc.php'; ?>
+					<?php require $_SERVER["DOCUMENT_ROOT"].'/src/foot.inc.php'; ?>
 				</div>
 			</div>
 		</div>
 	</div>
-	<?php require 'body_bottom.inc.php'; ?>
+	<?php require $_SERVER["DOCUMENT_ROOT"].'/src/body_bottom.inc.php'; ?>
 	<script src="/src/js/common.js"></script>
 	<script src="/src/js/auth.js"></script>
 	<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>

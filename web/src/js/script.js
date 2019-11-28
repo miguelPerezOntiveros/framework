@@ -72,11 +72,22 @@ toggleForm = function (only){
 	}
 }
 
-loadSection = function(name, displayName){
+$.urlParam = function (name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                      .exec(window.location.search);
+
+    return (results !== null) ? results[1] || 0 : false;
+}
+
+loadSection = function(name, displayName, replaceState){
 	$('.form').removeClass('bs-callout-left');
 	$('.form_plus').removeClass('rotated');
 	doTable(name, displayName, true);
 	doMenu(name, displayName);
+	if(replaceState){
+		history.replaceState({}, "", "?sidebar="+$.urlParam('sidebar')+'&table='+name);
+		//$('.sidebarWrapper_sidebar a').attr('href', '/index.php?sidebar=1&table='+name);
+	}
 }
 
 doMenu = function(name, displayName){
@@ -308,7 +319,11 @@ $(document).ready(function() {
 			processData: false
 		});
 	});
-	$('li>.tab:first').click();
+	if(!$.urlParam('table'))
+		$('li>.tab:first').click();
+	else
+		$('li>.tab[data-table='+$.urlParam('table')+']').click();
+		loadSection($.urlParam('table'));
 	$('.sidebar_trigger').on('click', function() {
 		if(window.innerWidth < 768){
 			$('.sidebarWrapper_sidebar').toggleClass('applyMediaQuery_sidebarWrapper_sidebar');
@@ -318,18 +333,22 @@ $(document).ready(function() {
 			$('.sidebarWrapper_sidebar').toggleClass('active');
 			$(this).toggleClass('active');
 			if($('.sidebarWrapper_sidebar').hasClass('active')){
-				history.replaceState({}, "", "?");
+				history.replaceState({}, '', '?sidebar=0&table='+$.urlParam('table'));
 				$('.sidebarWrapper_sidebar').removeClass('applyMediaQuery_sidebarWrapper_sidebar');
 				$('.sidebar_trigger').removeClass('applyMediaQuery_sidebar_trigger');
 			}
 			else{
 				$('.sidebarWrapper_sidebar ul .collapse').removeClass('show');
-				history.replaceState({}, "", "?sidebar=1");
+				history.replaceState({}, '', '?sidebar=1&table='+$.urlParam('table'));
 				$('.sidebarWrapper_sidebar').addClass('applyMediaQuery_sidebarWrapper_sidebar');
 				$('.sidebar_trigger').addClass('applyMediaQuery_sidebar_trigger');
 			}
 		}
 	});
+	document.getElementsByClassName('topbar_logout_link')[0].onclick = function() {
+		location.href='login.php?sidebar='+$.urlParam('sidebar'); 
+	};
+
 	$('.nav-item:not(.dropdown)').on('click', function(){
 		if(!$('.topbar_trigger').hasClass('collapsed'))
 			$('.topbar_trigger').click();

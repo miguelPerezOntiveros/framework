@@ -1,16 +1,16 @@
 <?php
-require '../../../src/set_config_and_params.inc.php';
-require 'session.inc.php'; ?>
+require $_SERVER["DOCUMENT_ROOT"].'/src/set_config_and_params.inc.php';
+require $_SERVER["DOCUMENT_ROOT"].'/src/session.inc.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php require 'head.inc.php'; ?>
+<?php require $_SERVER["DOCUMENT_ROOT"].'/src/head.inc.php'; ?>
 <body>
 	<div class="sidebarWrapper_wrapper">
-		<?php require 'sidebar.inc.php'; ?>
+		<?php require $_SERVER["DOCUMENT_ROOT"].'/src/sidebar.inc.php'; ?>
 		<div class="sidebarWrapper_page">
 			<div class="footerDown_container">
 				<div class="footerDown_body">
-					<?php require 'menu.inc.php'; ?>
+					<?php require $_SERVER["DOCUMENT_ROOT"].'/src/menu.inc.php'; ?>
 					<div class="modal fade in" id="feedbackModal" tabindex="-1" role="dialog">
 						<div class="modal-dialog modal_body" role="document">
 						</div>
@@ -35,12 +35,12 @@ require 'session.inc.php'; ?>
 					</div>
 				</div>
 				<div class="footerDown_footer">
-					<?php require 'foot.inc.php'; ?>
+					<?php require $_SERVER["DOCUMENT_ROOT"].'/src/foot.inc.php'; ?>
 				</div>
 			</div>
 		</div>
 	</div>
-	<?php require 'body_bottom.inc.php'; ?>
+	<?php require $_SERVER["DOCUMENT_ROOT"].'/src/body_bottom.inc.php'; ?>
 	<script src="/src/js/common.js"></script>
 	<script src="/src/js/script.js"></script>
 	<script>
