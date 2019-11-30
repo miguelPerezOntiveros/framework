@@ -4,7 +4,7 @@
 	
 	$no_header = true; 
 	require 'session.inc.php';
-	require_once 'db_connection.inc.php';
+	require 'db_connection.inc.php';
 	$sql = "select SCHEMA_NAME from information_schema.SCHEMATA where SCHEMA_NAME NOT IN('mysql', 'information_schema', 'performance_schema', 'sys', 'maker_mike');";
 	$res = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
 	foreach ($res as $db_name) {

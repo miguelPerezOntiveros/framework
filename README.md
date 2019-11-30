@@ -31,48 +31,15 @@
 		- Had not thought about extentions and themes
 	- Drag and drop imports
 
+- why do I have an ext folder on my project?
+- can't page.php be a symlink?
 - mm projects table page 2 doesn't show the same options
 - reloads to the same table are not working on the sidebar entries
-- variable options are not being filled in on the portlets table
-	- it's because config is being stored unordered in mysql
-		- once I fix that, various .r. extentions will need to be re-adjusted
-	- json objects are unordered, json arrays are ordered. I need to follow somethign like:
-{
-    "Tables": [{
-        "Name1": "a1",
-        "Name2": "a2",
-        "Name3": "a3"
-    }, {
-        "Name1": "b1",
-        "Name2": "b2",
-        "Name3": "b3"
-    }, {
-        "Name1": "c1",
-        "Name2": "c2",
-        "Name3": "c3"
-    }],
-    "_projectProperty1": "bla1",
-    "_projectProperty2": "bla2",
-    "_projectProperty3": "bla3"
-}
+- find a way to not need the require once to call db_connection. Check if the connection is open and to the desired db
+- themes are not being unzipped
 
-which in YAML looks like:
----
-Tables:
-- Name1: a1
-  Name2: a2
-  Name3: a3
-- Name1: b1
-  Name2: b2
-  Name3: b3
-- Name1: c1
-  Name2: c2
-  Name3: c3
-_projectProperty1: bla1
-_projectProperty2: bla2
-_projectProperty3: bla3
-
-
+- config is being stored unordered in mysql
+	- once I fix that, various .r. extentions will need to be re-adjusted
 
 ## General TODOs
 - annimations on both menus should probably match
@@ -240,21 +207,35 @@ Often times you will need a set of operations run agains the DB to be atomic. Th
     }
 ?>
 ```
+### YAML Configuration
+- default tables
+	- can be specified as strings just containing their name
+	- will contain the following columns:
+		- their own "name"
+		- "columns" array with:
+			- "name: 512"
+			- "description: 1024"
+		- set of permissions
+- default columns
+	- can be specified as strings just containing their name
+	- will contain the following properties:
+		- their own "name"
+		- "type: 512"
+		- set of permissions
 
-#### Recreating the main "maker_mike" project
+### Recreating the main "maker_mike" project
 - you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist. Should show up on sidebar TODO only if you are an admin.
 - run your maker_mike yaml on the maker tab, currently:
 ```
-_projectName: maker_mike
-_show: Maker Mike
-project: 
-  name: 
-  config: 
+name: maker_mike
+tables:
+- name: project
+  columns:
+  - name
+  - name: config 
     type: JSON 
-  description:
-settings:
-  name:
-  value: 
+  - description
+- settings
 ```
 - for the "maker_mike" projectName, build_pre.sh will add in a soft link to enable the home page
 - entry from the project table, project folder on the FS and the DB can't be deleted as per blacklisting on backend extention maker_mike.project.d.php

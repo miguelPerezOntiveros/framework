@@ -59,7 +59,7 @@
 	if(!count($row))
 		exit(json_encode((object) ["error" => "No such table."]));
 
-	require_once 'db_connection.inc.php';
+	require 'db_connection.inc.php';
 	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = ?;';
 	error_log('INFO - sql:' .$sql);
 	$stmt = $pdo->prepare($sql);

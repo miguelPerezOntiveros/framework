@@ -1,5 +1,5 @@
 <?php
-		$project = json_decode($row['config'])->_projectName;
+		$project = json_decode($row['config'], true)['name'];
 		error_log('Evaluating if I should delete project named '.$project);
 		if($project == 'maker_mike'){
 			echo json_encode((object) ["error" => 'No entries deleted.']);

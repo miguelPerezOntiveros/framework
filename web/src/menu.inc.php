@@ -7,7 +7,7 @@
 				</button>
 			    <span class="navbar_project"><?php 
 			    		echo $config['_show']?
-			    			$config['_show'].' ('.$config['_projectName'].')':
+			    			$config['_show'].' ('.$config['_name'].')':
 			    			'Home'; ?>
 			    </span>
 					<?php 

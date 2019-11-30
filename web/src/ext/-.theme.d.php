@@ -1,7 +1,7 @@
 <?php
 	require_once 'normalize_path.inc.php';
 
-	$baseProjectUrl = '../projects/'.$config['_projectName'];
+	$baseProjectUrl = '../projects/'.$config['_name'];
 	$url = $baseProjectUrl.'/'.$row['url'];
 
 	// error_log('normalize($url): '.normalize($url));
@@ -15,7 +15,7 @@
 			error_log('Command: '.$command);
 			exec($command);
 		}
-		$command = 'find "'.$baseProjectUrl.'" -path "../projects/'.$config['_projectName'].'/admin/*" -prune -o -type d -empty -delete';
+		$command = 'find "'.$baseProjectUrl.'" -path "../projects/'.$config['_name'].'/admin/*" -prune -o -type d -empty -delete';
 		error_log('Command: '.$command);
 		exec($command);
 	}

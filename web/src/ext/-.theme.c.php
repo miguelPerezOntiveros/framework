@@ -1,7 +1,7 @@
 <?php
 	require_once 'normalize_path.inc.php';
 
-	$baseProjectUrl = '../projects/'.$config['_projectName'];
+	$baseProjectUrl = '../projects/'.$config['_name'];
 	$url = $baseProjectUrl.'/'.$row['url'];
 	
 	// error_log('normalize($url): '.normalize($url));
@@ -23,9 +23,14 @@
 		}
 
 		if($url_available){
+			$execOutput = array();
 			$command = 'unzip "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'" -d '.$url;
 			error_log('Deploying theme: '.$command);
-			exec($command);
+			exec($command, $execOutput);
+			error_log("output:\n");
+			foreach ($execOutput as $line) {
+				error_log($line."\n");
+			}
 
 			$execOutput = array();
 			$command = 'unzip -l "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'"';
@@ -34,7 +39,7 @@
 			$row['contents'] = '';
 			$files_in_theme = [];
 			foreach(array_slice($execOutput, 3, -2) as $line) {
-				error_log('line: '.$line);
+				error_log('line: '.$line."\n");
 				$files_in_theme[] = substr($line, 3);
 			}
 			$row['contents'] = json_encode($files_in_theme);

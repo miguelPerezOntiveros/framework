@@ -4,7 +4,7 @@
 
 	require_once 'normalize_path.inc.php';
 
-	$baseProjectUrl = '../projects/'.$config['_projectName'];
+	$baseProjectUrl = '../projects/'.$config['_name'];
 	$url = $baseProjectUrl.'/'.$row['url'];
 	$dir = dirname($url);
 

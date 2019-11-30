@@ -145,9 +145,9 @@ doForm = function(columns){
 					window.form_portlet_variable_options = [];
 					$.each($('select[name="query_tables[]"] option'), function(i, option){
 						$.get('/src/crud_read.php?project='+window._projectName+'&table=' + $(option).data('table_name') + '&columns=', function(response){
-							window.form_portlet_variable_options[$(option).text()] = [];
+							window.form_portlet_variable_options[$(option).data('table_name')] = [];
 							$.each(JSON.parse(response).columns, function(i, column){
-								window.form_portlet_variable_options[$(option).text()].push($(option).data('table_name') + '.' + column[0]);
+								window.form_portlet_variable_options[$(option).data('table_name')].push($(option).data('table_name') + '.' + column[0]);
 							});
 						});
 					});
@@ -159,7 +159,7 @@ doForm = function(columns){
 			}
 			else if(e[1] == 'JSON')
 				form += '</br><pre name="'+e[0]+'" class="ace"></pre><br>';
-			else if(e[1] == '*')
+			else if(e[1] == 'file')
 				form += '</br><input type="file" name="'+e[0]+'" id="file_'+e[0]+'" required> <div class="catcher" data-input="file_'+e[0]+'" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>(Current file will persist if no new file is chosen)</div><br>';
 			else if(e[1] == 'date')
 				form += '</br><input name="'+e[0]+'" type="date" required><br>';
@@ -244,7 +244,7 @@ doTable2 = function(data, thenDoForm){
 		$('tr').append('<th>'+(e[2] || 'ID')+'</th>');
 		if(e['display'] == 'html')
 			columns.push({});
-		else if(e[1] == '*')
+		else if(e[1] == 'file')
 			columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
 		else if(e[3] == 'tables')
 			columns.push({ "render": function (data, type, full, meta) {return '-'+JSON.parse(data).join('<br>-'); } });
@@ -363,8 +363,8 @@ $(document).ready(function() {
 	});
 	$('#cu_form').on('change', 'select[name="query_tables[]"]', function(){
 		$('.cu_form-variable_options').html('');
-		$.each($('select[name="query_tables[]"]').val(), function(i, selected_table_human_name){
-			$.each(window.form_portlet_variable_options[selected_table_human_name], function(i, entry_from_selected_table){
+		$.each($('select[name="query_tables[]"]').val(), function(i, selected_table){
+			$.each(window.form_portlet_variable_options[selected_table], function(i, entry_from_selected_table){
 				$('.cu_form-variable_options').append('<a class="dropdown-item cu_form-insert_variable" href="#">'+entry_from_selected_table+'</a>');
 			});
 		});

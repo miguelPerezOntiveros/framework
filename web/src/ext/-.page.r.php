@@ -1,7 +1,7 @@
 <?php
 	foreach ($data as $key => $value) {
-		$data[$key][1] = '<a href=\'../'.$value[1].'\'>'.$value[1].'</a>';
+		$data[$key][2] = '<a href=\'../'.$value[2].'\'>'.$value[2].'</a>';
 	}
 	
-	$columns[1]->display = 'html';
+	$columns[2]->display = 'html';
 ?>

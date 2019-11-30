@@ -44,12 +44,12 @@ require $_SERVER["DOCUMENT_ROOT"].'/src/session.inc.php'; ?>
 	<script src="/src/js/common.js"></script>
 	<script src="/src/js/script.js"></script>
 	<script>
-		window._projectName = <?= "'".$config['_projectName']."'" ?>;
+		window._projectName = <?= "'".$config['_name']."'" ?>;
 		window._show = <?= "'".$config['_show']."'" ?>;
 	</script>
 	<?php 
-		$ext1 = 'ext/'.$config['_projectName'].'.ext.js';
-		$ext2 = '../../../src/js/'.$config['_projectName'].'.ext.js';
+		$ext1 = 'ext/'.$config['_name'].'.ext.js';
+		$ext2 = '../../../src/js/'.$config['_name'].'.ext.js';
 
 		if(file_exists($ext1))
 			echo '<script src='.$ext1.'></script>';

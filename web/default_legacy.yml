@@ -1,0 +1,42 @@
+_projectName: miguelp
+_show: Miguelp.com
+project: 
+  title: 
+  description: 
+  image: 
+    type: '*'
+  video: 
+  tags: 
+comment:
+  name:
+  comment:
+  project:
+    type: project
+    select: multi
+certification: 
+  title: 
+  description: 
+  image: 
+    type: '*'
+experience: 
+  title: 
+  description: 
+award: 
+  title: 
+  description:
+    type: 1024
+  note: 
+link: 
+  title: 
+  description: 
+blogEntry: 
+  title: 
+  description: 
+  image: 
+    type: '*'
+  video: 
+  tags: 
+  content: 
+to_do: 
+  title: 
+  description:    

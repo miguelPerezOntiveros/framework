@@ -71,10 +71,9 @@ function doTablePreHook(data){
 			config = JSON.parse(e[2]);
 			window.configs[e[0]]['YAML'] = YAML.stringify(config);
 
-			e[2] = config['_show'] + ' ('+config['_projectName']+')';
+			e[2] = config['show'] + ' ('+config['name']+')';
 		});
 		$('.copy i').attr('data-after','bar');
 	}
 	return data;
 }
-

@@ -13,7 +13,7 @@
 		return array();
 	}
 
-	session_name($config['_projectName']);
+	session_name($config['_name']);
 	session_start();
 	unset($_SESSION['userName']);
 	unset($_SESSION['type']);
@@ -29,8 +29,8 @@
 			error_log('login.php - incorrect pwd on html form.');
 		}
 		else {
-			error_log('login.php - setting session data now for project '.$config['_projectName']);
-			session_name($config['_projectName']);
+			error_log('login.php - setting session data now for project '.$config['_name']);
+			session_name($config['_name']);
 			session_start();
 			$_SESSION['userName']= $_POST['userName'];		
 			$_SESSION['type'] = $userInfo[2];
@@ -46,7 +46,7 @@
 		$userInfo = checkPassword($pdo, $tokeninfo['email']);
 
 		if(count($userInfo) != 0 && $tokeninfo['aud'] == '640592571227-igj3s1lcf6v580op163fg4v26vins5ib.apps.googleusercontent.com'){
-			session_name($config['_projectName']);
+			session_name($config['_name']);
 			session_start();
 			$_SESSION['userName'] = $tokeninfo['email'];
 			$_SESSION['type'] = $userInfo[2];
@@ -121,7 +121,7 @@
 	<script src="/src/js/auth.js"></script>
 	<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 	<script type="text/javascript">
-		window._projectName = <?= "'".$config['_projectName']."'" ?>;
+		window._projectName = <?= "'".$config['_name']."'" ?>;
 
 		$(document).ready(function() {
 			$('.form-control').keypress(function(event) {

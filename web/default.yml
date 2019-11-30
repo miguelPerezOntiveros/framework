@@ -1,42 +1,39 @@
-_projectName: miguelp
-_show: Miguelp.com
-project: 
-  title: 
-  description: 
-  image: 
-    type: '*'
-  video: 
-  tags: 
-comment:
-  name:
-  comment:
-  project:
+name: miguelp
+show: Miguelp.com
+tables:
+- name: project
+  columns:
+  - title
+  - name: description
+    type: 1024
+  - name: image
+    type: file
+  - video_link
+- name: comment
+  columns:
+  - name
+  - comment
+  - name: project
     type: project
     select: multi
-certification: 
-  title: 
-  description: 
-  image: 
-    type: '*'
-experience: 
-  title: 
-  description: 
-award: 
-  title: 
-  description:
-    type: 1024
-  note: 
-link: 
-  title: 
-  description: 
-blogEntry: 
-  title: 
-  description: 
-  image: 
-    type: '*'
-  video: 
-  tags: 
-  content: 
-to_do: 
-  title: 
-  description:    
+- name: certification
+  columns:
+  - title
+  - description
+  - name: image
+    type: file
+- experience
+- award
+- link
+- name: blogEntry
+  columns:
+  - title
+  - description
+  - name: image
+    type: file
+  - video_link
+  - tags
+  - content
+- name: to_do
+  permissions:
+    read: System Administrator

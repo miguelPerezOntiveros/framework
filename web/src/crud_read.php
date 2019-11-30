@@ -30,7 +30,7 @@
 				if(isset($config[$column['type']]) && $column['select'] != 'multi'){ //column is a non-multi ref
 					$otherTable = $column['type'];
 					$otherTableAlias = $column_key.'Table';
-					$otherColumn = $config[$otherTable]['_show'];
+					$otherColumn = $config[$otherTable]['show'];
 					$tablesToJoin[] = $otherTable.' '.$otherTableAlias;
 					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.$column_key.', "-", '.$otherTableAlias.'.'.$otherColumn.') as '.$column_key;
 					$joinRules[] = $_GET['table'].'.'.$column_key.' = '.$otherTableAlias.'.id';
@@ -61,12 +61,12 @@
 	$data = array();
 	$columns = array();
 	$sql = 'SELECT '.implode(', ', $allowedColumns).' FROM '.implode(', ', $tablesToJoin).' WHERE '.implode(' and ', $joinRules).';';	
-	error_log('SQL - '.$config['_projectName'].' - ' .$sql);
+	error_log('SQL - '.$config['_name'].' - ' .$sql);
 	$stmt = $pdo->prepare($sql);
 	error_log('bindings: '.implode(', ', $bindings));
 	$stmt->execute($bindings);
 	foreach(range(0, $stmt->columnCount() - 1) as $i)
-		$columns[] = (object)[$stmt->getColumnMeta($i)['name'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['type'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['_show'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['select']]; 
+		$columns[] = (object)[$stmt->getColumnMeta($i)['name'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['type'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['show'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['select']]; 
 	while($row = $stmt->fetch(PDO::FETCH_NUM))
 		$data[] = $row;
 

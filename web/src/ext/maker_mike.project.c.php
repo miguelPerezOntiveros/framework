@@ -3,9 +3,9 @@
 
 	if(isset($row['config'])) {
 		error_log('engine activated');
-		require_once 'db_connection.inc.php';
+		require 'db_connection.inc.php';
 
-		$row['config'] =  json_decode($row['config'], true);
+		$row['config'] = json_decode($row['config'], true);
 
 		// Check if it already exists
 		$already_exists = false;
@@ -13,243 +13,147 @@
 		error_log('INFO - sql:' .$ext_sql);
 		$stmt = $pdo->prepare($ext_sql);
 		$stmt->execute();
-
 		while($ext_row = $stmt->fetch(PDO::FETCH_NUM))
-			if($row['config']['_projectName'] == $ext_row[0]){
+			if($row['config']['name'] == $ext_row[0]){
 				error_log('Project "'.$ext_row[0].'" already exists.');
 				$already_exists = true;
 				exit(json_encode((object) ["error" => 'Project "'.$ext_row[0].'" already exists.']));
 			}
 
-		// adding in defaults for $row['config']
-		if(!isset($row['config']['_show'])){
-			$row['config']['_show'] = ucwords(str_replace("_"," ", $row['config']['_projectName'] ));
-		}
-		if(!isset($row['config']['page']) && $row['config']['_projectName'] != 'maker_mike'){
-			$row['config']['page'] = array(
-				'name' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'url' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'html' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '1024'
-				),
-				'_permissions' => array(
-					'create' => 'System Administrator',
-					'read' => 'System Administrator',
-					'update' => 'System Administrator',
-					'delete' => 'System Administrator'
-				),
-				'_show' => 'name'
+		// adds in defaults
+		$associative_config = transform($row['config']);
+		// echo print_r($associative_config);
+		// echo '<br><br>';
+		if(!isset($row['config']['show']))
+			$row['config']['show'] = ucwords(str_replace("_"," ", $row['config']['name']));
+		
+		if(!isset($associative_config['page']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'page',
+				'columns' => array_values(array(
+					'name',
+					'url',
+					array('name' => 'html', 'type' => 1024)
+				))
 			);
 		}
-		if(!isset($row['config']['portlet']) && $row['config']['_projectName'] != 'maker_mike'){
-			$row['config']['portlet'] = array(
-				'name' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'query_tables' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'select' => 'tables'
-				),
-				'query_conditions' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'pre' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '1024'
-				),
-				'template' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '1024'
-				),
-				'tween' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '1024'
-				),
-				'post' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '1024'
-				),
-				'_permissions' => array(
-					'create' => 'System Administrator',
-					'read' => 'System Administrator',
-					'update' => 'System Administrator',
-					'delete' => 'System Administrator'
-				),
-				'_show' => 'name'
+		if(!isset($associative_config['portlet']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'portlet',
+				'columns' => array_values(array(
+					'name',
+					array('name' => 'query_tables', 'select' => 'tables'),
+					'query_conditions',
+					array('name' => 'pre', 'type' => 1024),
+					array('name' => 'template', 'type' => 1024),
+					array('name' => 'tween','type' => 1024),
+					array('name' => 'post', 'type' => 1024)
+				))
 			);
 		}
-		if(!isset($row['config']['theme']) && $row['config']['_projectName'] != 'maker_mike'){
-			$row['config']['theme'] = array(
-				'name' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'url' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'file' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '*',
-					'ext' => array('zip')
-				),
-				'contents' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '1023'
-				),
-				'_permissions' => array(
-					'create' => 'System Administrator',
-					'read' => 'System Administrator',
-					'update' => 'System Administrator',
-					'delete' => 'System Administrator'
-				),
-				'_show' => 'name'
+		if(!isset($associative_config['theme']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'theme',
+				'columns' => array_values(array(
+					'name',
+					'url',
+					array('name' => 'file', 'type' => 'file', 'ext' => '["zip"]'),
+					array('name' => 'contents', 'type' => 1024)
+				))
 			);
 		}
-		if(!isset($row['config']['user_type'])){
-			$row['config']['user_type'] = array(
-				'name' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'landing_page' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'_permissions' => array(
-					'create' => 'System Administrator',
-					'read' => 'System Administrator',
-					'update' => 'System Administrator',
-					'delete' => 'System Administrator'
-				),
-				'_show' => 'name'
+		if(!isset($associative_config['user_type']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'user_type',
+				'columns' => array_values(array(
+					'name',
+					'landing_page'
+				))
 			);
 		}
-		if(!isset($row['config']['user'])){
-			$row['config']['user'] = array(
-				'user' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'pass' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => '255'
-				),
-				'type' => array(
-					'permissions_read' => 'System Administrator',
-					'permissions_update' => 'System Administrator',
-					'permissions_create' => 'System Administrator',
-					'type' => 'user_type'
-				),
-				'_permissions' => array(
-					'create' => 'System Administrator',
-					'read' => 'System Administrator',
-					'update' => 'System Administrator',
-					'delete' => 'System Administrator'
-				),
-				'_show' => 'user'
+		if(!isset($associative_config['user']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'user',
+				'columns' => array_values(array(
+					'user',
+					'pass',
+					array('name' => 'type', 'type' => 'user_type')
+				))
 			);
+		}
+		// unabreviate tables
+		foreach ($row['config']['tables'] as $table_key => $table) {
+			if(is_string($table))
+				$row['config']['tables'][$table_key] = array(
+				'name' => $table,
+				'columns' => array_values(array(
+					'name',
+					array('name' => 'value', 'type' => 1024)
+				)));
+			else if(!isset($table['columns']))
+				$row['config']['tables'][$table_key]['columns'] = array_values(array(
+					'name',
+					array('name' => 'value', 'type' => 1024)
+				));
+		}
+		// unabreviate columns
+		foreach ($row['config']['tables'] as $table_key => $table) {
+			foreach ($table['columns'] as $column_key => $column) {
+				if(is_string($column))
+					$row['config']['tables'][$table_key]['columns'][$column_key] = array(
+						'name' => $column);
+			}
 		}
 		$imageTables = array(); 				
-		foreach ($row['config'] as $table_key => &$table) {
-			if($table_key[0] == '_')
-				continue;
-			foreach ($table as $column_key => &$column) {
-				if($column_key[0] == '_')
-					continue;
-				if($column['type'] == '*' && !in_array($table_key, $imageTables))
-					$imageTables[] = $table_key;
+		foreach ($row['config']['tables'] as $table_key => &$table) {
+			//echo '<br><br>Looking at table: '.$table['name'].'<br>';
+			foreach ($table['columns'] as $column_key => &$column) {
+				if(!isset($column['type']))
+					$column['type'] = '255';
+				if($column['type'] == 'file' && !in_array($table['name'], $imageTables))
+					$imageTables[] = $table['name'];
+				//echo 'looking at column: '.$column['name'].'<br>';
 				if(!isset($column['_show']))
-					$column['_show'] = ucwords(str_replace("_"," ", $column_key));
+					$column['show'] = ucwords(str_replace("_"," ", $column['name']));
 				if(!isset($column['permissions_create']))
 					$column['permissions_create'] = '.*';
 				if(!isset($column['permissions_read']))
 					$column['permissions_read'] = '-';
 				if(!isset($column['permissions_update']))
 					$column['permissions_update'] = '.*';
-				if(!isset($column['type']))
-					$column['type'] = '255';
 			}
-			if(!isset($table['_permissions']['create']))
-				$table['_permissions']['create'] = '.*';
-			if(!isset($table['_permissions']['read']))
-				$table['_permissions']['read'] = '.*';
-			if(!isset($table['_permissions']['update']))
-				$table['_permissions']['update'] = '.*';
-			if(!isset($table['_permissions']['delete']))
-				$table['_permissions']['delete'] = '.*';
-			if(!isset($table['_show']))
-				$table['_show'] = key($table);
+			if(!isset($table['permissions']['create']))
+				$table['permissions']['create'] = '.*';
+			if(!isset($table['permissions']['read']))
+				$table['permissions']['read'] = '.*';
+			if(!isset($table['permissions']['update']))
+				$table['permissions']['update'] = '.*';
+			if(!isset($table['permissions']['delete']))
+				$table['permissions']['delete'] = '.*';
+			if(!isset($table['show']))
+				$table['show'] = $table['columns'][0]['name'];
 		}
-		
+		$associative_config = transform($row['config']);
+
 		// SQL
-		$sql = 'DROP DATABASE IF EXISTS '.$row['config']['_projectName'].';'.PHP_EOL;
-		$sql .= 'CREATE DATABASE '.$row['config']['_projectName'].';'.PHP_EOL;
-		$sql .= 'USE '.$row['config']['_projectName'].';'.PHP_EOL;
-		foreach ($row['config'] as $table_key => &$table) {
-			if($table_key[0] == '_')
-				continue;
-			$sql .= 'CREATE TABLE IF NOT EXISTS '.$table_key.'(id int NOT NULL AUTO_INCREMENT, ';
-			foreach ($table as $column_key => &$column) {
-				if($column_key[0] == '_')
-					continue;
+		$sql = 'DROP DATABASE IF EXISTS '.$row['config']['name'].';'.PHP_EOL;
+		$sql .= 'CREATE DATABASE '.$row['config']['name'].';'.PHP_EOL;
+		$sql .= 'USE '.$row['config']['name'].';'.PHP_EOL;
+		foreach ($row['config']['tables'] as $table_key => &$table) {
+			$sql .= 'CREATE TABLE IF NOT EXISTS '.$table['name'].'(id int NOT NULL AUTO_INCREMENT, ';
+			foreach ($table['columns'] as $column_key => &$column) {
 				$type = $column['type'];
-				if($type == '*') // file type
-					$type = 'varchar(255)';
+				if($type == 'file') // file type
+					$type = 'varchar(256)';
 				if(isset($column['select']))
-					$type = 'varchar(511)';
-				else if(isset($row['config'][$type])) // type matches the name of a table
-					$type = 'int, foreign key('.$column_key.') references '.$type.'(id)';
+					$type = 'varchar(512)';
+				else if(isset($associative_config[$type])) // type matches the name of a table
+					$type = 'int, foreign key('.$column['name'].') references '.$type.'(id)';
 				else if(is_numeric($type))
 					$type = 'varchar('.$type.')';
 				else if ($type == 'JSON')
 					;
-				$sql .= $column_key.' '.$type.', ';
+				$sql .= $column['name'].' '.$type.', ';
 			}
 			$sql .= 'primary key(id));'.PHP_EOL;
 		}
@@ -259,12 +163,12 @@
 		$sql .= "INSERT INTO user(user, pass, type ) VALUES ('user',  'user', 2);".PHP_EOL;
 
 		// Run pre script
-		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
+		echo exec($_SERVER["DOCUMENT_ROOT"].'/../build_pre.sh '.$row['config']['name'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.implode(',', $imageTables));
 
-		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['_projectName'].'/'.$row['config']['_projectName'].'.sql', $sql);	
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].'/projects/'.$row['config']['name'].'/'.$row['config']['name'].'.sql', $sql);	
 		// Run post script
 		$result_of_post_build = array();
-		exec($_SERVER["DOCUMENT_ROOT"].'/../build_post.sh '.$row['config']['_projectName'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
+		exec($_SERVER["DOCUMENT_ROOT"].'/../build_post.sh '.$row['config']['name'].' '.$db_host.' '.$db_user.' "'.$db_pass.'" '.$db_port.' 2>&1', $result_of_post_build);
 		error_log('result of post build: '.json_encode($result_of_post_build));
 		error_log('first line of result: '.$result_of_post_build[1]);
 		error_log('ERROR: '.(strpos($result_of_post_build[1], "ERROR") !== false));

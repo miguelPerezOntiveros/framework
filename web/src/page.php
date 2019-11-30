@@ -35,7 +35,7 @@
 			$fileds = [];
 			$portlet = $portletRow['pre'];
 
-			$sql = 'SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_SCHEMA="'.$GLOBALS['config']['_projectName'].'" AND TABLE_NAME IN ('.substr($portletRow['query_tables'], 1, -1).');';
+			$sql = 'SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_SCHEMA="'.$GLOBALS['config']['_name'].'" AND TABLE_NAME IN ('.substr($portletRow['query_tables'], 1, -1).');';
 			error_log('INFO - sql:' .$sql);
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute();

@@ -15,12 +15,12 @@
 	foreach ($config[$_GET['table']] as $column_key => $column) {
 		if($column_key[0] == '_')
 			continue;
-		if($column['type'] == '*')
+		if($column['type'] == 'file')
 			$fileColumns[] = $column_key;
 	}
-	error_log('file cols: '.count($fileColumns));
+	error_log('file columns: '.count($fileColumns));
 
-	require_once 'db_connection.inc.php';
+	require 'db_connection.inc.php';
 	$sql = 'SELECT * FROM '.$_GET['table'].' WHERE id = ?;';
 	error_log('INFO - sql:' .$sql);
 	$stmt = $pdo->prepare($sql);

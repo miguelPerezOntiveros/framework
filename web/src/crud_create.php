@@ -24,7 +24,7 @@
 				'Not present.'
 			);
 			// upload possible files start
-			if($column['type'] == '*'){
+			if($column['type'] == 'file'){
 				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
 					;
 				// var_dump($_FILES[$column_key]);
@@ -32,7 +32,7 @@
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
 				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
 				$ext = strtolower($ext);
-				$validExts = $column['ext'] ?: array('jpg', 'jpeg', 'gif', 'png');
+				$validExts = json_decode($column['ext']) ?: array('jpg', 'jpeg', 'gif', 'png');
 				if(array_search($ext, $validExts) === False ){
 					error_log('Valid exts: '.implode(', ', $validExts));
 					exit(json_encode((object) ["error" => "Supported extensions: ".implode(', ', $validExts)]));
@@ -56,7 +56,7 @@
 	if(!count($row))
 		exit(json_encode((object) ["error" => "No such table."]));
 
-	require_once 'db_connection.inc.php';
+	require 'db_connection.inc.php';
 
 	//Possible extension of the service
 	$postfix = 'c';

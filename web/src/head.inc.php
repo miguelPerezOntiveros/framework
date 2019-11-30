@@ -13,5 +13,5 @@
 	<link rel="stylesheet" href="/src/vendor/fontawesome-free-5.7.0-web/css/all.css">
 	<link rel="stylesheet" href="/src/css/style.css">
 
-	<title><?= $config['_projectName']?></title>
+	<title><?= $config['_name']?></title>
 </head>
