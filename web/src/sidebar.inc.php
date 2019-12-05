@@ -25,20 +25,20 @@
 		                if($config['_name'] != 'maker_mike')	
 			                echo '
 							<li class="tab" id="menu_page">
-								<a href="#" onclick="loadSection(\'page\', \'Page\');">Page</a>
+								<a onclick="loadSection(\'page\', \'\', true);">Page</a>
 							</li>
 							<li class="tab" id="menu_portlet">
-								<a href="#" onclick="loadSection(\'portlet\', \'Portlet\');">Portlet</a>
+								<a onclick="loadSection(\'portlet\', \'\', true);">Portlet</a>
 							</li>
 							<li class="tab" id="menu_theme">
-								<a href="#" onclick="loadSection(\'theme\', \'Theme\');">Theme</a>
+								<a onclick="loadSection(\'theme\', \'\', true);">Theme</a>
 							</li>';
 						echo '
 							<li class="tab" id="menu_user_type">
-								<a href="#" onclick="loadSection(\'user_type\', \'User Type\');">User Type</a>
+								<a onclick="loadSection(\'user_type\', \'\', true);">User Type</a>
 							</li>
 							<li class="tab" id="menu_user">
-								<a href="#" onclick="loadSection(\'user\', \'User\');">User</a>
+								<a onclick="loadSection(\'user\', \'\', true);">User</a>
 							</li>';
 					}
 				?>

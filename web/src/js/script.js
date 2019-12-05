@@ -82,6 +82,10 @@ $.urlParam = function (name) {
 loadSection = function(name, displayName, replaceState){
 	$('.form').removeClass('bs-callout-left');
 	$('.form_plus').removeClass('rotated');
+	if(!displayName)
+		displayName = name.replace('_', ' ').replace(/\b[a-z]/g, function(letter) {
+		    return letter.toUpperCase();
+		});;
 	doTable(name, displayName, true);
 	doMenu(name, displayName);
 	if(replaceState){

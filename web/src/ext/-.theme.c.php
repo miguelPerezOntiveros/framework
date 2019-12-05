@@ -24,10 +24,10 @@
 
 		if($url_available){
 			$execOutput = array();
-			$command = 'unzip "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'" -d '.$url;
+			$command = 'mkdir '.$url.'; unzip "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'" -d '.$url;
 			error_log('Deploying theme: '.$command);
 			exec($command, $execOutput);
-			error_log("output:\n");
+			error_log("output (".count($execOutput)."):\n");
 			foreach ($execOutput as $line) {
 				error_log($line."\n");
 			}
