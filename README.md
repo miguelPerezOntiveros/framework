@@ -29,6 +29,8 @@
 			- if I did check, I could just add all file names to the zip command
 		- 5. include [project]/admin/ext folder in the zip file
 		enable front end to actually download the generated zip file
+		- zips are just getting re-written as the folder name is used for name checking and that gets deleted
+		- rethink permissions. Right now I check for a target project SysAdmin session, maybe I should try to sign in (like SSO).
 	- Project deletion should export to a dedicated "trash" folder first
 	- Import
 		- 1. Create Maker Mike project
@@ -87,6 +89,7 @@
 	- YAML to JSON and JSON to YAML conversion on MM project creations (from scratch and copied from the datatable)
 	- Import/Export feature
 	- DB, MM DB entry and FS on project creation an deletion based on project name 
+	- document config cache. Abreviated non associative yaml is passed on to PHP, which filles in defaults and stores it in the DB. PHP then reads it back and makes it associative. TODO where?, that then workes as a cache and at some point TODO configs are passed to the front end.
 - Deploying to GCP (explain whole GCP migration). Should be using the "--prod-mode" flag on entry.sh
 - document OAuth
 - Creating portlets and pages
