@@ -47,7 +47,7 @@ require $_SERVER["DOCUMENT_ROOT"].'/src/session.inc.php'; ?>
 		window._projectName = <?= "'".$config['_name']."'" ?>;
 		window._show = <?= "'".$config['_show']."'" ?>;
 	</script>
-	<?php 
+	<?php
 		$ext1 = 'ext/'.$config['_name'].'.ext.js';
 		$ext2 = '../../../src/js/'.$config['_name'].'.ext.js';
 

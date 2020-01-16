@@ -53,13 +53,13 @@ function doTablePostHook(){
 	if(window.name == 'project'){
 		console.log('in maker_mike project table post hook');
 		doSidebarProjects();
-		$('.row_buttons').each(function(i, e){
-			$(e).find('.row_option:last').remove();
-			$(e).find('button').css('float', 'left');
-			$(e).append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>JSON</p></div>');
-			$(e).append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>YAML</p></div>');
-			//$(e).css('float', 'right');
-		});
+		if($('.row_buttons').find('.row_option:last div button i').hasClass('fa-pencil-alt')){
+			$('.row_buttons').find('button').css('float', 'left');
+			$('.row_buttons').find('.row_option:last').remove();
+			$('.row_buttons').append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>JSON</p></div>');
+			$('.row_buttons').append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>YAML</p></div>');			
+		}
+
 	}
 }
 function doTablePreHook(data){

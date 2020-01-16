@@ -1,6 +1,6 @@
 <?php
 	$ext1 = $_SERVER["DOCUMENT_ROOT"].'/projects/'.$_GET['project'].'/admin/ext/'.$_GET['table'].'.'.$postfix.'.php';
-	$ext2 = $_SERVER["DOCUMENT_ROOT"].'/src/ext/-.'					.$_GET['table'].'.'.$postfix.'.php';
+	$ext2 = $_SERVER["DOCUMENT_ROOT"].'/src/ext/-.'.$_GET['table'].'.'.$postfix.'.php';
 	$ext3 = $_SERVER["DOCUMENT_ROOT"].'/src/ext/'.$_GET['project'].'.'	.$_GET['table'].'.'.$postfix.'.php';
 
 	if(file_exists($ext1)){

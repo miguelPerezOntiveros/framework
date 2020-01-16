@@ -14,15 +14,23 @@
 		- can't recreate them atm because they "already exist" so they just take up their name
 	- project table entries that don't have a DB (need to be recreated)
 - document why I'm calling sidebar_projects twice
+- find a way to not need the require once to call db_connection. Check if the connection is open and to the desired db
 
 - Export/Import feature
 	- Export
 		- 1. SQL export (DML)
+			- could call an sh specifying the db name
 		- 2. Config from the project table in the maker_mike DB (this is JSON)
+			- "select" query from php
 		- 3. Media report sheet (from all media columns, make a list of all referenced media files)
-		- 4. Dump media files from media report sheet. Checking for consistency
+			- "select" query from php to the maker_mike DB
+		- 4. Dump media  files from media report sheet. Checking for consistency
+			- if I didn't have to check, I could just add the entire "uploads" folder to the zip file
 		- 5. Deliver either an agregated file (compressed or not) or multiple downloads
-		- Had not thought about extentions and themes
+			- single zip file
+		- Have to inlcude extentions and themes (themes are already in the uploads folder though)
+			- FE exts - ???
+			- BE exts - projects/[project]/admin/ext folder
 	- Project deletion should export to a dedicated "trash" folder first
 	- Import
 		- 1. Create Maker Mike project
@@ -30,12 +38,6 @@
 		- 3. SQL import (DML)
 		- Had not thought about extentions and themes
 	- Drag and drop imports
-
-- why do I have an ext folder on my project?
-- can't page.php be a symlink?
-- mm projects table page 2 doesn't show the same options
-- find a way to not need the require once to call db_connection. Check if the connection is open and to the desired db
-
 
 ## General TODOs
 - annimations on both menus should probably match
@@ -129,7 +131,7 @@ docker pull mysql/mysql-server:5.7
 do:
 ```
 	docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:3306 mysql/mysql-server:5.7
-	docker inspect [CONTAINER HASH] | grep \"IPAd
+	docker inspect [CONTAINER HASH] | grep '                    "IPAd'
 	cd docker
 	docker build .
 	sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]

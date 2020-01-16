@@ -275,12 +275,14 @@ doTable2 = function(data, thenDoForm){
 	// DataTable
 	$('.table_element').DataTable({
 		"data": data.data,
-		"columns": columns
+		"columns": columns,
+		"drawCallback":function(){
+			if(typeof doTablePostHook === "function")
+				doTablePostHook();
+		}
 	});
-	$('TFOOT').remove();
 
-	if (typeof doTablePostHook === "function")
-		doTablePostHook();
+	$('TFOOT').remove();
 
 	if(thenDoForm)
 		doForm(data.columns);
