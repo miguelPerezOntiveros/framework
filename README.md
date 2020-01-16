@@ -18,26 +18,24 @@
 
 - Export/Import feature
 	- Export
-		- 1. SQL export (DML)
-			- could call an sh specifying the db name
+		- 1. SQL export
 		- 2. Config from the project table in the maker_mike DB (this is JSON)
 			- "select" query from php
 		- 3. Media report sheet (from all media columns, make a list of all referenced media files)
-			- "select" query from php to the maker_mike DB
-		- 4. Dump media  files from media report sheet. Checking for consistency
-			- if I didn't have to check, I could just add the entire "uploads" folder to the zip file
-		- 5. Deliver either an agregated file (compressed or not) or multiple downloads
-			- single zip file
-		- Have to inlcude extentions and themes (themes are already in the uploads folder though)
-			- FE exts - ???
-			- BE exts - projects/[project]/admin/ext folder
+			- "select" query from php to the maker_mike DB to get the columns
+			- "select" to project DB to get the file paths
+		- 4. Dump media files from media report sheet. Checking for consistency
+			- if I didn't have to check, I could just add the entire "uploads" folder to the zip file and skip 3
+			- if I did check, I could just add all file names to the zip command
+		- 5. include [project]/admin/ext folder in the zip file
+		enable front end to actually download the generated zip file
 	- Project deletion should export to a dedicated "trash" folder first
 	- Import
 		- 1. Create Maker Mike project
 		- 2. Dump media files
 		- 3. SQL import (DML)
-		- Had not thought about extentions and themes
-	- Drag and drop imports
+		- Handle extentions and themes
+		- Drag and drop imports
 
 ## General TODOs
 - annimations on both menus should probably match
