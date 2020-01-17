@@ -53,6 +53,14 @@ $('table').on('click', '.download', function(e){
 	var id = $(e.target).closest('div').parent().parent().parent().parent().find('td:first').html();
 	$.get('/src/export.php?project='+JSON.parse(window.configs[id]['JSON']).name, function(response){
 		console.log('export response: ' + response);
+
+		element = document.createElement('a');
+		element.setAttribute('href', '../../'+JSON.parse(response).path+JSON.parse(response).file);
+		element.setAttribute('download', JSON.parse(response).file);
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
 	});
 });
 function doTablePostHook(){
