@@ -14,7 +14,7 @@
 	$target_folder = $config['_name'];
 	for($now = ''; file_exists($dir.$target_folder.'.zip'); $now = (!$now? time(): $now+1))
 		$target_folder = $config['_name'].$now;
-	$command = 'cd '.$dir.' && mkdir '.$target_folder.' && mysqldump -h '.$db_host.' -u '.$db_user.' --password='.$db_pass.' --databases '.$config['_name'].' > '.$target_folder.'/db.sql';
+	$command = 'cd '.$dir.' && mkdir -p '.$target_folder.'/root/admin && mysqldump -h '.$db_host.' -u '.$db_user.' --password='.$db_pass.' --databases '.$config['_name'].' > '.$target_folder.'/db.sql';
 	error_log('Command: '.$command);
 	exec($command);
 	
@@ -28,10 +28,23 @@
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$to_export]);
 	$export_config = $stmt->fetch(PDO::FETCH_NUM);
-	file_put_contents($dir.$target_folder.'/config.json', $export_config);	
+	file_put_contents($dir.$target_folder.'/config.json', $export_config);
+
+	/* TODO
+		get file columns by procesing json_decode($export_config)
+
+		foreach file column
+			./scrape.sh db.sql [table_name] [column_index] admin/uploads/[table_name]/ >> files_to_export.txt
+
+		./scrape.sh db.sql page 3 >> files_to_export.txt
+
+		foreach line of file.txt
+			cp $line $target_folder/root/$line
+
+	*/
 
 	// Zip
-	$command = 'cd '.$dir.' && cp -R ../ext '.$target_folder.' && cp -R ../uploads '.$target_folder.' && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;
+	$command = 'cd '.$dir.' && cp -R ../ext '.$target_folder.'/root/admin && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;
 	error_log('Command: '.$command);
 	exec($command);
 
