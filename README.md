@@ -197,6 +197,7 @@ Often times you will need a set of operations run agains the DB to be atomic. Th
 ?>
 ```
 ### YAML Configuration
+<<<<<<< Updated upstream
 - default tables
 	- can be specified as strings just containing their name
 	- will contain the following columns:
@@ -211,6 +212,25 @@ Often times you will need a set of operations run agains the DB to be atomic. Th
 		- their own "name"
 		- "type: 512"
 		- set of permissions
+=======
+![Project Config Management](README_resources/Project_Config_Management.png)
+- `set_config_and_params.inc.php` creates associative representation
+- `maker_mike.project.c.php` fills in syntactic sugar:
+	- default tables
+		- specified by the table's name as a string (instead of an object)
+		- will be replaced by an object containing:
+			- their own "name"
+			- "columns" array with:
+				- "name: 512"
+				- "description: 1024"
+			- set of permissions
+	- default columns
+		- specified by the column's name as a string (instead of an object)
+		- will be replaced by an object containing:
+			- their own "name"
+			- "type: 512"
+			- set of permissions
+>>>>>>> Stashed changes
 
 ### Recreating the main "maker_mike" project
 - you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist. Should show up on sidebar TODO only if you are an admin.

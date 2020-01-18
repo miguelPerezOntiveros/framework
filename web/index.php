@@ -10,7 +10,7 @@
 					<?php require $_SERVER["DOCUMENT_ROOT"].'/src/menu.inc.php'; ?>
 					<div class="container">
 						<div class="row">
-							<h2><br>Welcome to <b>Maker Mike 1.0.2</b>!</h2>
+							<h2><br>Introducing <b>Maker Mike 1.0.2</b></h2>
 						</div>
 						<br>
 						<br>
@@ -25,6 +25,7 @@
 									<li>Single pane management of <b>all your projects</b><br></li>
 									<li>Supports <b>pages</b>, <b>portlets</b> and <b>themes</b><br></li>
 									<li>Intuitive <b>JS client library</b><br></li>
+									<li><b>Import</b> and <b>Export</b> your projects<br></li>
 								</ul>
 							</div>
 						</div>
@@ -43,6 +44,9 @@
 								<p>Portlets can be used to create widget-like UIs, they query the CMS for data and produce HTML from it. Creating this HTML on the backend is necessary for web crawlers to be able to index your content without needing to run JavaScript.</p>
 								<p>Pages will be stores as php's files and can contain arbitraty HTML and your Portlets.</p>
 								<p>Themes are folders you upload to a project.</p>
+
+								<h5>Export and import your projects</h5>
+								Exporting a project is a usefull way to back it up, or to promote it across environments.
 							</div>							
 						</div>
 					</div>	
