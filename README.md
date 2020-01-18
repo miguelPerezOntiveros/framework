@@ -197,22 +197,6 @@ Often times you will need a set of operations run agains the DB to be atomic. Th
 ?>
 ```
 ### YAML Configuration
-<<<<<<< Updated upstream
-- default tables
-	- can be specified as strings just containing their name
-	- will contain the following columns:
-		- their own "name"
-		- "columns" array with:
-			- "name: 512"
-			- "description: 1024"
-		- set of permissions
-- default columns
-	- can be specified as strings just containing their name
-	- will contain the following properties:
-		- their own "name"
-		- "type: 512"
-		- set of permissions
-=======
 ![Project Config Management](README_resources/Project_Config_Management.png)
 - `set_config_and_params.inc.php` creates associative representation
 - `maker_mike.project.c.php` fills in syntactic sugar:
