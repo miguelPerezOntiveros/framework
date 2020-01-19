@@ -46,7 +46,7 @@
 								<p>Themes are folders you upload to a project.</p>
 
 								<h5>Export and import your projects</h5>
-								Exporting a project is a usefull way to back it up, or to promote it across environments.
+								Exporting a project is a usefull way to back it up, or to promote it across environments. Exports include your pages, file uploads, database data and project configuration.
 							</div>							
 						</div>
 					</div>	

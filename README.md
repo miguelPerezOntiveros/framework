@@ -16,12 +16,12 @@
 - document why I'm calling sidebar_projects twice
 - find a way to not need the require once to call db_connection. Check if the connection is open and to the desired db
 - Project deletion should export to a dedicated "trash" folder first
+- MM user type table view doesn´t load
 
 - Export/Import feature
 	- Export
 		- zip file should not remain available, I need to secure it
-		- validate dumped uploads vs exported DML
-		- dump pages
+		- when you have no session, an 'undefined' file is downloaded
 		- rethink permissions. Right now I check for a target project SysAdmin session, maybe I should try to sign in (like SSO).
 	- Import
 		- 1. Create Maker Mike project

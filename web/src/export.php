@@ -29,19 +29,20 @@
 	$stmt->execute([$to_export]);
 	$export_config = $stmt->fetch(PDO::FETCH_NUM);
 	file_put_contents($dir.$target_folder.'/config.json', $export_config);
+	$export_config = json_decode($export_config[0], true);
 
-	/* TODO
-		get file columns by procesing json_decode($export_config)
+	$file_columns = ['page 1 ./'];
+	foreach($export_config['tables'] as $table_key => &$table){
+		for($i=0;$i<count($table['columns']); $i++){
+			if($table['columns'][$i]['type']=='file')
+				$file_columns[]= $table['name'].' '.$i.' admin/uploads/'.$table['name'].'/';
+		}
+	}
 
-		foreach file column
-			./scrape.sh db.sql [table_name] [column_index] admin/uploads/[table_name]/ >> files_to_export.txt
-
-		./scrape.sh db.sql page 3 >> files_to_export.txt
-
-		foreach line of file.txt
-			cp $line $target_folder/root/$line
-
-	*/
+	// Pages and 'File' columns
+	$command = 'cd ../projects/'.$export_config['name'].' && cp --parents `echo '.implode(' ', $file_columns).' | xargs -n 3 sh ./../../../scrape.sh admin/exports/'.$target_folder.'/db.sql` admin/exports/'.$target_folder.'/root/';
+	error_log('Command: '.$command);
+	exec($command);
 
 	// Zip
 	$command = 'cd '.$dir.' && cp -R ../ext '.$target_folder.'/root/admin && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;

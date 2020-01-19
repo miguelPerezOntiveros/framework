@@ -6,11 +6,11 @@
 
 INSERT=`cat $1 | grep 'INSERT INTO \`'$2'\`'`
 FIND='INSERT INTO `'$2'` VALUES ('
-INSERT=${INSERT//$FIND/}
-INSERT=,${INSERT::-1}
+INSERT=${INSERT//$FIND/,}
+INSERT=${INSERT::-1}
 
 for TUPLE in ${INSERT//)/ } ; do
-	for i in $(seq 0 $3) ; do
+	for i in $(seq 0 $(($3 + 2))) ; do
 		url="${TUPLE%%,*}"; TUPLE="${TUPLE#*,}"
 	done
 	url=${url:1:-1}
