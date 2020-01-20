@@ -62,7 +62,7 @@
 				))
 			);
 		}
-		if(!isset($associative_config['user_type']) && $associative_config['_name'] != 'maker_mike'){
+		if(!isset($associative_config['user_type']) && $associative_config['_name']){
 			$row['config']['tables'][] = array(
 				'name' => 'user_type',
 				'columns' => array_values(array(
@@ -71,7 +71,7 @@
 				))
 			);
 		}
-		if(!isset($associative_config['user']) && $associative_config['_name'] != 'maker_mike'){
+		if(!isset($associative_config['user']) && $associative_config['_name']){
 			$row['config']['tables'][] = array(
 				'name' => 'user',
 				'columns' => array_values(array(

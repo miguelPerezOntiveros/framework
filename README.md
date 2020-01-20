@@ -16,9 +16,8 @@
 - document why I'm calling sidebar_projects twice
 - find a way to not need the require once to call db_connection. Check if the connection is open and to the desired db
 - Project deletion should export to a dedicated "trash" folder first
-- MM user type table view doesn´t load
 
-- Export/Import feature
+- Complete Export/Import feature
 	- Export
 		- zip file should not remain available, I need to secure it
 		- when you have no session, an 'undefined' file is downloaded
@@ -30,6 +29,23 @@
 		- 4. SQL import (DML)
 		- 5. unzip themes
 		- Implement Drag&drop imports
+
+- Content Export/Import feature
+	- Export
+		- Dump the sql
+		- one file per row
+		- specify "INSERT ON DUPLICATE KEY UPDATE"
+		- format values so they all start on new lines
+		- commands to consider:
+			- mysqldump --complete-insert
+			- mysqldump --lines-terminated-by
+			- mysqldump --tab
+			- mysqldump --xml
+			- mysql -e "SELECT ... INTO OUTFILE" > file_name
+	- Import 
+		- Should be a matter of importing every file
+		- commands to consider:
+			- mysql -e "source /path-to-backup/backup-file.sql" db_name
 
 ## General TODOs
 - annimations on both menus should probably match
@@ -77,6 +93,7 @@
 - move images and files to gcs to make Run stateless
 
 ## Documentation TODOs
+- Complete vs Content Export/Import feature as well as use cases or development patterns
 - Diagrams
 	- YAML to JSON and JSON to YAML conversion on MM project creations (from scratch and copied from the datatable)
 	- Import/Export feature
@@ -99,6 +116,7 @@
 	- select: tables (requires no type attribute)
 	- booleans
 	- text fields with 260+ length will be displayed as an ace editor on the front end as per web/src/js/script.js 
+	- `user` and `user_type` tables are always added if they don´t exist, while `page`, `portlet` and `theme`are added if the database being created isn´t the maker_mike one.
 - show paramter
 - where parameter, other params
 - Cloud SQL
@@ -231,8 +249,9 @@ tables:
   - description
 - settings
 ```
-- for the "maker_mike" projectName, build_pre.sh will add in a soft link to enable the home page
-- entry from the project table, project folder on the FS and the DB can't be deleted as per blacklisting on backend extention maker_mike.project.d.php
+- for the "maker_mike" projectName(only for that one? TODO), build_pre.sh will add in a soft link to enable the home page
+- the entry from the project table, the project folder on the FS and the DB can't be deleted as per blacklisting on backend extention maker_mike.project.d.php
+- Note: on entry.sh, the maker_mike DB file is run against the DB but data is only written if the database doesn´t already exist.
 
 #### start.sh
 - checks if web port is free

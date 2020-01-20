@@ -30,7 +30,7 @@
 				if(isset($config[$column['type']]) && $column['select'] != 'multi'){ //column is a non-multi ref
 					$otherTable = $column['type'];
 					$otherTableAlias = $column_key.'Table';
-					$otherColumn = $config[$otherTable]['show'];
+					$otherColumn = $config[$otherTable]['_show'];
 					$tablesToJoin[] = $otherTable.' '.$otherTableAlias;
 					$allowedColumns[] = 'CONCAT('.$_GET['table'].'.'.$column_key.', "-", '.$otherTableAlias.'.'.$otherColumn.') as '.$column_key;
 					$joinRules[] = $_GET['table'].'.'.$column_key.' = '.$otherTableAlias.'.id';
