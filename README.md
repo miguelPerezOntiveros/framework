@@ -37,11 +37,12 @@
 		- specify "INSERT ON DUPLICATE KEY UPDATE"
 		- format values so they all start on new lines
 		- commands to consider:
-			- mysqldump --complete-insert
-			- mysqldump --lines-terminated-by
-			- mysqldump --tab
-			- mysqldump --xml
-			- mysql -e "SELECT ... INTO OUTFILE" > file_name
+```
+	mysqldump -h 172.17.0.2 --xml --no-create-info -u root -p miguelp | grep -n '<table_data name="[_a-z0-9]*">'
+	csplit origin.txt '/<row/' {*}
+```
+		- flags to consider
+			- --add-drop-database
 	- Import 
 		- Should be a matter of importing every file
 		- commands to consider:
