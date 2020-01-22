@@ -49,9 +49,12 @@ $('table').on('click', '.copy', function(e){
 	document.body.removeChild(el);
 	console.log('copied. id: '+id+' format:'+format);
 });
-$('table').on('click', '.download', function(e){
+$('table').on('click', '.export', function(e){
+	var content_only = '';
+	if($(e.target).closest('button').hasClass('content_only'))
+		content_only = '&content_only=1';
 	var id = $(e.target).closest('div').parent().parent().parent().parent().find('td:first').html();
-	$.get('/src/export.php?project='+JSON.parse(window.configs[id]['JSON']).name, function(response){
+	$.get('/src/export.php?project='+JSON.parse(window.configs[id]['JSON']).name+content_only, function(response){
 		console.log('export response: ' + response);
 
 		element = document.createElement('a');
@@ -72,7 +75,8 @@ function doTablePostHook(){
 			$('.row_buttons').find('.row_option:last').remove();
 			$('.row_buttons').append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>JSON</p></div>');
 			$('.row_buttons').append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs copy"><i class="fas fa-copy"></i></button></div><p>YAML</p></div>');			
-			$('.row_buttons').append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs download"><i class="fas fa-angle-double-down"></i></button></div><p></p></div>');
+			$('.row_buttons').append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs export content_only"><i class="fas fa-angle-down"></i></button></div><p></p></div>');
+			$('.row_buttons').append('<div class="row_option"><div style="display: flex"><button style="float: left" class="btn btn-primary btn-xs export"><i class="fas fa-angle-double-down"></i></button></div><p></p></div>');
 		}
 
 	}

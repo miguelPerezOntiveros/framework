@@ -9,22 +9,28 @@
 		exit();
 	}
 
-	// Folders and SQL Dump
+	// Target folder
 	$dir = '../projects/'.$config['_name'].'/admin/exports/';
-	$target_folder = $config['_name'];
+	$target_folder = $config['_name'].(isset($_GET['content_only'])?'_content_only':'');
 	for($now = ''; file_exists($dir.$target_folder.'.zip'); $now = (!$now? time(): $now+1))
-		$target_folder = $config['_name'].$now;
-	if(!isset($_GET['content_only'])){
-		$command = 'cd '.$dir.' && mkdir -p '.$target_folder.'/root/admin && mysqldump -h '.$db_host.' -u '.$db_user.' --password='.$db_pass.' --databases '.$config['_name'].' > '.$target_folder.'/db.sql';
-	}
-	else{
-		$command = '';
-	}
+		$target_folder = $config['_name'].(isset($_GET['content_only'])?'_content_only_':'').$now;
 
-	error_log('Command: '.$command);
-	exec($command);
+	if(isset($_GET['content_only'])){
+		// Folder and SQL Dump
+		$command = 'cd '.$dir.' && mkdir '.$target_folder.' && ./../../../../../export_content.sh '.$db_host.' '.$db_user.' '.$db_pass.' '.$db_port.' '.$config['_name'].' '.$target_folder;
+		error_log('Command: '.$command);
+		exec($command);
+
+		// Uploads
+		$command = 'cd '.$dir.' && cp -R ../uploads '.$target_folder.'/_uploads';
+		error_log('Command: '.$command);
+		exec($command);
+	} else {
+		// Folder and SQL Dump
+		$command = 'cd '.$dir.' && mkdir -p '.$target_folder.'/root/admin && mysqldump -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --databases '.$config['_name'].' > '.$target_folder.'/db.sql';
+		error_log('Command: '.$command);
+		exec($command);
 	
-	if(!isset($_GET['content_only'])){		
 		// Project Config
 		$to_export = $config['_name'];
 		$config['_name'] = 'maker_mike'; // force db_connection.inc.php to connect to the 'maker_mike' DB
@@ -46,14 +52,19 @@
 			}
 		}
 
-		// Pages and 'File' columns
+		// Pages and all 'File' columns
 		$command = 'cd ../projects/'.$export_config['name'].' && cp --parents `echo '.implode(' ', $file_columns).' | xargs -n 3 sh ./../../../scrape.sh admin/exports/'.$target_folder.'/db.sql` admin/exports/'.$target_folder.'/root/';
+		error_log('Command: '.$command);
+		exec($command);
+
+		// Extentions
+		$command = 'cd '.$dir.' && cp -R ../ext '.$target_folder.'/root/admin';
 		error_log('Command: '.$command);
 		exec($command);
 	}
 
 	// Zip
-	$command = 'cd '.$dir.' && cp -R ../ext '.$target_folder.'/root/admin && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;
+	$command = 'cd '.$dir.' && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;
 	error_log('Command: '.$command);
 	exec($command);
 
