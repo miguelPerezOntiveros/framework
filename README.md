@@ -1,12 +1,9 @@
 ## Maker Mike 1.0.2
+![Project Creation](README_resources/Project_Creation.png)
 
-### Running maker mike locally
-To run on bare metal:
-	./start.sh # will start mysql and php dev server.
-- You should have mysql installed and available on your PATH ('/usr/local/mysql/bin' is typical on a mac)
-- Check ./start.sh usage with "-h"
+### Running Maker Mike
 
-For docker:
+#### Docker
 having done a 
 ```
 docker pull mysql/mysql-server:5.7
@@ -20,20 +17,31 @@ do:
 	sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
 ```
 
-### CRUD service extension mechanism
+#### Bare Metal
+	./start.sh # will start mysql and php dev server.
+- You should have mysql installed and available on your PATH ('/usr/local/mysql/bin' is typical on a mac)
+- Check ./start.sh usage with "-h"
+
+#### start.sh
+- checks if web port is free
+- checks if db port is listening and restarts db if not
+- creates start_settings.inc.php
+- starts the php server and opens the url for you
+
+### CRUD services
+
+#### Extension mechanism
 The logic is written on the "src/ext.inc.php" file, which is required by all CRUD services:
 - src/crud_create.php
 - src/crud_read.php
 - src/crud_update.php
 - src/crud_delete.php
 
-CRUD extentions are .php files named as either [TABLE_NAME].[POSTFIX].php if located in a specific project or [PROJECT_NAME|-].[POSTFIX].php if located in /src. The POSTFIX can be one of "c", "r, "u" and "d".
+CRUD extentions are .php files, they have a postfix which can be one of "c", "r, "u" and "d".
 "src/ext.inc.php" will search for CRUD service extentions in 3 places in this order:
-- project specific: /projects/[PROJECT_NAME]/admin/ext/[TABLE_NAME].[POSTFIX].php
-- from "/src" with an unspecified project. Ex: "/src/-.theme.c.php" or "/src/-.page.u.php"
-- from "/src" with a specific project. Ex: "/src/maker_mike.project.c.php"
-
-### CRUD services
+- project local: /projects/[PROJECT_NAME]/admin/ext/[TABLE_NAME].[POSTFIX].php
+- global with a specified project: Ex: "/src/[PROJECT_NAME].project.[POSTFIX].php"
+- global witohut a specified project: Ex: "/src/-.theme.[POSTFIX].php" or "/src/-.page.[POSTFIX].php"
 
 #### Request origin check
 CRUD services check if they have required by the backend itself by checking the $invoked_from_backend variable and then $GET_PARAMS and $POST_PARAMS if needed.
@@ -45,12 +53,7 @@ There are 3 file size limit configurations:
 - php.ini: defaults to 2MB, I have it at 10 MB
 - crud_create.php: custom code, I have it at 10 MB
 
-File extentions are limited to 'jpg', 'jpeg', 'gif' and 'png' at the moment by crud_create.php.
-
-### Discovery endpoint
-"src/discovery.php" is copied over to each project at creation time by "./build_pre.sh". It returns JSON output with all the configuration data that the front end client needs to build itself. Security checks are made on the backend by "src/discovery.php".
-
-### Transactions
+#### Transactions
 Often times you will need a set of operations run agains the DB to be atomic. The should be run from the backend. This is an example. 
 ```
 <?php 
@@ -88,7 +91,21 @@ Often times you will need a set of operations run agains the DB to be atomic. Th
     }
 ?>
 ```
-### Project Configuration
+
+File extentions are limited to 'jpg', 'jpeg', 'gif' and 'png' at the moment by crud_create.php.
+
+### Project Creation
+When you click 'submit' on the Maker 'projects' tab:
+- web/src/index.php sends the form data to itself (first transforming the config field data into json), which then:
+	- runs ./build_pre.sh projectName db_host db_user db_pass imageTables, which:
+		- recreates the project folder
+		- creates soft links to index, discovery and login.
+		- creates individual upload folders for tables with files, and one for all service extensions
+	- writes projectName/projectName.sql
+	- runs ./build_post.sh projectName db_host db_user db_pass imageTables, which
+		- creates the database
+
+#### Project Configuration Management
 ![Project Config Management](README_resources/Project_Config_Management.png)
 - `set_config_and_params.inc.php` creates associative representation
 - `maker_mike.project.c.php` fills in syntactic sugar:
@@ -107,7 +124,7 @@ Often times you will need a set of operations run agains the DB to be atomic. Th
 			- "type: 512"
 			- set of permissions
 
-### Recreating the main "maker_mike" project
+#### Recreating the main "maker_mike" project
 - you will loose all project table entries on the maker tab, so projects will be in a limbo as the dabases will continue to exist. Should show up on sidebar TODO only if you are an admin.
 - run your maker_mike yaml on the maker tab, currently:
 ```
@@ -125,27 +142,14 @@ tables:
 - the entry from the project table, the project folder on the FS and the DB can't be deleted as per blacklisting on backend extention maker_mike.project.d.php
 - Note: on entry.sh, the maker_mike DB file is run against the DB but data is only written if the database doesn´t already exist.
 
-#### start.sh
-- checks if web port is free
-- checks if db port is listening and restarts db if not
-- creates start_settings.inc.php
-- starts the php server and opens the url for you
-
-### When you click 'submit' on the Maker 'projects' tab
-- web/src/index.php sends the form data to itself (first transforming the config field data into json), which then:
-	- runs ./build_pre.sh projectName db_host db_user db_pass imageTables, which:
-		- recreates the project folder
-		- creates soft links to index, discovery and login.
-		- creates individual upload folders for tables with files, and one for all service extensions
-	- writes projectName/projectName.sql
-	- runs ./build_post.sh projectName db_host db_user db_pass imageTables, which
-		- creates the database
-
 ## Front end
 
 ### Front end extention mechanisms
 - Available hooks (2) on web/src/index.php TODO 
 - Displaying HTML on page (display = 'html';) (see page.r.php and theme.r.php) TODO
+
+#### Discovery endpoint
+"src/discovery.php" is copied over to each project at creation time by "./build_pre.sh". It returns JSON output with all the configuration data that the front end client needs to build itself. Security checks are made on the backend by "src/discovery.php".
 
 ### JS yaml library used
 https://www.npmjs.com/package/yamljs
