@@ -10,11 +10,11 @@ docker pull mysql/mysql-server:5.7
 ```
 do:
 ```
-	docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:3306 mysql/mysql-server:5.7
-	docker inspect [CONTAINER HASH] | grep '                    "IPAd'
-	cd docker
-	docker build .
-	sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
+docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:3306 mysql/mysql-server:5.7
+docker inspect [CONTAINER HASH] | grep '                    "IPAd'
+cd docker
+docker build .
+sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
 ```
 
 #### Bare Metal

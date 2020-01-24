@@ -8,6 +8,8 @@
 
 cd $6
 mysqldump -h $1 -P $4 --xml --no-create-info -u $2 --password=$3 $5 > dump.sql
+sed -i '$d' dump.sql # closing mysqldump tag
+sed -i '$d' dump.sql # closing database tag
 csplit dump.sql '/<table_data name=".*">/' {*}
 rm dump.sql xx00 # xml header doesn´t have table data
 
@@ -27,9 +29,10 @@ for file in `ls x*`; do # traverse tables
 		for file in `ls x*`; do # traverse rows
 			sed -i '1d;$d' $file
 			file_name=`cat $file | grep -m 1 '<field name="id">' | sed -r 's/\t+<field name="id">(.*?)<\/field>/\1/'`
+			sed -i '1d' $file # first line only has the id field
 			sed -i -e 's/^\t\t//' $file
 			mv $file $file_name.xml
-			# what happens when there are more than 99 rows?
+			# TODO what happens when there are more than 99 rows?
 		done
 	cd ..
 done

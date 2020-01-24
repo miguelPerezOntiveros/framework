@@ -1,3 +1,6 @@
+		- delete the 'id' lines of each file as the id the file name
+
+
 ## IMPORTANT TODOs
 - stateless computing
 	- make sure project creation works on GCRun (simlinks, etc). Run should be stateless.
@@ -17,7 +20,7 @@
 - find a way to not need the require once to call db_connection. Check if the connection is open and to the desired db
 - Project deletion should export to a dedicated "trash" folder first
 
-- Complete Export/Import feature
+- Complete-Export/Import feature
 	- Export
 		- zip file should not remain available, I need to secure it
 		- when you have no session, an 'undefined' file is downloaded
@@ -30,14 +33,35 @@
 		- 5. unzip themes
 		- Implement Drag&drop imports
 
-- Content Export/Import feature
+- Content-Export/Import feature
 	- Export
 		- un-xml-escape characters?
+		- what happens with more than 99 rows?
 		- zip file should not remain available, I need to secure it
 	- Import 
-		- concat all files, add all necessary xml headers
-		- review https://code.google.com/archive/p/mysqldump-x-restore/
-		- read http://rpbouman.blogspot.com/2010/04/restoring-xml-formatted-mysql-dumps.html
+		- exclude uploads folder on find
+		- add the delete/empty/drop tables commands
+		- add this to the front end
+
+```
+while read_dom; do
+    if [[ $ENTITY = "title" ]]; then
+        echo $CONTENT
+        exit
+    fi
+done < xhtmlfile.xhtml > titleOfXHTMLPage.txt
+
+
+
+
+	values="'1&amp;&lt;&gt;&quot;','2&amp;&lt;&gt;&quot;','3&amp;&lt;&gt;&quot;'"
+	values=${values//&amp;/&}
+	values=${values//&lt;/<}
+	values=${values//&gt;/>}
+	values=${values//&quot;/'"'}
+	echo $values
+```
+- https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 
 ## General TODOs
 - annimations on both menus should probably match
@@ -52,6 +76,7 @@
 - Figure out a way to create content that is not published, sucerely (possibly the where parameter on the read service)
 - Revise logging, currently only using error_log
 - SYNDICATION ?
+	- I have a complete and a content_only export/import. Do I need a schema_only one?
 - setup ace editor for php if it's not, can I have php autocompletions?
 - check if page and theme url availability need adjustments due to case sensitivity
 - verify session on pages from page table? would need to be able to mark pages as private as well
