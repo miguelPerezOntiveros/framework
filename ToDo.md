@@ -42,6 +42,7 @@
 		- exclude uploads folder on find
 		- add the delete/empty/drop tables commands
 		- add this to the front end
+		- should be able to setup automatic imports from a git repo
 
 ```
 while read_dom; do

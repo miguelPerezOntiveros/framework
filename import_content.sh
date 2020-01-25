@@ -12,8 +12,7 @@ for file in `find $1 -type f -name \*.xml | sort`; do
 	for word in $(<$file); do
 		i=$((i+1));
 		if (( $i % 2 )); then
-			if [ $i -gt 1 ]
-			then
+			if [ $i -gt 1 ]; then
 				word=${word:1}
 			fi;
 			fields+=( ${word//<field name=/}, )

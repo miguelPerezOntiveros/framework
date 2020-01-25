@@ -196,6 +196,10 @@ doForm = function(columns){
 			//$label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace( '{count}', files.length ) : files[ 0 ].name);
 		}, false);
 	});
+
+	if (typeof doFormPostHook === "function")
+		doFormPostHook();
+
 	$('.form_element').hide();
 }
 
