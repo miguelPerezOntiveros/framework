@@ -333,7 +333,7 @@ $(document).ready(function() {
 		$('li>.tab:first').click();
 	else
 		$('li>.tab[data-table='+$.urlParam('table')+']').click();
-		loadSection($.urlParam('table'));
+	// loadSection($.urlParam('table'));
 	$('.sidebar_trigger').on('click', function() {
 		if(window.innerWidth < 768){
 			$('.sidebarWrapper_sidebar').toggleClass('applyMediaQuery_sidebarWrapper_sidebar');

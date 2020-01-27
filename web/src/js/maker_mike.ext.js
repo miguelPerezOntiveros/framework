@@ -98,8 +98,9 @@ function doTablePreHook(data){
 }
 
 function doFormPostHook(){
-	$('.import_form').remove();
-	$('.form_element').parent().parent().parent().append('<div class="import_form"></div>');
-	$('.import_form').append('<hr style="padding-top: 50em;"><div style="float:right"><h3>Import Project or Content</h3><form><input type="file"></input></form></div>');
+	$('.title').after('<hr>');
+	$('.title').after('<div class="import_form"></div>');
+	$('.import_form').append('<div style=""><h3>Import</h3><input type="file"></input></div>');
+	$('.title').after('<hr>');
 	console.log('adding an hr');
 }

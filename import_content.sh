@@ -17,16 +17,18 @@ for file in `find $1 -type f -name \*.xml | sort`; do
 			fi;
 			fields+=( ${word//<field name=/}, )
 		else
-			values+=( \"${word//<\/field/}\", )
+			word=\"${word//<\/field/}\",
+			word=${word//\&quot;/\"}
+			word=${word//\&amp;/&}
+			word=${word//\&lt;/<}
+			values+=( $word )
 		fi;
 	done
 
 	fields=${fields[@]}
 	values=${values[@]}
+
 	[[ $file =~ (.*)/(.*)/(.*).xml ]]
-	echo insert into ${BASH_REMATCH[2]}\(\"id\", ${fields::-1}\) values\(${BASH_REMATCH[3]}, ${values::-1}\)\;;
-	
+	echo insert into ${BASH_REMATCH[2]}\(\"id\", ${fields::-1}\) values\(${BASH_REMATCH[3]}, ${values::-1}\)\; | sed 's/&gt;/>/g'
 	IFS=${ORIGINAL_IFS}
 done
-
-
