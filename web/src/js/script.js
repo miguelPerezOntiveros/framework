@@ -68,7 +68,10 @@ toggleForm = function (only){
 		$('.form_element').toggle('slow');
 		resetEditors();
 		if ($('.form').toggleClass('bs-callout-left'))
-		$('.form_plus').toggleClass('rotated');
+			$('.form_plus').toggleClass('rotated');
+		
+		if (typeof doToggleHook === "function")
+			doToggleHook();
 	}
 }
 
@@ -183,7 +186,7 @@ doForm = function(columns){
 		resetEditors();
 	});
 
-	$('.form_element').append('<input type="submit" class="btn btn-primary" style="float:right" value="OK">');
+	$('.form_element').append('<input type="submit" class="btn btn-primary" style="float:right" value="Create">');
 	$('.form_element .catcher').each(function(i, el){
 		el.addEventListener('drop', function(ev){
 			ev.stopPropagation();

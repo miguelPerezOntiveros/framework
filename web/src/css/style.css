@@ -50,7 +50,7 @@ h2 {
 .title{
 	padding: 0px 5px 0px 20px;
 }
-.title, .form.bs-callout-left{
+.title, .bs-callout-left{
 	margin: 10px 0 10px 0;
 	padding: 0px 5px 0px 20px;
 	border-left: 5px solid #323264;

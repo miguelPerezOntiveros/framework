@@ -96,11 +96,31 @@ function doTablePreHook(data){
 	}
 	return data;
 }
+function doToggleHook(){
+	$('.import_form').toggleClass('bs-callout-left');
+	$('.import_form').toggle('slow');
+}
 
 function doFormPostHook(){
-	$('.title').after('<hr>');
-	$('.title').after('<div class="import_form"></div>');
-	$('.import_form').append('<div style=""><h3>Import</h3><input type="file"></input></div>');
-	$('.title').after('<hr>');
-	console.log('adding an hr');
+	$('.table_parent').before('<div class="col-12" style="padding-top: 1em;"></div><div class="col-12 import_form"></div>');
+	$('.import_form').append('<b>File:</b><br>\
+		<form class="import_form_element">\
+			<input type="file" name="import_file" id="import_file" required> <div class="catcher" data-input="import_file" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>Select a zip file containing a modified export, it can be a complete or data-only export.</div><br>\
+			<input type="submit" class="btn btn-primary" style="float:right" value="Import">\
+		</form>\
+	</div>');
+	$('.table_parent').before('<hr>');
+	$('.import_form').hide();
+
+	$('.import_form_element .catcher').each(function(i, el){
+		el.addEventListener('drop', function(ev){
+			ev.stopPropagation();
+			ev.preventDefault();
+			var file = ev.dataTransfer.files[0];
+			var name = file.name;
+
+			$(el).find('.catcherFilesLabel').text(name);
+			$('#import_file')[0].files = ev.dataTransfer.files;
+		}, false);
+	});
 }
