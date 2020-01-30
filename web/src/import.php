@@ -1,5 +1,6 @@
 <?php
-	error_reporting(E_ALL ^ E_NOTICE); 
+	error_reporting(E_ALL ^ E_NOTICE);
+	$_GET['project'] = 'maker_mike';
 	require 'set_config_and_params.inc.php';
 	require_once 'session.inc.php';
 	require $_SERVER["DOCUMENT_ROOT"].'/start_settings.inc.php';
@@ -9,75 +10,59 @@
 		exit();
 	}
 
-	// pick a target folder
-	// unzip
-	// detect if it's complete or data-only
-	// if data-only
-	//		./import_content.sh target_file | mysql -h -P -u root --password
-	// else
-	//		./import_content.sh target_file | mysql -h -P -u root --password
-	//		copy uploads
-	//		copy pages
-	//		copy themes
+	// Target folder
+	$dir = '../projects/maker_mike/admin/exports/';
+	$target_folder = 'import';
+	for($now = ''; file_exists($dir.$target_folder.'.zip'); $now = (!$now? time(): $now+1))
+		$target_folder = 'import'.$now;
 
-	// // Target folder
-	// $dir = '../projects/'.$config['_name'].'/admin/exports/';
-	// $target_folder = $config['_name'].(isset($_GET['content_only'])?'_content_only':'');
-	// for($now = ''; file_exists($dir.$target_folder.'.zip'); $now = (!$now? time(): $now+1))
-	// 	$target_folder = $config['_name'].(isset($_GET['content_only'])?'_content_only_':'').$now;
+	if ($_FILES['import_file']["size"] > 10*1024*1024)
+		exit(json_encode((object) ["error" => "File too large"]));
 
-	// if(isset($_GET['content_only'])){
-	// 	// Folder and SQL Dump
-	// 	$command = 'cd '.$dir.' && mkdir '.$target_folder.' && ./../../../../../export_content.sh '.$db_host.' '.$db_user.' '.$db_pass.' '.$db_port.' '.$config['_name'].' '.$target_folder;
-	// 	error_log('Command: '.$command);
-	// 	exec($command);
+	error_log('About to move uploaded file: '.json_encode($_FILES['import_file']));
+	if (!move_uploaded_file($_FILES['import_file']["tmp_name"], $dir.$target_folder.'.zip')){
+		error_log('Error during transfer: '. json_encode($_FILES['import_file']));
+		exit(json_encode((object) ["error" => "Error during transfer, check the log"]));
+	}
+	// TODO check if there are no malitious files
 
-	// 	// Uploads
-	// 	$command = 'cd '.$dir.' && cp -R ../uploads '.$target_folder.'/_uploads';
-	// 	error_log('Command: '.$command);
-	// 	exec($command);
-	// } else {
-	// 	// Folder and SQL Dump
-	// 	$command = 'cd '.$dir.' && mkdir -p '.$target_folder.'/root/admin && mysqldump -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --databases '.$config['_name'].' > '.$target_folder.'/db.sql';
-	// 	error_log('Command: '.$command);
-	// 	exec($command);
-	
-	// 	// Project Config
-	// 	$to_export = $config['_name'];
-	// 	$config['_name'] = 'maker_mike'; // force db_connection.inc.php to connect to the 'maker_mike' DB
-	// 	require 'db_connection.inc.php';
-	// 	$export_config = array();
-	// 	$sql = 'SELECT config FROM project WHERE JSON_EXTRACT(config, "$.name") = ?;';	
-	// 	error_log('SQL - ' .$sql);
-	// 	$stmt = $pdo->prepare($sql);
-	// 	$stmt->execute([$to_export]);
-	// 	$export_config = $stmt->fetch(PDO::FETCH_NUM);
-	// 	file_put_contents($dir.$target_folder.'/config.json', $export_config);
-	// 	$export_config = json_decode($export_config[0], true);
+	// Unzip
+	$command = 'cd '.$dir.' && unzip '.$target_folder.'.zip && rm -rf '.$target_folder.'.zip';
+	error_log('Command: '.$command);
+	exec($command);
 
-	// 	$file_columns = ['page 1 ./'];
-	// 	foreach($export_config['tables'] as $table_key => &$table){
-	// 		for($i=0;$i<count($table['columns']); $i++){
-	// 			if($table['columns'][$i]['type']=='file')
-	// 				$file_columns[]= $table['name'].' '.$i.' admin/uploads/'.$table['name'].'/';
-	// 		}
-	// 	}
+	$myfile = fopen($dir,$target_folder.'/name.txt', "r") or die("Unable to open file!");
+	$to_import = fgets($myfile);
+	fclose($myfile);
 
-	// 	// Pages and all 'File' columns
-	// 	$command = 'cd ../projects/'.$export_config['name'].' && cp --parents `echo '.implode(' ', $file_columns).' | xargs -n 3 sh ./../../../scrape.sh admin/exports/'.$target_folder.'/db.sql` admin/exports/'.$target_folder.'/root/';
-	// 	error_log('Command: '.$command);
-	// 	exec($command);
+	if(file_exists($dir.$target_folder.'/db.sql')){
+		$config['_name'] = 'maker_mike'; // force db_connection.inc.php to connect to the 'maker_mike' DB
+		require 'db_connection.inc.php';
+		$sql = 'SELECT config FROM project WHERE JSON_EXTRACT(config, "$.name") = ?;';	
+		error_log('SQL - ' .$sql);
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute([$to_import]);
+		if($stmt->fetch(PDO::FETCH_NUM)){
+			// TODO	delete project
+		}
+		// TODO create Maker Mike project
+		//	copy pages
+		//	copy themes
+		//	copy extentions
+		// 	// Extentions
+		// 	$command = 'cd '.$dir.' && cp -R ../ext '.$target_folder.'/root/admin';
+		// 	error_log('Command: '.$command);
+		// 	exec($command);
+		// }
+	}
+	else { // it's a data-only import
+		$command = './../../import_content.sh target_file | mysql -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass;
+		error_log('Command: '.$command);
+		exec($command);
+		//	copy uploads
+		//	copy pages
+		//	copy themes
+	}
 
-	// 	// Extentions
-	// 	$command = 'cd '.$dir.' && cp -R ../ext '.$target_folder.'/root/admin';
-	// 	error_log('Command: '.$command);
-	// 	exec($command);
-	// }
-
-	// // Zip
-	// $command = 'cd '.$dir.' && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;
-	// error_log('Command: '.$command);
-	// exec($command);
-
-	echo json_encode((object) ['file' => $target_folder.'.zip', 'path' => $dir]);
+	echo json_encode((object) ['done' => 'done']);
 ?>

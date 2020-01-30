@@ -51,7 +51,7 @@
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute([$project]);
 		if(!$row = $stmt->fetch(PDO::FETCH_NUM))
-			exit(json_encode((object) ["error" => "Project has not been set up"]));
+			exit(json_encode((object) ["error" => "Project ".$project." has not been set up"]));
 		else{
 			$config=json_decode($row[0], true);
 		}

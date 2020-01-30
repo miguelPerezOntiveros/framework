@@ -104,7 +104,7 @@ function doToggleHook(){
 function doFormPostHook(){
 	$('.table_parent').before('<div class="col-12" style="padding-top: 1em;"></div><div class="col-12 import_form"></div>');
 	$('.import_form').append('<b>File:</b><br>\
-		<form class="import_form_element">\
+		<form class="import_form_element" action="/src/import.php">\
 			<input type="file" name="import_file" id="import_file" required> <div class="catcher" data-input="import_file" ondragover="return false"><i class="fas fa-3x fa-arrow-alt-circle-down"></i><br><br><span class="catcherFilesLabel"></span><br>Select a zip file containing a modified export, it can be a complete or data-only export.</div><br>\
 			<input type="submit" class="btn btn-primary" style="float:right" value="Import">\
 		</form>\
@@ -123,4 +123,40 @@ function doFormPostHook(){
 			$('#import_file')[0].files = ev.dataTransfer.files;
 		}, false);
 	});
+
+	// $('.import_form_element').submit(function(e){
+	// 		e.preventDefault();
+
+	// 		if (typeof submitHook === "function")
+	// 			if(submitHook())
+	// 				return;
+
+	// 		var formData = new FormData($('.form_element')[0]);
+	// 		for(prop in editors)
+	// 			formData.append(prop, editors[prop].getValue());
+
+	// 		$.ajax({
+	// 			type: "POST",
+	// 			url: endpoint[window.crud_mode] + '?project='+window._projectName+'&table=' + window.name,
+	// 			data: formData,
+	// 			success: function(data) {
+	// 				response = JSON.parse(data);
+
+	// 				if(response.error)
+	// 					if(response.error == 'login')
+	// 						window.location = 'login.php';
+	// 					else
+	// 						doModal('error', response.error, 3000);
+	// 				else
+	// 					doModal('success', response.success, 800);
+
+	// 				doTable(undefined, undefined, false);
+	// 				toggleForm("close");
+	// 			},
+	// 			enctype: "multipart/form-data",
+	// 			contentType: "multipart/mixed; boundary=frontier",
+	// 			contentType: false,
+	// 			processData: false
+	// 		});
+	// });
 }

@@ -14,6 +14,7 @@
 	$target_folder = $config['_name'].(isset($_GET['content_only'])?'_content_only':'');
 	for($now = ''; file_exists($dir.$target_folder.'.zip'); $now = (!$now? time(): $now+1))
 		$target_folder = $config['_name'].(isset($_GET['content_only'])?'_content_only_':'').$now;
+	$to_export = $config['_name'];
 
 	if(isset($_GET['content_only'])){
 		// Folder and SQL Dump
@@ -32,7 +33,6 @@
 		exec($command);
 	
 		// Project Config
-		$to_export = $config['_name'];
 		$config['_name'] = 'maker_mike'; // force db_connection.inc.php to connect to the 'maker_mike' DB
 		require 'db_connection.inc.php';
 		$export_config = array();
@@ -62,6 +62,7 @@
 		error_log('Command: '.$command);
 		exec($command);
 	}
+	file_put_contents($dir.$target_folder.'/name.txt', $to_export);
 
 	// Zip
 	$command = 'cd '.$dir.' && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;
