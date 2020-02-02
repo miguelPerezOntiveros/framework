@@ -20,13 +20,33 @@
 				exit(json_encode((object) ["error" => 'Project "'.$ext_row[0].'" already exists.']));
 			}
 
-		// adds in defaults
 		$associative_config = transform($row['config']);
-		// echo print_r($associative_config);
-		// echo '<br><br>';
-		if(!isset($row['config']['show']))
+		// adds in defaults
+		if(!isset($row['config']['show'])) // TODO should I be modifying associative_config instead? 
 			$row['config']['show'] = ucwords(str_replace("_"," ", $row['config']['name']));
 		
+		if(!isset($associative_config['export']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'export',
+				'columns' => array_values(array(
+					'notes',
+					'date_time',
+					array('name' => 'tables', 'select' => 'tables'),
+					array('name' => 'file', 'type' => 'file')
+				))
+			);
+		}
+		if(!isset($associative_config['import']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'import',
+				'columns' => array_values(array(
+					'notes',
+					'date_time',
+					array('name' => 'tables', 'select' => 'tables'),
+					array('name' => 'file', 'type' => 'file')
+				))
+			);
+		}
 		if(!isset($associative_config['page']) && $associative_config['_name'] != 'maker_mike'){
 			$row['config']['tables'][] = array(
 				'name' => 'page',

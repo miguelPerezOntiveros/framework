@@ -21,9 +21,15 @@
 		                echo '
 			                <li style="border-top: 1px solid #000032; color: #3bb6d4;">
 								<p>'.$config['_show'].' ('.$config['_name'].')</p>
-			                </li>';
+			                </li><ul class=\'list-unstyled sidebar_project_specific_ul\'>';
 		                if($config['_name'] != 'maker_mike')	
 			                echo '
+							<li class="tab" id="menu_export">
+								<a onclick="loadSection(\'export\', \'\', true);">Export</a>
+							</li>
+							<li class="tab" id="menu_import">
+								<a onclick="loadSection(\'import\', \'\', true);">Import</a>
+							</li>
 							<li class="tab" id="menu_page">
 								<a onclick="loadSection(\'page\', \'\', true);">Page</a>
 							</li>
@@ -34,12 +40,12 @@
 								<a onclick="loadSection(\'theme\', \'\', true);">Theme</a>
 							</li>';
 						echo '
-							<li class="tab" id="menu_user_type">
-								<a onclick="loadSection(\'user_type\', \'\', true);">User Type</a>
-							</li>
 							<li class="tab" id="menu_user">
 								<a onclick="loadSection(\'user\', \'\', true);">User</a>
-							</li>';
+							</li>
+							<li class="tab" id="menu_user_type">
+								<a onclick="loadSection(\'user_type\', \'\', true);">User Type</a>
+							</li></ul>';
 					}
 				?>
             </ul>

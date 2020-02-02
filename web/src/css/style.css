@@ -236,6 +236,9 @@ a[data-toggle="collapse"] {
 	opacity: 1;
 	margin: 5px auto;
 }
+.sidebar_project_specific_ul{
+	cursor: pointer;
+}
 #navbarSupportedContent:not(.show){
 	height: 40px;
 }

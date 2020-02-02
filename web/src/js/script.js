@@ -99,7 +99,7 @@ loadSection = function(name, displayName, replaceState){
 
 doMenu = function(name, displayName){
 	$('.tab').removeClass('active');
-	$('#menu_'+name).addClass('active');
+	$('#menu_'+name).addClass('active'); // sidebar
 	$('#title').text(displayName);
 }
 
