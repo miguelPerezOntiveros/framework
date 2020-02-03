@@ -111,6 +111,7 @@ done < xhtmlfile.xhtml > titleOfXHTMLPage.txt
 - move images and files to gcs to make Run stateless
 
 ## Documentation TODOs
+- front end recieves 5 pieces of data for each column: name, type, show, select, hide_in.
 - Complete vs Content Export/Import feature as well as use cases or development patterns
 - Diagrams
 	- Content exports vs complete exports

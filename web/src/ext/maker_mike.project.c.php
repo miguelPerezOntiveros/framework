@@ -30,9 +30,9 @@
 				'name' => 'export',
 				'columns' => array_values(array(
 					'notes',
-					'date_time',
+					array('name' => 'date_time', 'hide_in' => 'form'),
 					array('name' => 'tables', 'select' => 'tables'),
-					array('name' => 'file', 'type' => 'file')
+					array('name' => 'file', 'type' => 'file', 'hide_in' => 'form')
 				))
 			);
 		}
@@ -41,7 +41,7 @@
 				'name' => 'import',
 				'columns' => array_values(array(
 					'notes',
-					'date_time',
+					array('name' => 'date_time', 'hide_in' => 'form'),
 					array('name' => 'tables', 'select' => 'tables'),
 					array('name' => 'file', 'type' => 'file')
 				))

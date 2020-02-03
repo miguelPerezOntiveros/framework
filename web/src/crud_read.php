@@ -66,7 +66,7 @@
 	error_log('bindings: '.implode(', ', $bindings));
 	$stmt->execute($bindings);
 	foreach(range(0, $stmt->columnCount() - 1) as $i)
-		$columns[] = (object)[$stmt->getColumnMeta($i)['name'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['type'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['show'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['select']]; 
+		$columns[] = (object)[$stmt->getColumnMeta($i)['name'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['type'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['show'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['select'], $config[$_GET['table']][$stmt->getColumnMeta($i)['name']]['hide_in']]; 
 	while($row = $stmt->fetch(PDO::FETCH_NUM))
 		$data[] = $row;
 

@@ -109,6 +109,8 @@ doForm = function(columns){
 		var form = '';
 		if(i==0) // The id row will be hidden to the user
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
+		else if(e[4] && e[4].indexOf('form') >= 0){ // hide_in contains 'form'
+		}
 		else{
 			form += '<b>'+e[2]+':</b>'
 			if(e[3] == 'tables'){

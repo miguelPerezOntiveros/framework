@@ -183,7 +183,7 @@ footer{
 	cursor: auto;
 }
 
-.sidebarWrapper_sidebar ul li.active > a {
+.sidebarWrapper_sidebar ul li > a.active {
 	background-color: #000032;
 }
 a[data-toggle="collapse"] {

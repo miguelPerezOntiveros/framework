@@ -24,7 +24,7 @@
 				'Not present.'
 			);
 			// upload possible files start
-			if($column['type'] == 'file'){
+			if($value != 'Not present.' && $column['type'] == 'file'){
 				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
 					;
 				// var_dump($_FILES[$column_key]);

@@ -24,27 +24,27 @@
 			                </li><ul class=\'list-unstyled sidebar_project_specific_ul\'>';
 		                if($config['_name'] != 'maker_mike')	
 			                echo '
-							<li class="tab" id="menu_export">
-								<a onclick="loadSection(\'export\', \'\', true);">Export</a>
+							<li>
+								<a id="menu_export" class="tab" data-table=\'export\' onclick="loadSection(\'export\', \'\', true);">Export</a>
 							</li>
-							<li class="tab" id="menu_import">
-								<a onclick="loadSection(\'import\', \'\', true);">Import</a>
+							<li>
+								<a id="menu_import" class="tab" data-table=\'import\' onclick="loadSection(\'import\', \'\', true);">Import</a>
 							</li>
-							<li class="tab" id="menu_page">
-								<a onclick="loadSection(\'page\', \'\', true);">Page</a>
+							<li>
+								<a id="menu_page" class="tab" data-table=\'page\' onclick="loadSection(\'page\', \'\', true);">Page</a>
 							</li>
-							<li class="tab" id="menu_portlet">
-								<a onclick="loadSection(\'portlet\', \'\', true);">Portlet</a>
+							<li>
+								<a id="menu_portlet" class="tab" data-table=\'portlet\' onclick="loadSection(\'portlet\', \'\', true);">Portlet</a>
 							</li>
-							<li class="tab" id="menu_theme">
-								<a onclick="loadSection(\'theme\', \'\', true);">Theme</a>
+							<li>
+								<a id="menu_theme" class="tab" data-table=\'theme\' onclick="loadSection(\'theme\', \'\', true);">Theme</a>
 							</li>';
 						echo '
-							<li class="tab" id="menu_user">
-								<a onclick="loadSection(\'user\', \'\', true);">User</a>
+							<li>
+								<a id="menu_user" class="tab" data-table=\'user\' onclick="loadSection(\'user\', \'\', true);">User</a>
 							</li>
-							<li class="tab" id="menu_user_type">
-								<a onclick="loadSection(\'user_type\', \'\', true);">User Type</a>
+							<li>
+								<a id="menu_user_type" class="tab" data-table=\'user_type\' onclick="loadSection(\'user_type\', \'\', true);">User Type</a>
 							</li></ul>';
 					}
 				?>
