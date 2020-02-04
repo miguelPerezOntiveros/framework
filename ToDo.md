@@ -1,10 +1,4 @@
-		- delete the 'id' lines of each file as the id the file name
-
-
 ## IMPORTANT TODOs
-- stateless computing
-	- make sure project creation works on GCRun (simlinks, etc). Run should be stateless.
-	- Config should be stored on the DB to keep Run stateless?
 - should let me know if DB stops becomming available. Don't just hang there.
 	- make sure we get feedback if db couldn´t be created.
 	- make sure we get feedback on any sql errors.
@@ -19,31 +13,44 @@
 - document why I'm calling sidebar_projects twice
 - find a way to not need the require once to call db_connection. Check if the connection is open and to the desired db
 - Project deletion should export to a dedicated "trash" folder first
+- zip files and images should not have public links available, I need to secure them
+- should be able to setup automatic imports from a git repo
+	- project level or maker_mike level?
 
-- Complete-Export/Import feature
+### Import/Export
+- 'tables' on project config should add in only what you CAN see.
+- Maker_Mike level
 	- Export
-		- zip file should not remain available, I need to secure it
 		- when you have no session, an 'undefined' file is downloaded
-		- rethink permissions. Right now I check for a target project SysAdmin session, maybe I should try to sign in (like SSO).
+		- angle down should select 't1' ... 'tn' and then initiate a project-level export
+		- souble angle down should select 'Select All' and then initiate a project-level export
 	- Import
+		- Actually called 'Create from File'
+		- 0. Delete project if it exists
 		- 1. Create Maker Mike project
-		- 2. Copy uploads folder
-		- 3. Copy ext files
-		- 4. SQL import (DML)
-		- 5. unzip themes
-		- Implement Drag&drop imports
-
-- Content-Export/Import feature
+		- 2. initiate a project-level import confirmation request and then import
+		- add secondary form back in
+- Project level
 	- Export
-		- un-xml-escape characters?
+		- do create empty folders when there are no rows to export
 		- what happens with more than 99 rows?
-		- zip file should not remain available, I need to secure it
-	- Import 
-		- exclude uploads folder on find
 		- add the delete/empty/drop tables commands
-		- add this to the front end
-		- should be able to setup automatic imports from a git repo
-
+		- options (only what you have access to):
+			- Select All
+			- Extentions
+			- Pages
+			- Themes
+			- t1 ... tn
+		- project config should always be included
+	- Import 
+		- exclude uploads folder on 'find' command
+		- validate config to see if each table to be imported has matching column config
+		- on '?validate=true', provide a list of tables that will be written to, having checked write permissions on each table.
+		- options (only what you have access to):
+			- Complete file (no regen)
+			- Pages
+			- Themes
+			- t1 ... tn
 ```
 while read_dom; do
     if [[ $ENTITY = "title" ]]; then
@@ -65,6 +72,9 @@ done < xhtmlfile.xhtml > titleOfXHTMLPage.txt
 - https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 
 ## General TODOs
+- stateless computing
+	- make sure project creation works on GCRun (simlinks, etc). Run should be stateless.
+	- Config should be stored on the DB to keep Run stateless?
 - annimations on both menus should probably match
 - May move to GCP?
 	- https://cloud.google.com/sql/docs/mysql/connect-run
@@ -81,7 +91,6 @@ done < xhtmlfile.xhtml > titleOfXHTMLPage.txt
 - setup ace editor for php if it's not, can I have php autocompletions?
 - check if page and theme url availability need adjustments due to case sensitivity
 - verify session on pages from page table? would need to be able to mark pages as private as well
-- I need a better logo
 - use unlimited column types (will affect db creation) for html
 - I should allow for back and forward browser button functionality at index.php (you can't currently reach the same tab you were on)
 - create copy on edit

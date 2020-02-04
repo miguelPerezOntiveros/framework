@@ -260,7 +260,10 @@ doTable2 = function(data, thenDoForm){
 		else if(e[1] == 'file')
 			columns.push({ "render": function (data, type, full, meta) {return "<a href='uploads/"+window.name+'/'+data+"'><img style='width:60px;' src='uploads/"+window.name+'/'+data+"'/></a>"; } });
 		else if(e[3] == 'tables')
-			columns.push({ "render": function (data, type, full, meta) {return '-'+JSON.parse(data).join('<br>-'); } });
+			columns.push({ "render": function (data, type, full, meta) {
+				data = JSON.parse(data);
+				return data.length+' tables:<br>-'+data.join('<br>-');
+			}});
 		else if(e[3] == 'multi'){
 			columns.push({ "render": function (data, type, full, meta) {
 				data = JSON.parse(data);
@@ -335,7 +338,7 @@ $(document).ready(function() {
 		});
 	});
 	if(!$.urlParam('table'))
-		$('li>.tab:first').click();
+		$('.topbar_topbar li>.tab:first').click();
 	else
 		$('li>.tab[data-table='+$.urlParam('table')+']').click();
 	// loadSection($.urlParam('table'));

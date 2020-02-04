@@ -31,7 +31,7 @@
 				'columns' => array_values(array(
 					'notes',
 					array('name' => 'date_time', 'hide_in' => 'form'),
-					array('name' => 'tables', 'select' => 'tables'),
+					array('name' => 'selection', 'select' => 'tables'),
 					array('name' => 'file', 'type' => 'file', 'hide_in' => 'form')
 				))
 			);
@@ -42,7 +42,7 @@
 				'columns' => array_values(array(
 					'notes',
 					array('name' => 'date_time', 'hide_in' => 'form'),
-					array('name' => 'tables', 'select' => 'tables'),
+					array('name' => 'selection', 'select' => 'tables'),
 					array('name' => 'file', 'type' => 'file')
 				))
 			);

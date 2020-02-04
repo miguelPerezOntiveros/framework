@@ -51,15 +51,13 @@ h2 {
 	padding: 0px 5px 0px 20px;
 }
 .title, .bs-callout-left{
-	margin: 10px 0 10px 0;
+	margin: 35px 0;
 	padding: 0px 5px 0px 20px;
 	border-left: 5px solid #323264;
 	border-radius: 3px;
 }
 .form{
 	padding: 0px 5px 0px 25px;
-}
-.title, .form{
 	margin: 10px 0 10px 0;
 }
 .table_parent table{

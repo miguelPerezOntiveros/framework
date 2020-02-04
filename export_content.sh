@@ -7,6 +7,7 @@
 # $6 zip file path
 
 cd $6
+# TODO need to specify tables names
 mysqldump -h $1 -P $4 --xml --no-create-info -u $2 --password=$3 $5 > dump.sql
 sed -i '$d' dump.sql # closing mysqldump tag
 sed -i '$d' dump.sql # closing database tag
