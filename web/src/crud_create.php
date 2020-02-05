@@ -21,10 +21,10 @@
 					json_encode($_POST[$column_key]):
 					$_POST[$column_key])
 				: 
-				'Not present.'
+				$column_key.' value not present on creation.'
 			);
 			// upload possible files start
-			if($value != 'Not present.' && $column['type'] == 'file'){
+			if($value != $column_key.' value not present on creation.' && $column['type'] == 'file'){
 				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
 					;
 				// var_dump($_FILES[$column_key]);

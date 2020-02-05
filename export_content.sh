@@ -1,14 +1,15 @@
-# builds a content export zip
+# builds a content export folder
 # $1 db_host
 # $2 db_user
 # $3 db_pass
 # $4 db_port
 # $5 db_name
-# $6 zip file path
+# $6 tables
+# $7 zip file path
 
-cd $6
+cd $7
 # TODO need to specify tables names
-mysqldump -h $1 -P $4 --xml --no-create-info -u $2 --password=$3 $5 > dump.sql
+mysqldump -h $1 -P $4 --xml --no-create-info -u $2 --password=$3 $5 $6 > dump.sql
 sed -i '$d' dump.sql # closing mysqldump tag
 sed -i '$d' dump.sql # closing database tag
 csplit dump.sql '/<table_data name=".*">/' {*}

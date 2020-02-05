@@ -262,7 +262,7 @@ doTable2 = function(data, thenDoForm){
 		else if(e[3] == 'tables')
 			columns.push({ "render": function (data, type, full, meta) {
 				data = JSON.parse(data);
-				return data.length+' tables:<br>-'+data.join('<br>-');
+				return data? data.length+' tables:<br>-'+data.join('<br>-'): 'No tables.';
 			}});
 		else if(e[3] == 'multi'){
 			columns.push({ "render": function (data, type, full, meta) {

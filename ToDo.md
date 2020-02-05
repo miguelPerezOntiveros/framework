@@ -16,6 +16,7 @@
 - zip files and images should not have public links available, I need to secure them
 - should be able to setup automatic imports from a git repo
 	- project level or maker_mike level?
+- https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 
 ### Import/Export
 - 'tables' on project config should add in only what you CAN see.
@@ -42,6 +43,7 @@
 			- Themes
 			- t1 ... tn
 		- project config should always be included
+		- does the file field need to be of type file? I don´t want it displayed as an image
 	- Import 
 		- exclude uploads folder on 'find' command
 		- validate config to see if each table to be imported has matching column config
@@ -51,25 +53,6 @@
 			- Pages
 			- Themes
 			- t1 ... tn
-```
-while read_dom; do
-    if [[ $ENTITY = "title" ]]; then
-        echo $CONTENT
-        exit
-    fi
-done < xhtmlfile.xhtml > titleOfXHTMLPage.txt
-
-
-
-
-	values="'1&amp;&lt;&gt;&quot;','2&amp;&lt;&gt;&quot;','3&amp;&lt;&gt;&quot;'"
-	values=${values//&amp;/&}
-	values=${values//&lt;/<}
-	values=${values//&gt;/>}
-	values=${values//&quot;/'"'}
-	echo $values
-```
-- https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 
 ## General TODOs
 - stateless computing
