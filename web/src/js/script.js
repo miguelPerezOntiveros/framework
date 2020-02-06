@@ -106,6 +106,11 @@ doMenu = function(name, displayName){
 doForm = function(columns){
 	$('.form_element').html('');
 	$.each(columns, function(i, e){
+		// e[0] name
+		// e[1] type
+		// e[2] show
+		// e[3] select
+		// e[4] hide_in
 		var form = '';
 		if(i==0) // The id row will be hidden to the user
 			form += '<input type="hidden" name ="'+e[0]+'"/><br>';
@@ -116,6 +121,18 @@ doForm = function(columns){
 			if(e[3] == 'tables'){
 				$('.form_element').append(form+'</br><select name="'+e[0]+'[]" multiple required></select><br>');
 				form = '';
+				if(name == 'export' && e[0] == 'selection'){
+					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_all" value="Select All">Select All</option>');
+					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_extentions" value="Extentions Folder">Extentions Folder</option>');
+					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="theme" value="theme">Theme</option>');
+					$('.form_element option[value="Select All"]').on('click', function() {
+						var values = [];
+						$.each($('.form_element select[name="'+e[0]+'[]"] option'), function(i, e){
+						    values.push($(e).val());
+						});
+						$('.form_element select[name="selection[]"]').val(values);
+					});
+				}
 				$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).data('table')+'">'+$(el).text()+'</option>');
 				});

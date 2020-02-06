@@ -12,31 +12,35 @@
 	$validated_selection = json_decode($row['selection']);
 	foreach($validated_selection as $selection) {
 		if(
-			$selection == 'Extentions' && !preg_match('/System Administrator/', $_SESSION['type']) ||
-			$selection != 'Extentions' && $config[$selection]['_permissions']['read'] != '-' && !preg_match('/'.$config[$selection]['_permissions']['read'].'/', $_SESSION['type'])
+			$selection == 'Extentions Folder' && !preg_match('/System Administrator/', $_SESSION['type']) ||
+			$selection != 'Extentions Folder' && $config[$selection]['_permissions']['read'] != '-' && !preg_match('/'.$config[$selection]['_permissions']['read'].'/', $_SESSION['type'])
 		)
 			$validated_selection = array_diff($validated_selection, [$selection]);
 	}
 	$row['selection'] = json_encode($validated_selection);
-	$validated_table_selection = array_diff($validated_selection, ['Extentions']);
+	$validated_table_selection = array_diff($validated_selection, ['Extentions Folder', 'Select All']);
 
-	// Folder and tables
-	$command = 'cd '.$dir.' && mkdir '.$target_folder.' && ./../../../../../export_content.sh '.$db_host.' '.$db_user.' '.$db_pass.' '.$db_port.' '.$config['_name'].' "'.implode(' ', $validated_table_selection).'" '.$target_folder;
+	// Folder and tables, includes themes
+	$command = 'cd '.$dir.' && mkdir -p '.$target_folder.'/_admin/uploads && mkdir -p '.$target_folder.'/_admin/ext && ./../../../../../export_content.sh '.$db_host.' '.$db_user.' '.$db_pass.' '.$db_port.' '.$config['_name'].' "'.implode(' ', $validated_table_selection).'" '.$target_folder;
 	error_log("\n -- Command folder and tables: ".$command."\n");
 	exec($command);
 
-	//	'_uploads' folder
-	$command = 'cd '.$dir.'../uploads && mkdir ../exports/'.$target_folder.'/_uploads && cp -r '.implode(' ', $validated_table_selection).' ../exports/'.$target_folder.'/_uploads';
-	error_log("\n -- Command uploads: ".$command."\n");
-	exec($command);
+	// 'uploads' folder
+	// $command = 'cd '.$dir.'../uploads && cp -r '.implode(' ', $validated_table_selection).' ../exports/'.$target_folder.'/_admin/uploads';
+	// error_log("\n -- Command uploads: ".$command."\n");
+	// exec($command);
 
-	// 	Extentions
-	// TODO add all valid tables as options, add Extentions as option, add Select All as option
+	// Extentions
 	if(count(array_diff($validated_selection, $validated_table_selection)) != 0){
-		$command = 'cd '.$dir.' && cp -r ../ext '.$target_folder.'/root/admin';
+		$command = 'cd '.$dir.' && cp -r ../ext '.$target_folder.'/_admin';
 		error_log("\n -- Command exts: ".$command."\n");
-	// 	exec($command);
+		exec($command);
 	}
+
+	// SQL
+	$command = 'cd '.$dir.$target_folder.' && mysqldump -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --databases '.$config['_name'].' > db.sql';
+	error_log("\n -- Command SQL: ".$command."\n");
+	exec($command);
 	
 	// Project Config
 	$config['_name'] = 'maker_mike'; // force db_connection.inc.php to connect to the 'maker_mike' DB
@@ -47,7 +51,7 @@
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$to_export]);
 	$export_config = $stmt->fetch(PDO::FETCH_NUM);
-	// file_put_contents($dir.$target_folder.'/config.json', $export_config);
+	file_put_contents($dir.$target_folder.'/config.json', $export_config);
 	$export_config = json_decode($export_config[0], true);
 	$config['_name'] = $to_export; // reconnect to the requested DB
 	require 'db_connection.inc.php';
@@ -65,9 +69,9 @@
 			}
 	}
 	
-	$command = 'cd ../projects/'.$export_config['name'].' && cp --parents `echo '.implode(' ', $file_columns).' | xargs -n 3 sh ./../../../scrape.sh admin/exports/'.$target_folder.'/db.sql` admin/exports/'.$target_folder.'/root/';
+	$command = 'cd ../projects/'.$export_config['name'].' && cp --parents `echo '.implode(' ', $file_columns).' | xargs -n 3 sh ./../../../scrape.sh admin/exports/'.$target_folder.'/db.sql` admin/exports/'.$target_folder.'/_admin/';
 	error_log("\n -- Command scrape: ".$command."\n");
-	// 	exec($command);
+	exec($command);
 
 	// Zip
 	$command = 'cd '.$dir.' && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;

@@ -44,6 +44,7 @@
 			- t1 ... tn
 		- project config should always be included
 		- does the file field need to be of type file? I don´t want it displayed as an image
+		- delete export.php when -.export.c.php is ready
 	- Import 
 		- exclude uploads folder on 'find' command
 		- validate config to see if each table to be imported has matching column config

@@ -16,16 +16,18 @@
 		if($column_key[0] == '_')
 			continue;
 		if($column['permissions_create'] == '-' ||  preg_match('/'.$column['permissions_create'].'/', $_SESSION['type'])){
-			$value = (isset($_POST[$column_key])? 
-				(is_array($_POST[$column_key])?
-					json_encode($_POST[$column_key]):
-					$_POST[$column_key])
-				: 
-				$column_key.' value not present on creation.'
+			$value =
+				(isset($_POST[$column_key])?
+					(is_array($_POST[$column_key])?
+						json_encode($_POST[$column_key])
+						:
+						$_POST[$column_key])
+					: 
+					$column_key.' value not present on creation.'
 			);
 			// upload possible files start
 			if($value != $column_key.' value not present on creation.' && $column['type'] == 'file'){
-				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
+				for($now = ''; file_exists($target_file = $now.basename(str_replace(" ", "_", $_FILES[$column_key]['name']))); $now = (!$now? time(): $now+1))
 					;
 				// var_dump($_FILES[$column_key]);
 				// echo 'target file:  '.$target_file.'<br>';

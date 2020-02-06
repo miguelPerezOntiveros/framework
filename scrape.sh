@@ -9,6 +9,7 @@ FIND='INSERT INTO `'$2'` VALUES ('
 INSERT=${INSERT//$FIND/,}
 INSERT=${INSERT::-1}
 
+#echo 'INSERT: '${INSERT//)/ }
 for TUPLE in ${INSERT//)/ } ; do
 	for i in $(seq 0 $(($3 + 2))) ; do
 		url="${TUPLE%%,*}"; TUPLE="${TUPLE#*,}" # https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html
