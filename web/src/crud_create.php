@@ -26,7 +26,10 @@
 					$column_key.' value not present on creation.'
 			);
 			// upload possible files start
-			if($value != $column_key.' value not present on creation.' && $column['type'] == 'file'){
+			if($_FILES[$column_key]['error'] === 0 && $column['type'] == 'file'){
+				error_log("\nReceived a file: ". json_encode( $_FILES[$column_key]));
+				error_log("\ncolumn: ".$column_key);
+
 				for($now = ''; file_exists($target_file = $now.basename(str_replace(" ", "_", $_FILES[$column_key]['name']))); $now = (!$now? time(): $now+1))
 					;
 				// var_dump($_FILES[$column_key]);

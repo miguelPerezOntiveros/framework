@@ -16,12 +16,12 @@
 	foreach ($config[$_GET['table']] as $column_key => $column) {
 		if($column_key[0] == '_')
 			continue;
-		if($column['type'] == '*' && $_FILES[$column_key]['size'] > 0)
+		if($column['type'] == 'file' && $_FILES[$column_key]['size'] > 0)
 			$fileColumns[] = $column_key;
 		if(preg_match('/'.$column['permissions_update'].'/', $_SESSION['type'])) {
 			// upload possible files start
-			if($column['type'] == '*' && $_FILES[$column_key]['size'] > 0 ) {
-				for($now = ''; file_exists($target_file = $now.basename($_FILES[$column_key]['name'])); $now = (!$now? time(): $now+1))
+			if($_FILES[$column_key]['error'] === 0 && $column['type'] == 'file') {
+				for($now = ''; file_exists($target_file = $now.basename(str_replace(" ", "_", $_FILES[$column_key]['name']))); $now = (!$now? time(): $now+1))
 					;
 
 				// var_dump($_FILES[$column_key]);
@@ -44,7 +44,7 @@
 				$row[$column_key] = $target_file;
 			}
 			// upload possible files end
-			if($column['type'] != '*' ){
+			if($column['type'] != 'file' ){
 				$row[$column_key] = (isset($_POST[$column_key])? 
 					(is_array($_POST[$column_key])?
 						json_encode($_POST[$column_key]):

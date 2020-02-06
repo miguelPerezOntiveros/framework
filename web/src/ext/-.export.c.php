@@ -21,17 +21,12 @@
 	$validated_table_selection = array_diff($validated_selection, ['Extentions Folder', 'Select All']);
 
 	// Folder and tables, includes themes
-	$command = 'cd '.$dir.' && mkdir -p '.$target_folder.'/_admin/uploads && mkdir -p '.$target_folder.'/_admin/ext && ./../../../../../export_content.sh '.$db_host.' '.$db_user.' '.$db_pass.' '.$db_port.' '.$config['_name'].' "'.implode(' ', $validated_table_selection).'" '.$target_folder;
+	$command = 'cd '.$dir.' && mkdir -p '.$target_folder.'/_admin/uploads && ./../../../../../export_content.sh '.$db_host.' '.$db_user.' '.$db_pass.' '.$db_port.' '.$config['_name'].' "'.implode(' ', $validated_table_selection).'" '.$target_folder;
 	error_log("\n -- Command folder and tables: ".$command."\n");
 	exec($command);
 
-	// 'uploads' folder
-	// $command = 'cd '.$dir.'../uploads && cp -r '.implode(' ', $validated_table_selection).' ../exports/'.$target_folder.'/_admin/uploads';
-	// error_log("\n -- Command uploads: ".$command."\n");
-	// exec($command);
-
 	// Extentions
-	if(count(array_diff($validated_selection, $validated_table_selection)) != 0){
+	if(in_array("Extentions Folder", $validated_selection)){
 		$command = 'cd '.$dir.' && cp -r ../ext '.$target_folder.'/_admin';
 		error_log("\n -- Command exts: ".$command."\n");
 		exec($command);
@@ -61,22 +56,22 @@
 	if(in_array('Page', $validated_table_selection))
 		$file_columns[] = ['page 1 ./'];
 
-	foreach($export_config['tables'] as $table_key => &$table){
-		if(in_array($table_key, $validated_table_selection))
+	foreach($export_config['tables'] as $table){
+		if(in_array($table['name'], $validated_table_selection))
 			for($i=0;$i<count($table['columns']); $i++){
 				if($table['columns'][$i]['type']=='file')
-					$file_columns[]= $table['name'].' '.$i.' admin/uploads/'.$table['name'].'/';
+					$file_columns[]= $table['name'].' '.$i.' uploads/'.$table['name'].'/';
 			}
 	}
-	
-	$command = 'cd ../projects/'.$export_config['name'].' && cp --parents `echo '.implode(' ', $file_columns).' | xargs -n 3 sh ./../../../scrape.sh admin/exports/'.$target_folder.'/db.sql` admin/exports/'.$target_folder.'/_admin/';
+
+	$command = 'cd ../projects/'.$export_config['name'].'/admin && cp --parents `echo '.implode(' ', $file_columns).' | xargs -n 3 sh ./../../../../scrape.sh exports/'.$target_folder.'/db.sql` exports/'.$target_folder.'/_admin/';
 	error_log("\n -- Command scrape: ".$command."\n");
 	exec($command);
 
 	// Zip
 	$command = 'cd '.$dir.' && zip '.$target_folder.'.zip -r '.$target_folder.' && rm -rf '.$target_folder;
 	error_log("\n -- Command zip: ".$command."\n");
-	//exec($command);
+	exec($command);
 
 	$row['file'] = $target_folder.'.zip';
 ?>
