@@ -308,6 +308,8 @@ doTable2 = function(data, thenDoForm){
 		"drawCallback":function(){
 			if(typeof doTablePostHook === "function")
 				doTablePostHook();
+			if(window.name == 'export')
+				$('.row_buttons').find('.row_option:last').remove();
 		}
 	});
 

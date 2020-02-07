@@ -33,22 +33,16 @@
 		- add secondary form back in
 - Project level
 	- Export
-		- do create empty folders when there are no rows to export
 		- what happens with more than 99 rows?
 		- add the delete/empty/drop tables commands
-		- options (only what you have access to):
-			- Select All
-			- Extentions
-			- Pages
-			- Themes
-			- t1 ... tn
-		- project config should always be included
 		- does the file field need to be of type file? I don´t want it displayed as an image
-		- delete export.php when -.export.c.php is ready
+		- cancel crud updates on the back end
 	- Import 
 		- exclude uploads folder on 'find' command
 		- validate config to see if each table to be imported has matching column config
 		- on '?validate=true', provide a list of tables that will be written to, having checked write permissions on each table.
+		- dont'display the file as an image
+		- uploading the same file name rewrites the first file
 		- options (only what you have access to):
 			- Complete file (no regen)
 			- Pages

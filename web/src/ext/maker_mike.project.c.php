@@ -32,7 +32,7 @@
 					'notes',
 					array('name' => 'date_time', 'hide_in' => 'form'),
 					array('name' => 'selection', 'select' => 'tables'),
-					array('name' => 'file', 'type' => 'file', 'hide_in' => 'form')
+					array('name' => 'file', 'hide_in' => 'form')
 				))
 			);
 		}
@@ -43,7 +43,7 @@
 					'notes',
 					array('name' => 'date_time', 'hide_in' => 'form'),
 					array('name' => 'selection', 'select' => 'tables'),
-					array('name' => 'file', 'type' => 'file')
+					array('name' => 'file', 'type' => 'file', 'ext' => '["zip"]')
 				))
 			);
 		}
