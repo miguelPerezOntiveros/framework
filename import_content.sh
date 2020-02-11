@@ -1,13 +1,21 @@
 #!/bin/bash
+# echoes import statements
 # 1 path to unzipped import file
 
+current_table=_
 for file in `find $1 -type f -name \*.xml | sort`; do
+	[[ $file =~ (.*)/(.*)/(.*).xml ]]
+
+	if [ $current_table != ${BASH_REMATCH[2]} ]; then
+		current_table=${BASH_REMATCH[2]}
+		echo 'TRUNCATE TABLE '$current_table\;	
+	fi
 	ORIGINAL_IFS=${IFS}
 	IFS=\>
 
 	fields=()
 	values=()
-	
+
 	i=0;
 	for word in $(<$file); do
 		i=$((i+1));
@@ -28,7 +36,6 @@ for file in `find $1 -type f -name \*.xml | sort`; do
 	fields=${fields[@]}
 	values=${values[@]}
 
-	[[ $file =~ (.*)/(.*)/(.*).xml ]]
 	echo insert into ${BASH_REMATCH[2]}\(\"id\", ${fields::-1}\) values\(${BASH_REMATCH[3]}, ${values::-1}\)\; | sed 's/&gt;/>/g'
 	IFS=${ORIGINAL_IFS}
 done

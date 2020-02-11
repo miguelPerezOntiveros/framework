@@ -153,9 +153,16 @@
 			if(!isset($table['show']))
 				$table['show'] = $table['columns'][0]['name'];
 		}
-		$associative_config = transform($row['config']);
+		// disable import and export updates
+		foreach ($row['config']['tables'] as $table_key => &$table) {
+			if(($table['name'] == 'import' || $table['name'] == 'export') && $associative_config['_name'] != 'maker_mike'){
+				$table['permissions']['update'] = 'a^';
+				$table['permissions']['update'] = 'a^';
+			}
+		}
 
 		// SQL
+		$associative_config = transform($row['config']);
 		$sql = 'DROP DATABASE IF EXISTS '.$row['config']['name'].';'.PHP_EOL;
 		$sql .= 'CREATE DATABASE '.$row['config']['name'].';'.PHP_EOL;
 		$sql .= 'USE '.$row['config']['name'].';'.PHP_EOL;
