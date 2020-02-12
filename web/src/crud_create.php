@@ -27,13 +27,19 @@
 			);
 			// upload possible files start
 			if($_FILES[$column_key]['error'] === 0 && $column['type'] == 'file'){
-				for($now = ''; file_exists($target_file = $now.basename(str_replace(" ", "_", $_FILES[$column_key]['name']))); $now = (!$now? time(): $now+1))
-					;
+				$target_path = '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/';
+				$target_file = basename(str_replace(" ", "_", $_FILES[$column_key]['name']));
+				$ext = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+				$now = '';
+				do{
+					if($now){
+						$target_file = substr($target_file, 0, -strlen($ext)-1).'_'.$now.'.'.$ext;
+					}
+					$now = ($now? $now+1: time());
+				} while(file_exists($target_path.$target_file));
 				// var_dump($_FILES[$column_key]);
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
-				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
-				$ext = strtolower($ext);
 				$validExts = json_decode($column['ext']) ?: array('jpg', 'jpeg', 'gif', 'png');
 				if(array_search($ext, $validExts) === False ){
 					error_log('Valid exts: '.implode(', ', $validExts));
@@ -44,7 +50,7 @@
 					exit(json_encode((object) ["error" => "File too large"]));
 
 				error_log('About to move uploaded file: '. json_encode( $_FILES[$column_key]));
-				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], '../projects/'.$_GET['project'].'/admin/uploads/'.$_GET['table'].'/'.$target_file)){
+				if (!move_uploaded_file($_FILES[$column_key]["tmp_name"], $target_path.$target_file)){
 					error_log('Error during transfer: '. json_encode( $_FILES[$column_key]));
 					exit(json_encode((object) ["error" => "Error during transfer, check the log"]));
 				}

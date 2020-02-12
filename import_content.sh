@@ -3,7 +3,7 @@
 # 1 path to unzipped import file
 
 current_table=_
-for file in `find $1 -type f -name \*.xml | sort`; do
+for file in `find $1 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 	[[ $file =~ (.*)/(.*)/(.*).xml ]]
 
 	if [ $current_table != ${BASH_REMATCH[2]} ]; then
@@ -23,7 +23,8 @@ for file in `find $1 -type f -name \*.xml | sort`; do
 			if [ $i -gt 1 ]; then
 				word=${word:1}
 			fi;
-			fields+=( ${word//<field name=/}, )
+			word=${word::-1}
+			fields+=( ${word//<field name=\"/}, )
 		else
 			word=\"${word//<\/field/}\",
 			word=${word//\&quot;/\"}
@@ -36,6 +37,6 @@ for file in `find $1 -type f -name \*.xml | sort`; do
 	fields=${fields[@]}
 	values=${values[@]}
 
-	echo insert into ${BASH_REMATCH[2]}\(\"id\", ${fields::-1}\) values\(${BASH_REMATCH[3]}, ${values::-1}\)\; | sed 's/&gt;/>/g'
+	echo INSERT INTO ${BASH_REMATCH[2]}\(id, ${fields::-1}\) VALUES\(${BASH_REMATCH[3]}, ${values::-1}\)\; | sed 's/&gt;/>/g'
 	IFS=${ORIGINAL_IFS}
 done
