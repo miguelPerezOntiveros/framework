@@ -121,7 +121,7 @@ doForm = function(columns){
 			if(e[3] == 'tables'){
 				$('.form_element').append(form+'</br><select name="'+e[0]+'[]" multiple required></select><br>');
 				form = '';
-				if(name == 'export' && e[0] == 'selection'){
+				if((name == 'export' || name == 'import') && e[0] == 'selection'){
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_all" value="Select All">Select All</option>');
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_extentions" value="Extentions Folder">Extentions Folder</option>');
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="theme" value="theme">Theme</option>');
