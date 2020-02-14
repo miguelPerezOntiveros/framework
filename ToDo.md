@@ -40,11 +40,10 @@
 		- validate config to see if each table to be imported has matching column config
 			- each import contains a config.json, parse it, extract the table object and compare it to the project's table conf.
 		- on '?validate=true', provide a list of tables that will be written to, having checked write permissions on each table.
-		- options (only what you have access to):
-			- Complete file (no regen)
-			- Pages
-			- Themes
-			- t1 ... tn
+		- Pages (create symlinks)
+		- Themes (deploy them)
+		- Extentions
+		- copy files from uploads folder
 
 ## General TODOs
 - stateless computing

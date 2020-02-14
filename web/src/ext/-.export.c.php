@@ -51,10 +51,10 @@
 	$config['_name'] = $to_export; // reconnect to the requested DB
 	require 'db_connection.inc.php';
 
-	// Files from 'file'-type columns (plus Pages)
+	// Files from 'file'-type columns
 	$file_columns = [];
-	if(in_array('Page', $validated_table_selection))
-		$file_columns[] = ['page 1 ./'];
+	// if(in_array('page', $validated_table_selection))
+	// 	$file_columns[] = 'page 1 ./';
 
 	foreach($export_config['tables'] as $table){
 		if(in_array($table['name'], $validated_table_selection))

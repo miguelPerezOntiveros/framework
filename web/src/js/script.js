@@ -125,6 +125,7 @@ doForm = function(columns){
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_all" value="Select All">Select All</option>');
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_extentions" value="Extentions Folder">Extentions Folder</option>');
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="theme" value="theme">Theme</option>');
+					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="page" value="page">Page</option>');
 					$('.form_element option[value="Select All"]').on('click', function() {
 						var values = [];
 						$.each($('.form_element select[name="'+e[0]+'[]"] option'), function(i, e){

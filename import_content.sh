@@ -1,13 +1,20 @@
 #!/bin/bash
 # echoes import statements
-# 1 path to unzipped import file
+# 1 path to zipped import file's derectory
+# 2 zip file name
+# 3 tables
+
+cd $1
+unzipped=`unzip -qql $2 | head -n1 | awk '{ print $4}'`
+unzip -qq $2 && cd $unzipped
 
 current_table=_
-for file in `find $1 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
-	[[ $file =~ (.*)/(.*)/(.*).xml ]]
+for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
+	[[ $file =~ (.*)/(.*).xml ]]
 
-	if [ $current_table != ${BASH_REMATCH[2]} ]; then
-		current_table=${BASH_REMATCH[2]}
+	if [ $current_table != ${BASH_REMATCH[1]} ]; then
+		current_table=${BASH_REMATCH[1]}
+		# todo copy files
 		echo 'TRUNCATE TABLE '$current_table\;	
 	fi
 	ORIGINAL_IFS=${IFS}
@@ -37,6 +44,9 @@ for file in `find $1 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 	fields=${fields[@]}
 	values=${values[@]}
 
-	echo INSERT INTO ${BASH_REMATCH[2]}\(id, ${fields::-1}\) VALUES\(${BASH_REMATCH[3]}, ${values::-1}\)\; | sed 's/&gt;/>/g'
+	echo INSERT INTO ${BASH_REMATCH[1]}\(id, ${fields::-1}\) VALUES\(${BASH_REMATCH[2]}, ${values::-1}\)\; | sed 's/&gt;/>/g'
 	IFS=${ORIGINAL_IFS}
 done
+
+cd ..
+rm -rf $unzipped
