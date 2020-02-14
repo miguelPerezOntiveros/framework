@@ -1,5 +1,5 @@
 #!/bin/bash
-# echoes import statements
+# echoes import statements, copies tables' uploads folders
 # 1 path to zipped import file's derectory
 # 2 zip file name
 # 3 tables
@@ -14,7 +14,8 @@ for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 
 	if [ $current_table != ${BASH_REMATCH[1]} ]; then
 		current_table=${BASH_REMATCH[1]}
-		# todo copy files
+		rm -rf ../../$current_table # delete uploads folder on target project
+		cp -r _admin/uploads/$current_table ../../ # copy uploads folder to target project
 		echo 'TRUNCATE TABLE '$current_table\;	
 	fi
 	ORIGINAL_IFS=${IFS}

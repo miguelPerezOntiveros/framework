@@ -43,7 +43,6 @@
 		- Pages (create symlinks)
 		- Themes (deploy them)
 		- Extentions
-		- copy files from uploads folder
 
 ## General TODOs
 - stateless computing
