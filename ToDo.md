@@ -19,14 +19,7 @@
 - should be able to modify permissions without having to recreate a project
 
 ### Import/Export
-- 'tables' on project config should add in only what you CAN see.
 - Maker_Mike level
-	- Export
-		- when you have no session, an 'undefined' file is downloaded
-		- buttons
-			- single angle down should select 't1' ... 'tn' on a project-level export
-			- double angle down should select 'Select All' and then initiate a project-level export
-			- use an ajax
 	- Import
 		- Actually called 'Create from File'
 		- 0. Delete project if it exists
@@ -40,9 +33,8 @@
 		- validate config to see if each table to be imported has matching column config
 			- each import contains a config.json, parse it, extract the table object and compare it to the project's table conf.
 		- on '?validate=true', provide a list of tables that will be written to, having checked write permissions on each table.
-		- Pages (create symlinks)
-		- Themes (deploy them)
-		- Extentions
+		- don't construct sql to then import, but actually call crud delete and crud create services
+			- for example, themes and pages should deploy
 
 ## General TODOs
 - stateless computing

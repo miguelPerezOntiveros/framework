@@ -15,7 +15,7 @@
 	$validated_table_selection = array_diff($validated_selection, ['Extentions Folder', 'Select All']);
 
 	// Unzip and Import
-	$command = './../../import_content.sh '.$dir.' '.$row['file'].' "'.implode(' ', $validated_table_selection).'"| mysql -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --database '.$config['_name'];
+	$command = './../../import_content.sh '.$dir.' '.$row['file'].' "'.implode(' ', $validated_table_selection).'" '.(in_array("Extentions Folder", $validated_selection)?'ext':'').' | mysql -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --database '.$config['_name'];
 	error_log("\n -- Command Unzip and Import: ".$command."\n");
 	exec($command);
 ?>
