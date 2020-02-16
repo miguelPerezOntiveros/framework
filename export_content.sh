@@ -34,7 +34,6 @@ for file in `ls x*`; do # traverse tables
 			sed -i '1d' $file # first line only has the id field
 			sed -i -e 's/^\t\t//' $file
 			mv $file $file_name.xml
-			# TODO what happens when there are more than 99 rows?
 		done
 	cd ..
 done

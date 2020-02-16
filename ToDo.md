@@ -17,6 +17,7 @@
 	- project level or maker_mike level?
 - https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 - should be able to modify permissions without having to recreate a project
+- there is no verison locking on the php version https://www.php.net/ChangeLog-7.php
 
 ### Import/Export
 - Maker_Mike level
@@ -27,16 +28,13 @@
 		- 2. initiate a project-level import confirmation request and then import
 		- add secondary form back in
 - Project level
-	- Export
-		- what happens with more than 99 rows?
 	- Import 
 		- validate config to see if each table to be imported has matching column config
 			- each import contains a config.json, parse it, extract the table object and compare it to the project's table conf.
 		- on '?validate=true', provide a list of tables that will be written to, having checked write permissions on each table.
-		- don't construct sql to then import, but actually call crud delete and crud create services
-			- for example, themes and pages should deploy
-
+		
 ## General TODOs
+- what happens if I delete a portlet that is being used by a page?
 - stateless computing
 	- make sure project creation works on GCRun (simlinks, etc). Run should be stateless.
 	- Config should be stored on the DB to keep Run stateless?
@@ -55,10 +53,8 @@
 - setup ace editor for php if it's not, can I have php autocompletions?
 - check if page and theme url availability need adjustments due to case sensitivity
 - verify session on pages from page table? would need to be able to mark pages as private as well
-- use unlimited column types (will affect db creation) for html
 - I should allow for back and forward browser button functionality at index.php (you can't currently reach the same tab you were on)
 - create copy on edit
-- only preview or don't show even don't show html field on datatable.
 - should file size limit be a per project setting? (do I need per project settings?) same thing with input height threadholds
 - create test suite
 - incorporate OAuth 2.0 for Google accounts

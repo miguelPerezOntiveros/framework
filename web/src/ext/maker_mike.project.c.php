@@ -53,7 +53,7 @@
 				'columns' => array_values(array(
 					'name',
 					'url',
-					array('name' => 'html', 'type' => 1024)
+					array('name' => 'html', 'type' => 64000)
 				))
 			);
 		}
@@ -64,10 +64,10 @@
 					'name',
 					array('name' => 'query_tables', 'select' => 'tables'),
 					'query_conditions',
-					array('name' => 'pre', 'type' => 1024),
-					array('name' => 'template', 'type' => 1024),
-					array('name' => 'tween','type' => 1024),
-					array('name' => 'post', 'type' => 1024)
+					array('name' => 'pre', 'type' => 4000),
+					array('name' => 'template', 'type' => 50000),
+					array('name' => 'tween','type' => 4000),
+					array('name' => 'post', 'type' => 4000)
 				))
 			);
 		}
@@ -78,7 +78,7 @@
 					'name',
 					'url',
 					array('name' => 'file', 'type' => 'file', 'ext' => '["zip"]'),
-					array('name' => 'contents', 'type' => 1024)
+					array('name' => 'contents', 'type' => 64000)
 				))
 			);
 		}
