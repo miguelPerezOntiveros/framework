@@ -14,7 +14,10 @@
 	$row['selection'] = json_encode($validated_selection);
 	$validated_table_selection = array_diff($validated_selection, ['Extentions Folder', 'Select All']);
 
-	// Unzip and Import
+	// validate table compatibility?
+	// parse import file's config.json, compare each table's object to $config[table_name]
+
+	// Unzip, import and delete
 	$command = './../../import_content.sh '.$dir.' '.$row['file'].' "'.implode(' ', $validated_table_selection).'" '.(in_array("Extentions Folder", $validated_selection)?'ext':'').' | mysql -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --database '.$config['_name'];
 	error_log("\n -- Command Unzip and Import: ".$command."\n");
 	exec($command);

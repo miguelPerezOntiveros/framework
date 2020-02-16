@@ -6,19 +6,23 @@
 # 4 ext?
 
 cd $1
-unzipped=`unzip -qql $2 | head -n1 | awk '{ print $4}'`
+unzipped=`unzip -qql $2 | head -n1 | awk '{ print $4}'` # ToDo does this work with spaces in the zip file name?
 unzip -qq $2 && cd $unzipped
 
 current_table=_
 for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 	[[ $file =~ (.*)/(.*).xml ]]
 
-	if [ $current_table != ${BASH_REMATCH[1]} ]; then
+	if [ $current_table != ${BASH_REMATCH[1]} ]; then # we are on the first row of a table
 		current_table=${BASH_REMATCH[1]}
-		rm -rf ../../$current_table # delete uploads folder on target project
-		[ -d _admin/uploads/$current_table ] && cp -r _admin/uploads/$current_table ../../ # copy uploads folder to target project
 		echo 'TRUNCATE TABLE '$current_table\;	
-	fi
+
+		# uploads folder
+		rm -rf ../../$current_table
+		[ -d _admin/uploads/$current_table ] && cp -r _admin/uploads/$current_table ../../
+
+		# if [ $current_table = 'page' ]; then should remove all existing page symlinks 
+	fi;
 	ORIGINAL_IFS=${IFS}
 	IFS=\>
 
@@ -40,7 +44,7 @@ for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 				ln -s ../../src/page.php ../../../../${word//<\/field/}
 			fi;
 			word=\"${word}\",
-			word=${word//\&quot;/\"}
+			word=${word//\&quot;/\\\"}
 			word=${word//\&amp;/&}
 			word=${word//\&lt;/<}
 			values+=( $word )
@@ -56,7 +60,7 @@ done
 
 
 # Extentions
-if [ $4 = 'ext' ]; then
+if [ -z '$4' ] && [ $4 = 'ext' ]; then
 	rm -rf ../../ext
 	cp -r _admin/ext ../../../
 fi;

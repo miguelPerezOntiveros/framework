@@ -17,7 +17,6 @@
 	- project level or maker_mike level?
 - https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 - should be able to modify permissions without having to recreate a project
-- there is no verison locking on the php version https://www.php.net/ChangeLog-7.php
 
 ### Import/Export
 - Maker_Mike level
@@ -29,11 +28,10 @@
 		- add secondary form back in
 - Project level
 	- Import 
-		- validate config to see if each table to be imported has matching column config
-			- each import contains a config.json, parse it, extract the table object and compare it to the project's table conf.
 		- on '?validate=true', provide a list of tables that will be written to, having checked write permissions on each table.
 		
 ## General TODOs
+- there is no verison locking on the php version https://www.php.net/ChangeLog-7.php
 - what happens if I delete a portlet that is being used by a page?
 - stateless computing
 	- make sure project creation works on GCRun (simlinks, etc). Run should be stateless.
