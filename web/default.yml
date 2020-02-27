@@ -1,39 +1,25 @@
 name: miguelp
 show: Miguelp.com
 tables:
-- name: project
-  columns:
-  - title
-  - name: description
-    type: 1024
-  - name: image
-    type: file
-  - video_link
-- name: comment
-  columns:
-  - name
-  - comment
-  - name: project
-    type: project
-    select: multi
 - name: certification
   columns:
   - title
   - description
   - name: image
     type: file
-- experience
-- award
-- link
 - name: blogEntry
   columns:
   - title
+  - name: public
+    type: int
   - description
+  - name: content
+    type: 40000
+- name: blogImage
+  columns:
+  - name
   - name: image
     type: file
-  - video_link
-  - tags
-  - content
 - name: to_do
   permissions:
     read: System Administrator

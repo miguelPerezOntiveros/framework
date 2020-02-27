@@ -17,6 +17,13 @@
 	- project level or maker_mike level?
 - https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 - should be able to modify permissions without having to recreate a project
+- portlets should be able to narrow down fields
+- improve filtering options on portlets, for use cases like displaying an individual blog post (could be from url, could be using portlet communication)
+- how do I define boolean data types?
+- deleting a theme doesn´t take the empty folders out
+- deploying a theme creates a __ MACOSX/js/ folder
+- add an option to show complete html
+- not able to use tildes on page html field
 
 ### Import/Export
 - Maker_Mike level
