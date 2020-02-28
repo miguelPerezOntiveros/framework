@@ -31,13 +31,19 @@
 								<a id="menu_import" class="tab" data-table=\'import\' onclick="loadSection(\'import\', \'\', true);">Import</a>
 							</li>
 							<li>
+								<a id="menu_theme" class="tab" data-table=\'theme\' onclick="loadSection(\'theme\', \'\', true);">Theme</a>
+							</li>
+							<li>
 								<a id="menu_page" class="tab" data-table=\'page\' onclick="loadSection(\'page\', \'\', true);">Page</a>
 							</li>
 							<li>
 								<a id="menu_portlet" class="tab" data-table=\'portlet\' onclick="loadSection(\'portlet\', \'\', true);">Portlet</a>
 							</li>
 							<li>
-								<a id="menu_theme" class="tab" data-table=\'theme\' onclick="loadSection(\'theme\', \'\', true);">Theme</a>
+								<a id="menu_image" class="tab" data-table=\'image\' onclick="loadSection(\'image\', \'\', true);">Image</a>
+							</li>
+							<li>
+								<a id="menu_text" class="tab" data-table=\'text\' onclick="loadSection(\'text\', \'\', true);">Text</a>
 							</li>';
 						echo '
 							<li>

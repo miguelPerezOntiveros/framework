@@ -15,7 +15,7 @@
 					$topNavLi = "";
 					if(isset($config))
 						foreach ($config as $table => $value) {
-							if($table[0] == '_' || $table == 'export' || $table == 'import' || $table == 'user' || $table == 'user_type' || $table == 'page' || $table == 'portlet' || $table == 'theme')
+							if($table[0] == '_' || $table == 'export' || $table == 'import' || $table == 'user' || $table == 'user_type' || $table == 'page' || $table == 'portlet' || $table == 'theme' || $table == 'image' || $table == 'text')
 								continue;
 							//error_log('permission read: /'.$value['_permissions']['read'].'/');
 							//error_log('username: '.$_SESSION['type']);

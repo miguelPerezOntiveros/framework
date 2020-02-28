@@ -9,6 +9,7 @@
 	- DBs that are not being managed (should be actionable)
 		- can't recreate them atm because they "already exist" so they just take up their name
 	- project table entries that don't have a DB (need to be recreated)
+- pass in portlet filters via the portlaet tag on a page
 - Any way to preserve db connection on a session?
 	- find a way to not need the require_once to call db_connection. Check if the connection is open and to the desired db
 - Project deletion should export to a dedicated "trash" folder first
@@ -24,6 +25,7 @@
 - deploying a theme creates a __ MACOSX/js/ folder
 - add an option to show complete html
 - not able to use tildes on page html field
+- create additional tag on pages to quickly reference an image or text
 
 ### Import/Export
 - Maker_Mike level

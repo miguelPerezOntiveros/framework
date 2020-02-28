@@ -47,6 +47,17 @@
 				))
 			);
 		}
+		if(!isset($associative_config['theme']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'theme',
+				'columns' => array_values(array(
+					'name',
+					'url',
+					array('name' => 'file', 'type' => 'file', 'ext' => '["zip"]'),
+					array('name' => 'contents', 'type' => 64000)
+				))
+			);
+		}
 		if(!isset($associative_config['page']) && $associative_config['_name'] != 'maker_mike'){
 			$row['config']['tables'][] = array(
 				'name' => 'page',
@@ -71,14 +82,21 @@
 				))
 			);
 		}
-		if(!isset($associative_config['theme']) && $associative_config['_name'] != 'maker_mike'){
+		if(!isset($associative_config['image']) && $associative_config['_name'] != 'maker_mike'){
 			$row['config']['tables'][] = array(
-				'name' => 'theme',
+				'name' => 'image',
 				'columns' => array_values(array(
 					'name',
-					'url',
-					array('name' => 'file', 'type' => 'file', 'ext' => '["zip"]'),
-					array('name' => 'contents', 'type' => 64000)
+					array('name' => 'image', 'type' => 'file')
+				))
+			);
+		}
+		if(!isset($associative_config['text']) && $associative_config['_name'] != 'maker_mike'){
+			$row['config']['tables'][] = array(
+				'name' => 'text',
+				'columns' => array_values(array(
+					'name',
+					array('name' => 'text', 'type' => 65000)
 				))
 			);
 		}
