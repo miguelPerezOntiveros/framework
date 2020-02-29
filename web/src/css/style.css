@@ -305,3 +305,10 @@ a[data-toggle="collapse"] {
 	text-align: center;
 	font-size: .8em;
 }
+
+td {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 0px;
+}
