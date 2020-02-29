@@ -25,7 +25,7 @@
 - deploying a theme creates a __ MACOSX/js/ folder
 - add an option to show complete html
 - not able to use tildes on page html field
-- create additional tag on pages to quickly reference an image or text
+- support additional tags on pages to quickly reference an image or text @page.php
 
 ### Import/Export
 - Maker_Mike level
