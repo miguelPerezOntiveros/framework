@@ -10,6 +10,7 @@
 	if(strpos(normalize($url), normalize($baseProjectUrl)) === 0 &&
 		strpos(normalize($url), normalize($baseProjectUrl).'/admin') !== 0
 	){	
+		// TODO maybe add a UNIQUE on the db instead of checking if the name is available?
 		$url_available = true;
 		$sql = 'SELECT url FROM '.$_GET['table'].';';
 		error_log('INFO - sql:' .$sql);
@@ -24,7 +25,7 @@
 
 		if($url_available){
 			$execOutput = array();
-			$command = 'mkdir '.$url.'; unzip "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'" -d '.$url;
+			$command = 'mkdir -p '.$url.' && unzip "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'" -d '.$url.' -x __MACOSX/*';
 			error_log('Deploying theme: '.$command);
 			exec($command, $execOutput);
 			error_log("output (".count($execOutput)."):\n");
@@ -33,14 +34,14 @@
 			}
 
 			$execOutput = array();
-			$command = 'unzip -l "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'"';
-			error_log('find: '.$command);
+			$command = 'unzip -l "'.$baseProjectUrl.'/admin/uploads/theme/'.$row['file'].'" -x __MACOSX/* | awk \'{print $4}\' | grep -v /$';
+			error_log('unzip -l: '.$command);
 			exec($command, $execOutput);
 			$row['contents'] = '';
 			$files_in_theme = [];
 			foreach(array_slice($execOutput, 3, -2) as $line) {
 				error_log('line: '.$line."\n");
-				$files_in_theme[] = substr($line, 3);
+				$files_in_theme[] = $line;
 			}
 			$row['contents'] = json_encode($files_in_theme);
 		}

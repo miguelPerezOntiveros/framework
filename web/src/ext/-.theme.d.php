@@ -11,12 +11,12 @@
 		strpos(normalize($url), normalize($baseProjectUrl).'/admin') !== 0
 	){
 		foreach (json_decode($row['contents']) as $key => $value) {
-			$command = 'rm "'.$url.'/'.end(explode(' ', $value)).'"';
-			error_log('Command: '.$command);
+			$command = 'rm "'.$url.'/'.$value.'"';
+			error_log('Command rm: '.$command);
 			exec($command);
 		}
-		$command = 'find "'.$baseProjectUrl.'" -path "../projects/'.$config['_name'].'/admin/*" -prune -o -type d -empty -delete';
-		error_log('Command: '.$command);
+		$command = 'rmdir `find "../projects/'.$config['_name'].'" -type d | grep -v ../projects/'.$config['_name'].'/admin`';
+		error_log('Command find: '.$command);
 		exec($command);
 	}
 ?>
