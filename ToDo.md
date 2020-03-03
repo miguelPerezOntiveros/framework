@@ -18,9 +18,20 @@
 	- project level or maker_mike level?
 - https://www.nginx.com/blog/php-fpm-cve-2019-11043-vulnerability-nginx/
 - should be able to modify permissions without having to recreate a project
-- portlets should be able to narrow down fields
-- improve filtering options on portlets, for use cases like displaying an individual blog post (could be from url, could be using portlet communication)
-- how do I define boolean data types? I need it for the blogEntry table for example
+- exclude .DS_Store files on theme deployments
+- add date field to blogEntry
+	- export project
+	- regen project
+	- import modified version
+- support dynamic arguments on portlet filters, for example for displaying an individual blog post
+	- possible solutions
+		- reading $_GET('id')
+		- parameters left by other portlets
+- portlets should be able to specify their field array
+	- use `query_fields` instead of `query_tables`
+		- update project.c.php
+		- update page.php
+		- update script.js
 
 ### Import/Export
 - Maker_Mike level
@@ -105,7 +116,7 @@
 	- _show fields
 	- select: multi
 	- select: tables (requires no type attribute)
-	- booleans
+	- `boolean` type
 	- text fields with 260+ length will be displayed as an ace editor on the front end as per web/src/js/script.js 
 	- `user` and `user_type` tables are always added if they don´t exist, while `import`, `export`, `page`, `portlet` and `theme`are added if the database being created isn´t the maker_mike one.
 - parameters

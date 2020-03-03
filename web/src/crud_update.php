@@ -28,7 +28,7 @@
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
 				$ext = pathinfo($target_file, PATHINFO_EXTENSION);
-				$validExts = $column['ext'] ?: array('jpg', 'jpeg', 'gif', 'png');
+				$validExts = $column['ext'] ?: array('jpg', 'jpeg', 'gif', 'png', 'pdf');
 				if(array_search($ext, $validExts) === False ){
 					error_log('Valid exts: '.implode(', ', $validExts));
 					exit(json_encode((object) ["error" => "File type '".$ext."' not supported"]));

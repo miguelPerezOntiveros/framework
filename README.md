@@ -159,7 +159,7 @@ https://www.npmjs.com/package/yamljs
 - One liner to find a string in all files recursively:
 $ grep -rn . -e 'STRING'
 - One liner to find a string in all php files:
-$ grep --include=\*.php -rn . -e 'STRING'
+$ grep --include='\*.php' -rn . -e 'STRING'
 - Clean docker out with:
 docker ps -aq | xargs docker rm -f
 docker images -q | xargs docker rmi -f

@@ -36,7 +36,7 @@
 					$joinRules[] = $_GET['table'].'.'.$column_key.' = '.$otherTableAlias.'.id';
 				}
 				else if($column['type'] == 'boolean')
-					$allowedColumns[] = 'IF('.$_GET['table'].'.'.$column_key.', "1-Yes", "0-No") as '.$_GET['table'].'.'.$column_key;
+					$allowedColumns[] = 'IF('.$_GET['table'].'.'.$column_key.', "1-Yes", "0-No") as '.$column_key;
 				else
 					$allowedColumns[] = $_GET['table'].'.'.$column_key;
 		}

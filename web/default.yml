@@ -11,7 +11,7 @@ tables:
   columns:
   - title
   - name: public
-    type: int
+    type: boolean
   - description
   - name: content
     type: 40000

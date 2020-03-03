@@ -40,7 +40,7 @@
 				// var_dump($_FILES[$column_key]);
 				// echo 'target file:  '.$target_file.'<br>';
 				// echo 'ext: '.pathinfo($target_file, PATHINFO_EXTENSION);
-				$validExts = json_decode($column['ext']) ?: array('jpg', 'jpeg', 'gif', 'png');
+				$validExts = json_decode($column['ext']) ?: array('jpg', 'jpeg', 'gif', 'png', 'pdf');
 				if(array_search($ext, $validExts) === False ){
 					error_log('Valid exts: '.implode(', ', $validExts));
 					exit(json_encode((object) ["error" => "Supported extensions: ".implode(', ', $validExts)]));
