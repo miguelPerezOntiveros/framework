@@ -18,7 +18,7 @@
 	// parse import file's config.json, compare each table's object to $config[table_name]
 
 	// Unzip, import and delete
-	$command = './../../import_content.sh '.$dir.' '.$row['file'].' "'.implode(' ', $validated_table_selection).'" '.(in_array("Extentions Folder", $validated_selection)?'ext':'').' | mysql -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --database '.$config['_name'];
+	$command = './../../import_content.sh '.$dir.' '.$row['file'].' "'.implode(' ', $validated_table_selection).'" '.(in_array("Extentions Folder", $validated_selection)?'ext':'').' | mysql -h '.$db_host.' -P '.$db_port.' -u '.$db_user.' --password='.$db_pass.' --database '.$config['_name'].' --default-character-set=utf8mb4';
 	error_log("\n -- Command Unzip and Import: ".$command."\n");
 	exec($command);
 ?>

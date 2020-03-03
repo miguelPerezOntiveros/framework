@@ -54,7 +54,7 @@
 					'name',
 					'url',
 					array('name' => 'file', 'type' => 'file', 'ext' => '["zip"]'),
-					array('name' => 'contents', 'type' => 64000)
+					array('name' => 'contents', 'type' => 15000)
 				))
 			);
 		}
@@ -64,7 +64,7 @@
 				'columns' => array_values(array(
 					'name',
 					'url',
-					array('name' => 'html', 'type' => 64000)
+					array('name' => 'html', 'type' => 15000)
 				))
 			);
 		}
@@ -75,10 +75,10 @@
 					'name',
 					array('name' => 'query_tables', 'select' => 'tables'),
 					'query_conditions',
-					array('name' => 'pre', 'type' => 4000),
-					array('name' => 'template', 'type' => 50000),
-					array('name' => 'tween','type' => 4000),
-					array('name' => 'post', 'type' => 4000)
+					array('name' => 'pre', 'type' => 1000),
+					array('name' => 'template', 'type' => 12000),
+					array('name' => 'tween','type' => 1000),
+					array('name' => 'post', 'type' => 1000)
 				))
 			);
 		}
@@ -96,7 +96,7 @@
 				'name' => 'text',
 				'columns' => array_values(array(
 					'name',
-					array('name' => 'text', 'type' => 65000)
+					array('name' => 'text', 'type' => 15000)
 				))
 			);
 		}
@@ -126,12 +126,12 @@
 				'name' => $table,
 				'columns' => array_values(array(
 					'name',
-					array('name' => 'value', 'type' => 1024)
+					array('name' => 'value', 'type' => 2000)
 				)));
 			else if(!isset($table['columns']))
 				$row['config']['tables'][$table_key]['columns'] = array_values(array(
 					'name',
-					array('name' => 'value', 'type' => 1024)
+					array('name' => 'value', 'type' => 2000)
 				));
 		}
 		// unabreviate columns
@@ -200,7 +200,7 @@
 					;
 				$sql .= $column['name'].' '.$type.', ';
 			}
-			$sql .= 'primary key(id));'.PHP_EOL;
+			$sql .= 'primary key(id)) CHARACTER SET utf8mb4;'.PHP_EOL;
 		}
 		$sql .= "INSERT INTO user_type(name, landing_page) VALUES ('System Administrator', 'index.php');".PHP_EOL;
 		$sql .= "INSERT INTO user_type(name, landing_page) VALUES ('User', 'index.php');".PHP_EOL;

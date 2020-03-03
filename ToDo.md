@@ -32,6 +32,7 @@
 		- update project.c.php
 		- update page.php
 		- update script.js
+- themes are not autodeploying after import
 
 ### Import/Export
 - Maker_Mike level

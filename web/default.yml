@@ -14,7 +14,7 @@ tables:
     type: boolean
   - description
   - name: content
-    type: 40000
+    type: 15000
 - name: blogImage
   columns:
   - name
