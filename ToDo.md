@@ -32,7 +32,12 @@
 		- update project.c.php
 		- update page.php
 		- update script.js
+- on imports, when unselecting tables, the select all option should unselect itself. check backend validations.
+- adding a user or user type on maker_mike displays more forms
+- image name should be a link to the image?
+- file columns should only preview file when they are images
 - themes are not autodeploying after import
+- check if old page symlinks are removed on page imports
 
 ### Import/Export
 - Maker_Mike level
@@ -92,8 +97,12 @@
 	- migrate the web app to use the JS client library
 	- should the client handle authentication (get and set) as well?
 - move images and files to gcs to make Run stateless
+- on installation
+	- should create maker_mike folder and index and login phps
+	- line 4 of session.inc.php makes php crash... php config is different, it doesn´t crash on my laptop 
 
 ## Documentation TODOs
+- can I import an import file that has a completely different sql?
 - front end recieves 5 pieces of data for each column: name, type, show, select, hide_in.
 - Complete vs Content Export/Import feature as well as use cases or development patterns
 - Diagrams

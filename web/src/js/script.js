@@ -124,8 +124,12 @@ doForm = function(columns){
 				if((name == 'export' || name == 'import') && e[0] == 'selection'){
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_all" value="Select All">Select All</option>');
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="_extentions" value="Extentions Folder">Extentions Folder</option>');
-					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="theme" value="theme">Theme</option>');
-					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="page" value="page">Page</option>');
+					
+					// side nav tables
+					$.each($('.sidebar_project_specific_ul li a').slice(2), function(i, el){ // skipping the first 2 (i.e. Export and Import)
+						$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).data('table')+'">'+$(el).text()+'</option>');
+					});
+					
 					$('.form_element option[value="Select All"]').on('click', function() {
 						var values = [];
 						$.each($('.form_element select[name="'+e[0]+'[]"] option'), function(i, e){
@@ -134,6 +138,7 @@ doForm = function(columns){
 						$('.form_element select[name="selection[]"]').val(values);
 					});
 				}
+				// top nav tables
 				$.each($('.navbar-nav li span').slice(0, -1), function(i, el){
 					$('select[name="'+e[0]+'[]"]').append('<option data-table_name="'+$(el).data('table')+'" value="'+$(el).data('table')+'">'+$(el).text()+'</option>');
 				});
