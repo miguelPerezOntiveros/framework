@@ -1,9 +1,11 @@
 FROM nginx:alpine
 RUN apk update && apk add --update git php7=7.3.14-r0 php7-fpm php7-json php7-pdo php7-pdo_mysql php7-session curl mariadb-client zip coreutils bash # coreutils is for csplit
 
-COPY php.ini /etc/php7/php.ini
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY entry.sh /home/
+COPY docker/php.ini /etc/php7/php.ini
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/entry.sh /home/
 RUN chmod +x /home/entry.sh
+COPY ./ /usr/share/nginx/html
+RUN chown -R nginx:nginx /usr/share/nginx/html
 
 CMD /home/entry.sh

@@ -12,9 +12,8 @@ do:
 ```
 docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:3306 mysql/mysql-server:5.7
 docker inspect [CONTAINER HASH] | grep '                    "IPAd'
-cd docker
-docker build .
-sudo docker run -v $PWD/..:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
+docker build . -f docker/Dockerfile
+sudo docker run --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
 ```
 
 #### Bare Metal
@@ -138,7 +137,6 @@ tables:
   - description
 - settings
 ```
-- for the "maker_mike" projectName(only for that one? TODO), build_pre.sh will add in a soft link to enable the home page
 - the entry from the project table, the project folder on the FS and the DB can't be deleted as per blacklisting on backend extention maker_mike.project.d.php
 - Note: on entry.sh, the maker_mike DB file is run against the DB but data is only written if the database doesn´t already exist.
 

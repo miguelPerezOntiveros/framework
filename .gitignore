@@ -1,5 +1,4 @@
 projects
-!projects/maker_mike/*
 .DS_Store
 .idea/Framework.iml
 web/start_settings.inc.php

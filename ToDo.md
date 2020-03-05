@@ -100,6 +100,8 @@
 - on installation
 	- should create maker_mike folder and index and login phps
 	- line 4 of session.inc.php makes php crash... php config is different, it doesn´t crash on my laptop 
+- php does not have permissions to run all commands using exec()
+
 
 ## Documentation TODOs
 - can I import an import file that has a completely different sql?

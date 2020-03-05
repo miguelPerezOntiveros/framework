@@ -84,8 +84,8 @@ cat ../maker_mike.sql | mysql -h $db_host -u $db_user --password=$db_pass
 
 echo 'setting up maker_mike project'
 mkdir -p projects/maker_mike/admin
-ln -s ../../src/index.php projects/maker_mike/admin
-ln -s ../../src/login.php projects/maker_mike/admin
+ln -s ../../../src/index.php projects/maker_mike/admin
+ln -s ../../../src/login.php projects/maker_mike/admin
 
 nginx
 php-fpm7
