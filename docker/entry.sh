@@ -97,5 +97,5 @@ while true
 do
 	date
 	top -bn 1
-	sleep 60
+	sleep 600
 done

@@ -38,6 +38,7 @@
 - file columns should only preview file when they are images
 - themes are not autodeploying after import
 - check if old page symlinks are removed on page imports
+- create a new dockerfile for dev, based on the old one
 
 ### Import/Export
 - Maker_Mike level

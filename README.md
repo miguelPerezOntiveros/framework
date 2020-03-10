@@ -8,16 +8,23 @@ having done a
 ```
 docker pull mysql/mysql-server:5.7
 ```
-do:
+for prod do:
 ```
 docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:3306 mysql/mysql-server:5.7
 docker inspect [CONTAINER HASH] | grep '                    "IPAd'
 docker build . -f docker/Dockerfile
 sudo docker run --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
 ```
+for dev do:
+```
+docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:3306 mysql/mysql-server:5.7
+docker inspect [CONTAINER HASH] | grep '                    "IPAd'
+docker build . -f docker/Dockerfile_dev
+sudo docker run -v $PWD:/usr/share/nginx/html --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
+```
 
 #### Bare Metal
-	./start.sh # will start mysql and php dev server.
+./start.sh # will start mysql and php dev server.
 - You should have mysql installed and available on your PATH ('/usr/local/mysql/bin' is typical on a mac)
 - Check ./start.sh usage with "-h"
 
