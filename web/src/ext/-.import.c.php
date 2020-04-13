@@ -14,7 +14,7 @@
 	$row['selection'] = json_encode($validated_selection);
 	$validated_table_selection = array_diff($validated_selection, ['Extentions Folder', 'Select All']);
 
-	// validate table compatibility?
+	// validate table compatibility? TODO
 	// parse import file's config.json, compare each table's object to $config[table_name]
 
 	// Unzip, import and delete

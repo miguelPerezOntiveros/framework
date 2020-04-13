@@ -37,8 +37,9 @@
 - image name should be a link to the image?
 - file columns should only preview file when they are images
 - themes are not autodeploying after import
-- check if old page symlinks are removed on page imports
-- create a new dockerfile for dev, based on the old one
+- we do not support pages with spaces in them, validate that before adding the row to the pages table
+
+- on imports, are page soft links being created regardless of url depth?
 
 ### Import/Export
 - Maker_Mike level
@@ -102,7 +103,7 @@
 	- should create maker_mike folder and index and login phps
 	- line 4 of session.inc.php makes php crash... php config is different, it doesn´t crash on my laptop 
 - php does not have permissions to run all commands using exec()
-
+- implement a ctr+s to save without closing the create/edit form
 
 ## Documentation TODOs
 - can I import an import file that has a completely different sql?

@@ -14,6 +14,7 @@ docker run -e "MYSQL_ROOT_HOST=%" -e "MYSQL_ROOT_PASSWORD=admin" --rm -p 3306:33
 docker inspect [CONTAINER HASH] | grep '                    "IPAd'
 docker build . -f docker/Dockerfile
 sudo docker run --rm -p 80:80 IMAGE_HASH /home/entry.sh -h [DB_HOST]
+# optionally replace web/index.php with for example <?php header("Location: projects/miguelp/index.php")?>
 ```
 for dev do:
 ```

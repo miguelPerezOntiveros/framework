@@ -23,3 +23,8 @@ tables:
 - name: to_do
   permissions:
     read: System Administrator
+- name: temperature
+  columns:
+  - date
+  - celsius
+  - sensor

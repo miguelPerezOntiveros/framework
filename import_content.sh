@@ -1,12 +1,12 @@
 #!/bin/bash
-# echoes import statements, copies tables' uploads folders
+# echoes sql: truncates tables and inserts rows; copies tables' uploads folders; rewrites extentions
 # 1 path to zipped import file's derectory
 # 2 zip file name
 # 3 tables
 # 4 ext?
 
 cd $1
-unzipped=`unzip -qql $2 | head -n1 | awk '{ print $4}'` # ToDo does this work with spaces in the zip file name?
+unzipped=`unzip -qql $2 | head -n1 | awk '{ print $4}'` # TODO does this work with spaces in the zip file name?
 unzip -qq $2 && cd $unzipped
 
 current_table=_
@@ -18,10 +18,13 @@ for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 		echo 'TRUNCATE TABLE '$current_table\;	
 
 		# uploads folder
-		rm -rf ../../$current_table
+		[ -d ../../$current_table ] && rm -rf ../../$current_table
 		[ -d _admin/uploads/$current_table ] && cp -r _admin/uploads/$current_table ../../
 
-		# if [ $current_table = 'page' ]; then should remove all existing page symlinks 
+		# remove existing page symlinks
+		if [ $current_table = 'page' ]; then 
+			find ../../../.. -type l -ls | grep /src/page.php | awk '{print $11}' | xargs rm
+		fi;
 	fi;
 	ORIGINAL_IFS=${IFS}
 	IFS=\>
@@ -40,7 +43,7 @@ for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 			fields+=( ${word//<field name=\"/}, )
 		else
 			word=${word//<\/field/}
-			if [ $current_table = "page" ] && [ ${fields[-1]} = "url," ]; then
+			if [ $current_table = "page" ] && [ ${fields[-1]} = "url," ]; then # TODO soft links being created regardless of url depth?
 				ln -s ../../src/page.php ../../../../${word//<\/field/}
 			fi;
 			word=\"${word}\",
@@ -57,7 +60,6 @@ for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 	echo INSERT INTO ${BASH_REMATCH[1]}\(id, ${fields::-1}\) VALUES\(${BASH_REMATCH[2]}, ${values::-1}\)\; | sed 's/&gt;/>/g'
 	IFS=${ORIGINAL_IFS}
 done
-
 
 # Extentions
 if [ -z '$4' ] && [ $4 = 'ext' ]; then
