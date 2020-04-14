@@ -29,7 +29,7 @@
 
 		if($url_available){
 			error_log('Creating page');
-			$command = 'mkdir -p '.$dir.' && ln -s '.dirname($_SERVER['SCRIPT_FILENAME']).'/page.php '.$url;
+			$command = 'mkdir -p '.$dir.' && ln -s '.dirname($_SERVER['SCRIPT_FILENAME']).'/page.php "'.$url.'"';
 			error_log('Command: '.$command);
 			exec($command);
 		} else {

@@ -1,6 +1,6 @@
 #!/bin/bash
 # echoes sql: truncates tables and inserts rows; copies tables' uploads folders; rewrites extentions
-# 1 path to zipped import file's derectory
+# 1 path to zipped import file's directory
 # 2 zip file name
 # 3 tables
 # 4 ext?
@@ -25,6 +25,8 @@ for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 		if [ $current_table = 'page' ]; then 
 			find ../../../.. -type l -ls | grep /src/page.php | awk '{print $11}' | xargs rm
 		fi;
+
+		# TODO remove existing theme files first
 	fi;
 	ORIGINAL_IFS=${IFS}
 	IFS=\>
@@ -43,8 +45,21 @@ for file in `find $3 -type f -name \*.xml | grep -v ^$1/_admin*  | sort`; do
 			fields+=( ${word//<field name=\"/}, )
 		else
 			word=${word//<\/field/}
-			if [ $current_table = "page" ] && [ ${fields[-1]} = "url," ]; then # TODO soft links being created regardless of url depth?
-				ln -s ../../src/page.php ../../../../${word//<\/field/}
+			if [ $current_table = "page" ] && [ ${fields[-1]} = "url," ]; then
+				unzipped_absolute=$(pwd)
+				( # parentheses denote a subshell in bash
+					cd ../../../../../../src ;
+					ln -s $(pwd)/page.php $unzipped_absolute/../../../../${word//<\/field/}
+				)
+			fi;
+			if [ $current_table = "theme" ] && [ ${fields[-1]} = "url," ]; then
+				row_url=${word//<\/field/}
+			fi;
+			if [ $current_table = "theme" ] && [ ${fields[-1]} = "file," ]; then
+				# deploy the current theme
+				unzipped_absolute=$(pwd)
+				# TODO need to delte all previous theme files first
+				# mkdir -p $unzipped_absolute/../../../../$row_url && unzip _admin/uploads/theme/${word//<\/field/} -d $unzipped_absolute/../../../../$row_url -x __MACOSX/*
 			fi;
 			word=\"${word}\",
 			word=${word//\&quot;/\\\"}

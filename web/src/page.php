@@ -8,7 +8,7 @@
 	$res = array();
 	$page = '';
 	
-	$sql = 'SELECT * FROM page WHERE url = "'.$url.'";';
+	$sql = 'SELECT * FROM page WHERE url = "'.urldecode($url).'";';
 	error_log('INFO - sql:' .$sql);
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute();

@@ -36,10 +36,11 @@
 - adding a user or user type on maker_mike displays more forms
 - image name should be a link to the image?
 - file columns should only preview file when they are images
-- themes are not autodeploying after import
-- we do not support pages with spaces in them, validate that before adding the row to the pages table
+- prevent .DS_Store files from being imported or exported
 
-- on imports, are page soft links being created regardless of url depth?
+- themes are not autodeploying after import
+	- I can deploy them, but I now need to delete previoud theme files first
+	- alternatively, do not delete themes at all on imports?
 
 ### Import/Export
 - Maker_Mike level
